@@ -1,9 +1,11 @@
 import './App.css';
 
-import LoginButton from './components/login';
+import CadastroSpring from './components/login';
 import { useEffect } from 'react';
 import { gapi } from 'gapi-script';
 
+import Login from './components/CadastroSpring';
+import LoginSpring from './components/LoginSpring.js';
 const clientId = PermissionStatus.REACT_APP_CLIENT_ID;
 
 function App() {
@@ -20,7 +22,9 @@ function App() {
 
   return (
     <div className='App'>
-        <LoginButton/>
+        <CadastroSpring/>
+        <Login/>
+        <LoginSpring/>
     </div>
   )
 }

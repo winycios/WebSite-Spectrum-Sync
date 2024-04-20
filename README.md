@@ -1,8 +1,8 @@
-# Academia Fitness App
+# FIT TECH
 
 ## Descrição
 
-O Academia Fitness App é uma aplicação web desenvolvida em React voltada para ajudar os usuários a gerenciar suas rotinas de treino e nutrição. Com uma interface intuitiva e recursos poderosos, nossa aplicação visa tornar a jornada de fitness mais acessível e eficaz para todos os níveis de condicionamento físico.
+A FIT TECH é uma aplicação web desenvolvida em React voltada para ajudar os usuários a gerenciar suas rotinas de treino e nutrição. Com uma interface intuitiva e recursos poderosos, nossa aplicação visa tornar a jornada de fitness mais acessível e eficaz para todos os níveis de condicionamento físico.
 
 ## Funcionalidades
 

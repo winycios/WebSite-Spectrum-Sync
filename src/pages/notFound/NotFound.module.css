@@ -1,0 +1,44 @@
+.content {
+    display: flex;
+    padding: 0 1rem;
+    min-height: 100vh;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    gap: 80px;
+    background-color: #1e1e1e;
+    background-image: linear-gradient(to top,
+            #1e1e1e, #252525);
+}
+
+.content img {
+    height: auto;
+    max-width: 40%;
+}
+
+.box h1 {
+    width: 100%;
+    color: #ffffff;
+    font-size: 5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.box h3 {
+    width: 100%;
+    color: #ffffff;
+    text-align:justify;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+@media screen and (max-width: 700px) {
+    .content {
+        flex-direction: column;
+    }
+
+    .content img {
+        max-width: 70%;
+    }
+}

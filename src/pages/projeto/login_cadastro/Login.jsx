@@ -11,9 +11,9 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import LoginGoogle from "../../../components/projeto/cadastro_login/google/LoginGoogle";
+import { LogarUser } from "../../../service/auth";
 
 const Login = () => {
-    sessionStorage.clear();
     const navigate = useNavigate();
 
 
@@ -27,8 +27,7 @@ const Login = () => {
             senha: senha
 
         }).then((response) => {
-            sessionStorage.setItem("id", response.data.userId);
-            sessionStorage.setItem("nome", response.data.nome);
+            LogarUser(response.data.userId, response.data.token)
 
             toast.success(`Olá ${response.data.nome}, seja bem vindo!`);
             setTimeout(() => {
@@ -78,7 +77,6 @@ const Login = () => {
                                     <Form.Control required type="text" value={email} onChange={(e) => handleInputChange(e, setEmail)} />
                                     <Form.Control.Feedback type="invalid">Por favor digite seu Email!</Form.Control.Feedback>
                                     <label className={Styles.label}>Digite seu email</label>
-                                    <div className={Styles.underline}></div>
                                 </div>
                             </Form.Group>
 
@@ -87,7 +85,6 @@ const Login = () => {
                                     <Form.Control required type="password" value={senha} onChange={(e) => handleInputChange(e, setSenha)} />
                                     <Form.Control.Feedback type="invalid">Por favor digite sua Senha!</Form.Control.Feedback>
                                     <label className={Styles.label}>Digite seu senha</label>
-                                    <div className={Styles.underline}></div>
                                 </div>
                             </Form.Group>
                             <p className={Styles.help_pass}>Esqueci minha senha</p>

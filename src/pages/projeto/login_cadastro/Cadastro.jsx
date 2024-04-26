@@ -76,7 +76,6 @@ const Cadastro = () => {
                                     <Form.Control required type="text" value={nome} onChange={(e) => handleInputChange(e, setNome)} />
                                     <Form.Control.Feedback type="invalid">Por favor digite seu nome completo!</Form.Control.Feedback>
                                     <label className={Styles.label}>Digite seu nome completo</label>
-                                    <div className={Styles.underline}></div>
                                 </div>
                             </Form.Group>
 
@@ -85,7 +84,6 @@ const Cadastro = () => {
                                     <Form.Control required type="text" value={email} onChange={(e) => handleInputChange(e, setEmail)} />
                                     <Form.Control.Feedback type="invalid">Por favor digite seu email!</Form.Control.Feedback>
                                     <label className={Styles.label}>Digite seu Email</label>
-                                    <div className={Styles.underline}></div>
                                 </div>
                             </Form.Group>
 
@@ -95,7 +93,6 @@ const Cadastro = () => {
                                     <Form.Control type="password" required value={senha} onChange={(e) => handleInputChange(e, setSenha)} />
                                     <Form.Control.Feedback type="invalid">Por favor digite sua senha.</Form.Control.Feedback>
                                     <label className={Styles.label}>Digite sua senha</label>
-                                    <div className={Styles.underline}></div>
                                 </div>
                             </Form.Group>
                         </Col>

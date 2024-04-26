@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import Api from '../../../../api';
 import { GoogleLogin } from '@react-oauth/google';
+import { LogarUser } from '../../../../service/auth';
 
 function CadasGoogle() {
     const navigate = useNavigate();
@@ -28,8 +29,8 @@ function CadasGoogle() {
             nome: name
 
         }).then((response) => {
-            sessionStorage.setItem("id", response.data.userId);
-            sessionStorage.setItem("nome", response.data.nome);
+            LogarUser(response.data.userId, response.data.token)
+
 
             toast.success(`Olá ${response.data.nome}, seja bem vindo!`);
             logOut();

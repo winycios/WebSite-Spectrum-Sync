@@ -1,24 +1,28 @@
-main {
-
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-}
-
-.col {
-
-    height: 100%;
+.box {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 30px;
+    overflow-y: hidden;
 }
+
+.container {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(5.4px);
+    border: 1px solid rgba(255, 255, 255, 0.47);
+    padding: 30px;
+}
+
+/* Inputs */
 
 .box_form {
 
-    width: 100%;
-    padding: 40px;
-}
+    width: 100%;}
 
 .form {
     display: flex;
@@ -31,16 +35,19 @@ main {
 }
 
 /* inputs */
+
 .input-container {
     position: relative;
-    margin: 35px auto;
+    margin: 20px auto;
     width: 100%;
 }
 
+.input-container select::placeholder,
 .input-container input::placeholder {
     color: gray;
 }
 
+.input-container select,
 .input-container input {
     font-size: 20px;
     width: 100%;
@@ -61,6 +68,8 @@ main {
     pointer-events: none;
 }
 
+.input-container select:focus~.label,
+.input-container select:valid~.label,
 .input-container input:focus~.label,
 .input-container input:valid~.label {
     top: -20px;
@@ -68,51 +77,20 @@ main {
     color: #ffffff !important;
 }
 
+.input-container select:focus,
 .input-container input:focus {
     background-color: transparent;
     box-shadow: unset;
     border-bottom: 2px solid var(--vermelho);
 }
 
-
+.input-container select:focus
+.input-container select:valid,
 .input-container input:focus,
 .input-container input:valid {
     border-bottom: 2px solid var(--vermelho);
 }
 
-.button {
-    width: 30%;
-    height: 60px;
-}
-
-.help_pass {
-
-    text-align: end;
-    cursor: "pointer";
-    transition: var(--transition);
-}
-
-.help_pass:hover {
-
-    color: var(--vermelho);
-}
-
-.box_button {
-    margin-top: 20px;
-    display: flex;
-    width: 100%;
-    gap: 20px;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-
-@media screen and (max-width: 600px) {
-    main {
-        flex-direction: column;
-    }
-
-    .button {
-        width: 100%;
-    }
+option {
+    color: black;
 }

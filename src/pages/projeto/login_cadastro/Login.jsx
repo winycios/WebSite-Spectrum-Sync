@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import Styles from "./L_G.module.css";
 import LayoutLogin from "../../../components/projeto/cadastro_login/layout/Layout_Login";
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 import tela from "../../../utils/assets/FundoLogin.png"
@@ -90,7 +91,9 @@ const Login = () => {
                                     <div className={Styles.underline}></div>
                                 </div>
                             </Form.Group>
-                            <p className={Styles.help_pass}>Esqueci minha senha</p>
+                            {/* <p type="button" Link="../recuperar" className={Styles.help_pass}>Esqueci minha senha</p> */}
+                            <Link className={Styles.help_pass} to="../recuperar">Esqueci minha senha</Link>
+                            
                         </Col>
 
                         <div className={Styles.box_button}>

@@ -4,6 +4,7 @@ import { Route, createBrowserRouter, createRoutesFromElements } from 'react-rout
 import Home from './pages/landing page/Home'
 import Cadastro from './pages/projeto/login_cadastro/Cadastro';
 import Login from './pages/projeto/login_cadastro/Login';
+import Recuperar from './pages/projeto/recuperar_senha/RecuperarSenha';
 import NotFound from './pages/notFound/NotFound';
 import HomeProjeto from './pages/projeto/home/Home'
 const Rotas = createBrowserRouter(
@@ -13,6 +14,7 @@ const Rotas = createBrowserRouter(
                 <Route index element={<Home />} />
                 <Route path="cadastrar" element={<Cadastro />} />
                 <Route path="logar" element={<Login />} />
+                <Route path="recuperar" element={<Recuperar />} />
                 <Route path="homeProjeto" element={<HomeProjeto />} />
                 <Route path="*" element={<NotFound />} />
             </Route>

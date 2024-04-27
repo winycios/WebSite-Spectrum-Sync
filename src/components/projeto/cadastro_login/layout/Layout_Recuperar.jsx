@@ -3,7 +3,7 @@ import { ArrowLeft } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 
 
-const Layout_Login = ({ background, value }) => {
+const Layout_Recuperar = ({ background, value }) => {
 
     return (
         <>
@@ -14,7 +14,7 @@ const Layout_Login = ({ background, value }) => {
                 <div className={styles.boxText}>
 
                     <Link to="../logar"><span className={`${styles.text} ${value ? styles.active : ''}`}>Login</span></Link>
-                    <Link to="../cadastrar"><span className={`${styles.text} ${value === false ? styles.active : ''}`}>Cadastrar</span></Link>
+                    <Link to="../recuperar"><span className={`${styles.text} ${value === false ? styles.active : ''}`}>Recuperar Senha</span></Link>
 
                 </div>
             </div>
@@ -23,4 +23,4 @@ const Layout_Login = ({ background, value }) => {
 }
 
 
-export default Layout_Login;
+export default Layout_Recuperar;

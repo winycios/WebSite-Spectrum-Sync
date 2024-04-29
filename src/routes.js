@@ -8,6 +8,7 @@ import NotFound from './pages/notFound/NotFound';
 //Login e cadastro
 import Cadastro from './pages/projeto/login_cadastro/Cadastro';
 import Login from './pages/projeto/login_cadastro/Login';
+import Recuperar from './pages/projeto/recuperar_senha/RecuperarSenha';
 
 //Usuario logado
 import HomeProjeto from './pages/projeto/logado/home/Home'
@@ -20,6 +21,7 @@ const Rotas = createBrowserRouter(
                 <Route index element={<Home />} />
                 <Route path="cadastrar" element={<Cadastro />} />
                 <Route path="logar" element={<Login />} />
+                <Route path="recuperar" element={<Recuperar />} />
                 <Route path="homeProjeto" element={<HomeProjeto />} />
                 <Route path="homeProjeto/user" element={<User />} />
                 <Route path="*" element={<NotFound />} />

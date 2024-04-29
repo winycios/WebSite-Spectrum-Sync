@@ -1,9 +1,29 @@
 main {
-
     display: flex;
     width: 100vw;
     height: 100vh;
 }
+
+
+@media screen and (max-width: 600px) {
+
+    main {
+        flex-direction: column;
+        width: 100vw;
+        height: 70vh;
+    }
+
+    h1{
+        text-align:justify;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: content-box !important;
+    }
+}
+
 
 .col {
 
@@ -16,8 +36,16 @@ main {
 
 .box_form {
 
-    width: 100%;
-    padding: 40px;
+    width: 50%;
+    padding: 8%;
+}
+
+p{    
+    text-align: center;
+}
+
+p:hover{
+    color: var(--vermelho);
 }
 
 .form {
@@ -29,15 +57,13 @@ main {
     text-align: center;
     text-transform: uppercase;
 }
-
-/* inputs */
 .input-container {
     position: relative;
-    margin: 35px auto;
+    margin: 50px auto;
     width: 100%;
 }
 
-.input-container input::placeholder {
+.input-container input::placeholder{
     color: gray;
 }
 
@@ -61,6 +87,7 @@ main {
     pointer-events: none;
 }
 
+
 .input-container input:focus~.label,
 .input-container input:valid~.label {
     top: -20px;
@@ -71,31 +98,40 @@ main {
 .input-container input:focus {
     background-color: transparent;
     box-shadow: unset;
-    border-bottom: 2px solid var(--vermelho);
 }
 
+.input-container .underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: var(--vermelho);
+    transform: scaleX(0);
+    transition: all 0.3s ease;
+}
 
-.input-container input:focus,
-.input-container input:valid {
-    border-bottom: 2px solid var(--vermelho);
+.input-container input:focus~.underline,
+.input-container input:valid~.underline {
+    transform: scaleX(1);
 }
 
 .button {
     width: 30%;
-    height: 60px;
+    height: 3.75rem;
 }
 
-.help_pass {
+.btnCancelar {
 
-    color: #ccc;
-    text-align: end;
-    cursor: "pointer";
-    transition: var(--transition);
+    border: 1px solid white;
+    padding: 12px 28px;
+    border-radius: 5px;
+
+    color: white;
 }
 
-.help_pass:hover {
-
-    color: var(--vermelho);
+.btnCancelar:hover {
+    background-color: rgba(150, 150, 150, 0.5);
 }
 
 .box_button {
@@ -105,15 +141,4 @@ main {
     gap: 20px;
     justify-content: space-evenly;
     align-items: center;
-}
-
-
-@media screen and (max-width: 600px) {
-    main {
-        flex-direction: column;
-    }
-
-    .button {
-        width: 100%;
-    }
 }

@@ -25,7 +25,7 @@ A FIT TECH é uma aplicação web desenvolvida em React voltada para ajudar os u
 - **React Router**: Para gerenciamento de rotas na aplicação.
 - **MySql**:  armazenamento de dados em tempo real.
 - **Google login**: Para autenticação de usuários
-- **Chart.js**: Para geração de gráficos e estatísticas.
+- **React Charts - MUI X**: Para geração de gráficos e estatísticas.
 
 ## Contribuição
 

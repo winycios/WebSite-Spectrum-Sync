@@ -1,8 +1,7 @@
 import { React } from "react";
-import NavBar from "../../../components/projeto/navBar/NavBar";
+import NavBar from "../../../../components/projeto/navBar/NavBar";
 
 const Home = () => {
-
     return (
         <>
             <NavBar />

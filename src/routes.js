@@ -1,12 +1,19 @@
 import React from "react";
 import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
+// iniciais
 import Home from './pages/landing page/Home'
+import NotFound from './pages/notFound/NotFound';
+
+//Login e cadastro
 import Cadastro from './pages/projeto/login_cadastro/Cadastro';
 import Login from './pages/projeto/login_cadastro/Login';
 import Recuperar from './pages/projeto/recuperar_senha/RecuperarSenha';
-import NotFound from './pages/notFound/NotFound';
-import HomeProjeto from './pages/projeto/home/Home'
+
+//Usuario logado
+import HomeProjeto from './pages/projeto/logado/home/Home'
+import User from './pages/projeto/logado/tela_usuario/User'
+
 const Rotas = createBrowserRouter(
     createRoutesFromElements(
         <>
@@ -16,6 +23,7 @@ const Rotas = createBrowserRouter(
                 <Route path="logar" element={<Login />} />
                 <Route path="recuperar" element={<Recuperar />} />
                 <Route path="homeProjeto" element={<HomeProjeto />} />
+                <Route path="homeProjeto/user" element={<User />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
         </>

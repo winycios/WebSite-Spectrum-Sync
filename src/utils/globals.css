@@ -39,6 +39,20 @@ body {
     font-weight: 600;
 }
 
+.modal-content {
+    background: unset !important;
+}
+
+.form-control.is-invalid:focus,
+.was-validated .form-control:invalid:focus {
+    box-shadow: none !important;
+}
+
+
+.container {
+    max-width: 95% !important;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }

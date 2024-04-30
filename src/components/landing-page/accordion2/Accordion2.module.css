@@ -15,7 +15,7 @@ button {
     flex-direction: column;
     padding: 8px 8px 8px 48px;
     gap: 1.5rem;
-    transition: transforme 0.5s ease-in-out;
+    transition: var(--transition) !important;
 }
 
 .solution_mobile_subtitle {
@@ -25,19 +25,19 @@ button {
     text-align: start;
     width: 80%;
     display: none;
-    transition: transforme 0.5s ease-in-out;
     flex-direction: column;
     gap: 2rem;
+    transition: var(--transition) !important;
 }
 
 .sectionText.active .solution_mobile_subtitle {
     display: flex;
-    transition: transforme 0.5s ease-in-out;
+    transition: var(--transition) !important;
 }
 
 .sectionText.active {
     border-left: 3px solid var(--vermelho);
-    transition: transforme 0.5s ease-in-out;
+    transition: var(--transition) !important;
 }
 
 .col {

@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import styles from './NavBar_landing.module.css'
-import { PersonAdd, House, BoxArrowInRight, Cursor, Shuffle, PersonRaisedHand, PersonLinesFill } from 'react-bootstrap-icons';
+import { PersonAdd, House, BoxArrowInRight, Cursor, Shuffle, PersonRaisedHand } from 'react-bootstrap-icons';
 import logo from '../../../utils/assets/logo.png';
 
 const NavBar = () => {

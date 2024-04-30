@@ -1,7 +1,7 @@
 .bg-body-tertiary {
 
     padding: 0;
-    background-color: #1C1C1E !important;
+    background-color: var(--preto) !important;
     border-bottom: 3px solid var(--vermelho);
 }
 
@@ -35,7 +35,7 @@
 .actives {
 
     background: var(--salmao) !important;
-    color: #ffffff !important;
+    color: var(--branco) !important;
     border: 2px solid var(--salmao) !important;
 }
 
@@ -43,9 +43,9 @@
 .actives:hover,
 .nav_link:nth-child(-n + 5):hover {
 
-    border-bottom: 2px solid #ffffff !important;
+    border-bottom: 2px solid var(--branco) !important;
     background: transparent !important;
-    color: #ec5e67 !important;
+    color: var(--salmao) !important;
 
 }
 

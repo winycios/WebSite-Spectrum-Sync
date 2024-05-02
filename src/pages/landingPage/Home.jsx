@@ -5,19 +5,21 @@ import Separator from "../../components/landing-page/separator/Separator";
 import AccordionFaq from "../../components/landing-page/accordion/AccordionFaq";
 import AccordionSolution from "../../components/landing-page/accordion2/AccordionSolution";
 import Footer from "../../components/landing-page/footer/Footer"
-import folder1 from "../../utils/assets/supino.png";
-import folder2 from "../../utils/assets/dieta.png";
-import folder3 from "../../utils/assets/dispositivos-responsivos.png";
-import exampleNavigation from "../../utils/assets/exampleNavigation.svg";
-import exampleMobile from "../../utils/assets/mobileExample.svg";
 import styles from "./Home.module.css";
+
+
+const folder1 = "https://fittech500.blob.core.windows.net/imagens-spectrum/supino.png";
+const folder2 = "https://fittech500.blob.core.windows.net/imagens-spectrum/dieta.png";
+const folder3 = "https://fittech500.blob.core.windows.net/imagens-spectrum/dispositivos-responsivos.png";
+const exampleNavigation = "https://fittech500.blob.core.windows.net/imagens-spectrum/exampleNavigation.svg";
+const exampleMobile = "https://fittech500.blob.core.windows.net/imagens-spectrum/mobileExample.svg";
 
 const Home = () => {
     return (
         <>
             <Navbar />
 
-            <div style={{ marginTop: '8rem' }} id="section_slider">
+            <div id="section_slider">
                 <Slider />
             </div>
 

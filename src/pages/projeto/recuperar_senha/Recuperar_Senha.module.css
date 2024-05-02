@@ -129,6 +129,7 @@ p:hover {
     main {
         flex-direction: column;
         width: 100vw;
+        height: 90vh;
     }
 
     h1 {
@@ -137,11 +138,5 @@ p:hover {
 
     .box_form {
         width: 100%;
-    }
-  
-      *,
-    *::before,
-    *::after {
-        box-sizing: content-box;
     }
 }

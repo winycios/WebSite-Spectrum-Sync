@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import FindImage from '../GET/ProcurarImg';
 
-const logo = 'https://fittech500.blob.core.windows.net/blob/logo.png'
+const logo = 'https://fittech500.blob.core.windows.net/imagens-spectrum/logo.png'
 
 const NavBar = () => {
     const navigate = useNavigate();

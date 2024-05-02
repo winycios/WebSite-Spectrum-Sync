@@ -1,0 +1,22 @@
+.buttonText {
+    letter-spacing: 0.5px;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 24px;
+}
+
+.button {
+    border-radius: 8px;
+    width: fit-content;
+    background-color: var(--vermelho);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2% 4%;
+}

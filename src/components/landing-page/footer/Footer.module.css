@@ -1,0 +1,150 @@
+.logoGrey {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.logoContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 24px;
+}
+
+.companyname202x {
+    position: relative;
+    line-height: 140%;
+    text-align: center;
+}
+
+.linkName {
+    position: relative;
+    line-height: 140%;
+}
+
+.footerComponentslinkfooter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 0px;
+}
+
+.footerComponentsverticalMen {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.iconJamIconsOutlineL {
+    width: 24px;
+    position: relative;
+    height: 24px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.footerComponentssocialIcons {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.googlePlay {
+    width: 135px;
+    position: relative;
+    height: 40px;
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.appDownload {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 8.38px;
+    font-family: 'Open Sans';
+}
+
+.bottom {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 48px 0px 24px;
+    box-sizing: border-box;
+    gap: 48px;
+}
+
+.footer {
+    background-color: var(--preto);
+    width: 100%;
+    position: relative;
+    border-top: 4px solid #ff0000;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 80px;
+    text-align: left;
+    font-size: 16px;
+    color: #fff;
+    font-family: 'Open Sans';
+}
+
+@media screen and (max-width: 912px) {
+    .bottom {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 0px;
+      gap: 24px;
+    }
+  
+    .footerComponentsverticalMen {
+      flex-direction: column;
+      gap: 16px;
+    }
+  
+    .footerComponentssocialIcons {
+      margin-top: 24px;
+    }
+  
+    .appDownload {
+      margin-top: 24px;
+    }
+  
+    .footer {
+      padding: 0px 24px;
+      font-size: 14px;
+    }
+  
+    .logoContainer {
+      align-items: center;
+    }
+  
+    .logoGrey {
+      justify-content: center;
+      text-align: center;
+    }
+  
+    .googlePlay {
+      width: 100%;
+    }
+  }

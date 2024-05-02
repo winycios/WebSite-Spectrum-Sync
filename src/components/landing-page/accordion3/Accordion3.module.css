@@ -1,0 +1,50 @@
+.gaveta_header {
+    display: flex;
+    padding: 0.75rem 1rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 1px solid var(--branco);
+    background-color: var(--preto);
+    gap: 6rem;
+}
+
+.gaveta_header span {
+    color: var(--salmao);
+}
+
+.gaveta_body {
+    display: none;
+    padding: 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+    background-color: var(--preto);
+}
+
+.gaveta_item.active .gaveta_body {
+    display: flex;
+}
+
+.gaveta_item.active .gaveta_header {
+    background-color: var(--preto);
+}
+
+.icon {
+    width: 0.5rem;
+    transition: transform 0.5s ease-in-out;
+}
+
+.gaveta_item.active .icon {
+    transform: rotate(180deg);
+}
+
+.gaveta_header.start {
+    border-radius: 0.5rem 0.5rem 0 0;
+    transition: transform 0.5s ease-in-out;
+}
+
+.gaveta_header.end {
+    border-radius: 0 0 0.5rem 0.5rem;
+    transition: transform 0.5s ease-in-out;
+}

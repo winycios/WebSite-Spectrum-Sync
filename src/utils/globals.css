@@ -10,7 +10,7 @@
     --salmao: #FF3B47;
     --rosa: #FF6E77;
     --vermelho: #FF0817;
-    --background: url('./assets/BackGround.svg');
+    --background: url('https://fittech500.blob.core.windows.net/blob/BackGround.svg');
 
     --transition: 0.5s ease-in-out;
 }

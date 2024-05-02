@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
-import tela from "../../../utils/assets/FundoLogin.png"
 import Api from '../../../api'
 
 import Button from 'react-bootstrap/Button';
@@ -13,6 +12,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import LoginGoogle from "../../../components/projeto/cadastro_login/google/LoginGoogle";
 import { LogarUser } from "../../../service/auth";
+
+const tela = "https://fittech500.blob.core.windows.net/blob/FundoLogin.png"
 
 const Login = () => {
     const navigate = useNavigate();

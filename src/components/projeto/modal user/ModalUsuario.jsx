@@ -11,13 +11,16 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 import Modal from 'react-bootstrap/Modal';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-
-import Logo from "../../../utils/assets/semFundo.svg"
-
+import Api from '../../../api'
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
+import { getId } from '../../../service/auth';
 
 import Styles from "./ModalUsuario.module.css"
+
+const Logo = "https://fittech500.blob.core.windows.net/blob/semFundo.svg"
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -87,13 +90,47 @@ ColorlibStepIcon.propTypes = {
 const steps = ['Fit tech', 'Credencial', 'Seu corpo', 'Adicionais'];
 
 
-const CustomizedSteppers = () => {
+const CustomizedSteppers = ({ nome, email }) => {
+
+    const navigate = useNavigate();
+    const [newUser, setUser] = useState({
+        nome: nome,
+        senha: '',
+        img: '',
+        genero: '',
+        peso: '',
+        altura: '',
+        dataNascimento: '',
+        meta: '',
+        nivelCondicao: ''
+    });
+
+    const handleSave = () => {
+        Api.put(`usuarios/${getId()}`, newUser).then(() => {
+
+            toast.success("Seus dados foram atualizado com sucesso!");
+            setTimeout(() => { navigate("/homeProjeto/user"); }, 2000);
+
+        }).catch(function (error) {
+            toast.error(error.response.data.message);
+        });
+    }
+
+    // Atualiza o objeto de estado para cada mudança de input
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setUser(prevUser => ({
+            ...prevUser,
+            [name]: value
+        }));
+    };
+
+
     const [validated, setValidated] = useState(false);
 
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState(true);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -101,6 +138,8 @@ const CustomizedSteppers = () => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.stopPropagation();
+        } else {
+            handleSave();
         }
         setValidated(true);
     };
@@ -146,26 +185,26 @@ const CustomizedSteppers = () => {
                             <Form.Group>
                                 <div className={Styles["input-container"]}>
                                     <label>Seu Nome</label>
-                                    <Form.Control required type="text" value="po" readOnly />
+                                    <Form.Control required type="text" value={newUser.nome} name="nome" onChange={handleInputChange} />
                                 </div>
                             </Form.Group>
 
                             <Form.Group>
                                 <div className={Styles["input-container"]}>
                                     <label>Seu Email</label>
-                                    <Form.Control required type="text" value="winycios@gmail.com" readOnly />
+                                    <Form.Control required type="text" value={email} readOnly />
                                 </div>
                             </Form.Group>
 
 
                             <Form.Group controlId="validationCustomSenha">
                                 <div className={Styles["input-container"]}>
-                                    <Form.Control type="password" required />
+                                    <Form.Control type="password" name="senha" value={newUser.senha} onChange={handleInputChange} required />
                                     <Form.Control.Feedback type="invalid">Por favor digite sua senha.</Form.Control.Feedback>
                                     <label className={Styles.label}>
                                         Digite sua nova Senha
                                     </label>
-                                    <span aria-describedby={id} onClick={handleClick}>Renovar senha ?</span>
+                                    <span aria-describedby={id} onClick={handleClick}>senha ?</span>
                                     <Popover
                                         id={id}
                                         open={open}
@@ -181,7 +220,11 @@ const CustomizedSteppers = () => {
                                             }
                                         }}
                                     >
-                                        <Typography sx={{ p: 2 }}>Renove sua senha por segurança após o login.</Typography>
+                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 1 dígito</Typography>
+                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 1 letra minúscula</Typography>
+                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 1 letra maiúscula</Typography>
+                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 8 caracteres</Typography>
+                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 1 caractere especial</Typography>
                                     </Popover>
                                 </div>
                             </Form.Group>
@@ -195,7 +238,8 @@ const CustomizedSteppers = () => {
                             <Form.Group controlId="validationCustomGenero">
                                 <div className={Styles["input-container"]}>
                                     <label>Seu Gênero:</label>
-                                    <Form.Select aria-label="Select sexo">
+                                    <Form.Select aria-label="Select sexo" name="genero" onChange={handleInputChange} defaultValue={newUser.genero}>
+                                        <option disabled value="">Selecione seu gênero</option>
                                         <option value="masculino">Masculino</option>
                                         <option value="feminino">Feminino</option>
                                         <option value="N/A">Prefiro não informar</option>
@@ -204,9 +248,10 @@ const CustomizedSteppers = () => {
                             </Form.Group>
 
 
+
                             <Form.Group controlId="validationCustomPeso">
                                 <div className={Styles["input-container"]}>
-                                    <Form.Control required type="number" />
+                                    <Form.Control required type="number" name="peso" onChange={handleInputChange} value={newUser.peso} />
                                     <Form.Control.Feedback type="invalid">Por favor informe seu peso!</Form.Control.Feedback>
                                     <label className={Styles.label}>Digite seu peso</label>
                                 </div>
@@ -214,7 +259,7 @@ const CustomizedSteppers = () => {
 
                             <Form.Group controlId="validationCustomAltura">
                                 <div className={Styles["input-container"]}>
-                                    <Form.Control required type="number" />
+                                    <Form.Control required type="number" name="altura" onChange={handleInputChange} value={newUser.altura} />
                                     <Form.Control.Feedback type="invalid">Por favor informe sua altura!</Form.Control.Feedback>
                                     <label className={Styles.label}>Digite sua altura</label>
                                 </div>
@@ -229,9 +274,10 @@ const CustomizedSteppers = () => {
                             <Form.Group controlId="validationCustomMeta">
                                 <div className={Styles["input-container"]}>
                                     <label>Sua Meta:</label>
-                                    <Form.Select aria-label="Select meta">
-                                        <option value="peso">Perder peso</option>
-                                        <option value="massa">ganhar massa muscular</option>
+                                    <Form.Select aria-label="Select meta" name="meta" onChange={handleInputChange} defaultValue={newUser.meta}>
+                                        <option disabled value="">Selecione sua meta</option>
+                                        <option value="Perder peso">Perder peso</option>
+                                        <option value="Ganhar massa">ganhar massa muscular</option>
                                     </Form.Select>
                                 </div>
                             </Form.Group>
@@ -239,7 +285,7 @@ const CustomizedSteppers = () => {
                             <Form.Group>
                                 <div className={Styles["input-container"]}>
                                     <label>Informe sua data de nascimento</label>
-                                    <Form.Control type="date" required />
+                                    <Form.Control type="date" required name="dataNascimento" onChange={handleInputChange} value={newUser.dataNascimento} />
                                     <Form.Control.Feedback type="invalid">Por favor informe sua data de nascimento.</Form.Control.Feedback>
                                 </div>
                             </Form.Group>
@@ -247,7 +293,8 @@ const CustomizedSteppers = () => {
                             <Form.Group controlId="validationCustomNivel">
                                 <div className={Styles["input-container"]}>
                                     <label>Seu nível de condição física:</label>
-                                    <Form.Select aria-label="Select condicionamento fisico">
+                                    <Form.Select aria-label="Select condicionamento fisico" name="nivelCondicao" onChange={handleInputChange} defaultValue={newUser.nivelCondicao}>
+                                        <option disabled value="">Selecione seu nível</option>
                                         <option value="Basico">Não treino</option>
                                         <option value="Mediano">Treino as vezes</option>
                                         <option value="Avancado">treino diariamente</option>
@@ -264,10 +311,6 @@ const CustomizedSteppers = () => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button>
-
             <Modal show={show} onHide={handleClose} animation={true}>
                 <div className={Styles.box}>
                     <div className={Styles.container}>

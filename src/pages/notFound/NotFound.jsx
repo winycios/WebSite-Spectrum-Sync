@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./NotFound.module.css";
-import imgNotFound from "../../utils/assets/404.svg";
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { ArrowLeft } from 'react-bootstrap-icons';
 
+const imgNotFound = "https://fittech500.blob.core.windows.net/blob/404.svg";
 
 
 const NotFound = () => {

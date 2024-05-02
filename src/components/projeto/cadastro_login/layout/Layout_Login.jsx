@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Layout_Login = ({ background, value }) => {
 
+    sessionStorage.clear();
     return (
         <>
             <div className={styles.box} style={{ backgroundImage: `url(${background})` }}>

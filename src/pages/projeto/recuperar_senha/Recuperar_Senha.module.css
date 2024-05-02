@@ -138,4 +138,10 @@ p:hover {
     .box_form {
         width: 100%;
     }
+  
+      *,
+    *::before,
+    *::after {
+        box-sizing: content-box;
+    }
 }

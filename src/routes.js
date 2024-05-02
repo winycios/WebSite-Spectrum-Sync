@@ -2,7 +2,7 @@ import React from "react";
 import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
 // iniciais
-import Home from './pages/landing page/Home'
+import Home from './pages/landingPage/Home'
 import NotFound from './pages/notFound/NotFound';
 
 //Login e cadastro

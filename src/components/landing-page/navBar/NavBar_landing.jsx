@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import styles from './NavBar_landing.module.css'
 import { PersonAdd, House, BoxArrowInRight, Cursor, Shuffle, PersonRaisedHand } from 'react-bootstrap-icons';
 
-const logo = 'https://fittech500.blob.core.windows.net/blob/logo.png'
+const logo = 'https://fittech500.blob.core.windows.net/imagens-spectrum/logo.png'
 
 const NavBar = () => {
     const scrollToSection = (sectionId) => {
@@ -21,7 +21,7 @@ const NavBar = () => {
 
     return (
         <>
-            <Navbar expand="lg" className={`${styles["bg-body-tertiary"]} navbar navbar-dark fixed-top`}>
+            <Navbar expand="lg" className={`${styles["bg-body-tertiary"]} navbar navbar-dark sticky-top`}>
                 <Container>
                     <Navbar.Brand href="/">
                         <img

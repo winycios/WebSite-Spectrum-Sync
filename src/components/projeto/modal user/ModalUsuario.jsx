@@ -311,7 +311,7 @@ const CustomizedSteppers = ({ nome, email }) => {
 
     return (
         <>
-            <Modal show={show} onHide={handleClose} animation={true}>
+            <Modal show={show} animation={true}>
                 <div className={Styles.box}>
                     <div className={Styles.container}>
                         <Stack sx={{ width: '100%' }} spacing={4}>

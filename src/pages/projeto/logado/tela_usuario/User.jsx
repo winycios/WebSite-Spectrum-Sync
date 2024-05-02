@@ -10,11 +10,16 @@ import Table from 'react-bootstrap/Table';
 import Api from '../../../../api';
 import { getId } from '../../../../service/auth';
 
-import { EggFried, FiletypeCsv, FilePdf, ArrowUpLeftCircle, Trash, ArrowsVertical, Arrows, Cursor, BrightnessHigh } from 'react-bootstrap-icons';
+import { EggFried, FiletypeCsv, FilePdf, ArrowUpLeftCircle, Trash, ArrowsVertical, BrightnessHigh  } from 'react-bootstrap-icons';
+
+import ScoreIcon from '@mui/icons-material/Score';
+import GpsNotFixedIcon from '@mui/icons-material/GpsNotFixed';
+import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 
 import BarDirection from "../../../../components/projeto/Charts/BarDirection"
 import LineDirection from "../../../../components/projeto/Charts/LineChart"
 import AxisDirection from "../../../../components/projeto/Charts/AxisDirection"
+import HearingIcon from '@mui/icons-material/Hearing';
 import Section3 from '../../../../components/projeto/Charts/Section3'
 import { toast } from 'react-toastify';
 
@@ -27,7 +32,8 @@ const User = () => {
         altura: '',
         nivelCondicao: '',
         meta: '',
-        objetivo: ''
+        objetivo: '',
+        pontuacao: ''
     });
 
     // dados do usuario
@@ -105,7 +111,7 @@ const User = () => {
     return (
         <>
             <NavBar />
-            <Container style={{ marginBottom: "20px" }}>
+            <Container style={{ marginBottom: "20px", display: "flex", justifyContent: "center" }}>
                 <Row className={Styles.container}>
                     <Col className={Styles.cols} style={{ display: "flex", flexDirection: "column", gap: "30px" }} sm>
                         <Card border="danger" bg="dark">
@@ -122,11 +128,13 @@ const User = () => {
                                     <span className={Styles.line} />
                                     <div className={Styles.box}>
 
-                                        <div className={Styles.box_text}> <Cursor color="white" size={22} className="align-center" /> <span>{user.meta}</span></div>
+                                        <div className={Styles.box_text}> <GpsNotFixedIcon color="white" size={22} className="align-center" /> <span>{user.meta}</span></div>
 
-                                        <div className={Styles.box_text}> <Arrows color="white" size={22} className="align-center" /> <span>PESO: {user.peso} KG</span></div>
+                                        <div className={Styles.box_text}> <MonitorWeightIcon color="white" size={22} className="align-center" /> <span>Peso: {user.peso} kg</span></div>
 
-                                        <div className={Styles.box_text}> <ArrowsVertical color="white" size={22} className="align-center" /> <span>ALTURA: {user.altura}CM</span></div>
+                                        <div className={Styles.box_text}> <ArrowsVertical color="white" size={22} className="align-center" /> <span>Altura: {user.altura}cm</span></div>
+
+                                        <div className={Styles.box_text}> <ScoreIcon color="white" size={22} className="align-center" /> <span>Pontos: {user.pontuacao}</span></div>
                                     </div>
                                     <span className={Styles.line} />
                                     <div className={Styles.box}>
@@ -136,6 +144,8 @@ const User = () => {
                                         <div onClick={handleDownload} className={`${Styles.box_text} ${Styles.active}`}> <FiletypeCsv color="white" size={22} className="align-center" /><span>Dados</span></div>
 
                                         <div className={`${Styles.box_text} ${Styles.active}`}> <FilePdf color="white" size={22} className="align-center" /><span>Relatório</span></div>
+
+                                        <div className={`${Styles.box_text} ${Styles.active}`}> <HearingIcon color="white" size={22} className="align-center" /><span>Apoio</span></div>
 
                                         <div className={`${Styles.box_text} ${Styles.active}`}> <ArrowUpLeftCircle color="white" size={22} className="align-center" /><span>Editar</span></div>
 

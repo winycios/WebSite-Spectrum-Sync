@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 
-const tela = "https://fittech500.blob.core.windows.net/blob/FundoCadastro.png"
+const tela = "https://fittech500.blob.core.windows.net/imagens-spectrum/FundoCadastro.png"
 
 const Cadastro = () => {
     const navigate = useNavigate();

@@ -5,11 +5,11 @@ import styles from './NavBar.module.css'
 
 import { House, Cursor, FileBreak, BoxArrowInLeft } from 'react-bootstrap-icons';
 
-import logo from '../../../utils/assets/logo.png'
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import FindImage from '../GET/FindImage';
+import FindImage from '../GET/ProcurarImg';
 
+const logo = 'https://fittech500.blob.core.windows.net/blob/logo.png'
 
 const NavBar = () => {
     const navigate = useNavigate();

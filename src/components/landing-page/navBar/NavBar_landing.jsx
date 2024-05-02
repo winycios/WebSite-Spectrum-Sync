@@ -4,7 +4,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import styles from './NavBar_landing.module.css'
 import { PersonAdd, House, BoxArrowInRight, Cursor, Shuffle, PersonRaisedHand } from 'react-bootstrap-icons';
-import logo from '../../../utils/assets/logo.png';
+
+const logo = 'https://fittech500.blob.core.windows.net/blob/logo.png'
 
 const NavBar = () => {
     const scrollToSection = (sectionId) => {

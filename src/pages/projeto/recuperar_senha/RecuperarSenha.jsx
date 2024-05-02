@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 
 
 const Recuperar = () => {
@@ -18,10 +20,11 @@ const Recuperar = () => {
     const [email, setEmail] = useState("");
 
     const handleSave = () => {
+        toast.success("Enviando email!");
 
-        Api.post(`usuarios`, {
-            nome,
-            email
+        Api.post(`usuarios/enviar-email`, {
+            "nome": nome,
+            "para": email
 
         }).then(() => {
 
@@ -41,7 +44,7 @@ const Recuperar = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
+
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.stopPropagation();
@@ -53,6 +56,19 @@ const Recuperar = () => {
 
     };
 
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
     return (
         <>
             <main>
@@ -61,27 +77,45 @@ const Recuperar = () => {
                     <Form noValidate validated={validated} onSubmit={handleSubmit} className={Styles.box_form}>
                         <Col className={Styles.form}>
 
-                        <h1>Redefinir senha</h1>
-                        <hr />
-                        <p>Informe o seu email para enviarmos um link para alteração da senha.</p>
+                            <h1>Redefinir senha</h1>
+                            <hr />
+                            <p>Informe seu email para podermos redefinir sua senha</p>
+                            <Button variant="outline-warning" aria-describedby={id} onClick={handleClick}>Dúvida ?</Button>
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                sx={{
+                                    '& .MuiTypography-root': {
+                                        color: 'black'
+                                    },
+                                }}
+                                anchorOrigin={{
+                                    vertical: "top",
+                                    horizontal: 'left',
+                                }}
+                            >
+                                <Typography sx={{ p: 2 }}>Sua nova senha será enviada para o email fornecido. Por favor, verifique sua caixa de entrada e lixeira</Typography>
+                            </Popover>
                         </Col>
 
                         <Form.Group controlId="validationCustomUsername">
-                                <div className={Styles["input-container"]}>
-                                    <Form.Control required type="text" value={nome} onChange={(e) => handleInputChange(e, setNome)} />
-                                    <Form.Control.Feedback type="invalid">Por favor digite seu nome completo!</Form.Control.Feedback>
-                                    <label className={Styles.label}>Digite seu nome completo</label>
-                                    <div className={Styles.underline}></div>
-                                </div>
+                            <div className={Styles["input-container"]}>
+                                <Form.Control required type="text" value={nome} onChange={(e) => handleInputChange(e, setNome)} />
+                                <Form.Control.Feedback type="invalid">Por favor digite seu nome completo!</Form.Control.Feedback>
+                                <label className={Styles.label}>Digite seu nome completo</label>
+                                <div className={Styles.underline}></div>
+                            </div>
                         </Form.Group>
 
                         <Form.Group controlId="validationCustomEmail">
-                                <div className={Styles["input-container"]}>
-                                    <Form.Control required type="text" value={email} onChange={(e) => handleInputChange(e, setEmail)} />
-                                    <Form.Control.Feedback type="invalid">Por favor digite seu email!</Form.Control.Feedback>
-                                    <label className={Styles.label}>Digite seu Email</label>
-                                    <div className={Styles.underline}></div>
-                                </div>
+                            <div className={Styles["input-container"]}>
+                                <Form.Control required type="text" value={email} onChange={(e) => handleInputChange(e, setEmail)} />
+                                <Form.Control.Feedback type="invalid">Por favor digite seu email!</Form.Control.Feedback>
+                                <label className={Styles.label}>Digite seu Email</label>
+                                <div className={Styles.underline}></div>
+                            </div>
                         </Form.Group>
 
                         <div className={Styles.box_button}>

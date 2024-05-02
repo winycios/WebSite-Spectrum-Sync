@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import CadasGoogle from "../../../components/projeto/cadastro_login/google/CadasGoogle"
 import Api from '../../../api'
-
-import tela from "../../../utils/assets/FundoCadastro.png"
-
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
+
+const tela = "https://fittech500.blob.core.windows.net/blob/FundoCadastro.png"
 
 const Cadastro = () => {
     const navigate = useNavigate();

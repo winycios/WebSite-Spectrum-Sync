@@ -18,7 +18,6 @@ const PlanoTreino = () => {
                     </div>
                 </div>
 
-
                 <div className={styles.container_tittle}>
                 <h2 className={styles.sub_tittle_red}>Ver Mais</h2>
                 </div>

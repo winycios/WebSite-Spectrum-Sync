@@ -1,0 +1,21 @@
+.carousel_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    padding: 4rem 0 4rem 0;
+}
+
+.main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel_img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 2%;
+    opacity: 0.4;
+}

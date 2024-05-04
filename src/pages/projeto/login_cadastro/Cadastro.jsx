@@ -8,6 +8,9 @@ import Api from '../../../api'
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import { Password } from 'primereact/password';
+import { Divider } from 'primereact/divider';
+import { FloatLabel } from 'primereact/floatlabel';
 
 
 const tela = "https://fittech500.blob.core.windows.net/imagens-spectrum/FundoCadastro.png"
@@ -19,6 +22,21 @@ const Cadastro = () => {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+
+    const header = <div className="font-bold mb-3">Digite sua senha</div>;
+    const footer = (
+        <>
+            <Divider />
+            <p className="mt-2">Necessário ter</p>
+            <ul className="pl-2 ml-2 mt-0 line-height-3">
+                <li>• Pelo menos 1 dígito</li>
+                <li>• Pelo menos 1 letra minúscula</li>
+                <li>• Pelo menos 1 letra maiúscula</li>
+                <li>• Pelo menos 8 caracteres</li>
+                <li>• Pelo menos 1 caractere especial</li>
+            </ul>
+        </>
+    );
 
     const handleSave = () => {
 
@@ -44,18 +62,20 @@ const Cadastro = () => {
     // Validação de campos
     const [validated, setValidated] = useState(false);
 
+
     const handleSubmit = (event) => {
+        toast.dismiss();
         event.preventDefault();
-        
+
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false && senha === "") {
+            toast.warning("Por favor digite uma senha")
             event.stopPropagation();
         } else {
             handleSave();
         }
 
         setValidated(true);
-
     };
     return (
         <>
@@ -86,16 +106,32 @@ const Cadastro = () => {
                                 </div>
                             </Form.Group>
 
-
                             <Form.Group controlId="validationCustomSenha">
-                                <div className={Styles["input-container"]}>
-                                    <Form.Control type="password" required value={senha} onChange={(e) => handleInputChange(e, setSenha)} />
-                                    <Form.Control.Feedback type="invalid">Por favor digite sua senha.</Form.Control.Feedback>
-                                    <label className={Styles.label}>Digite sua senha</label>
+                                <div className={`${Styles["input-container"]}`}>
+                                    <FloatLabel>
+                                        <Password
+                                            type="password"
+                                            required
+                                            className={Styles.pass}
+                                            value={senha}
+                                            onChange={(e) => handleInputChange(e, setSenha)}
+                                            header={header}
+                                            footer={footer}
+                                            toggleMask
+                                            promptLabel="Nível senha"
+                                            weakLabel="Fraca"
+                                            mediumLabel="Média"
+                                            strongLabel="Forte"
+                                        />
+
+                                        <label className={Styles.labels} htmlFor="password">Senha</label>
+                                    </FloatLabel>
                                 </div>
                             </Form.Group>
+
                         </Col>
                         <Form.Group>
+                            <p style={{ textAlign: "justify", cursor: "pointer" }} onClick={() => window.open('https://fittech500.blob.core.windows.net/imagens-spectrum/modelo-termos-e-condicoes-FitTech.pdf', '_blank')}>Termos e condições</p>
                             <Form.Check
                                 required
                                 label="Concorde com os termos e condições"

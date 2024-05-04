@@ -74,6 +74,14 @@ main {
     border-bottom: 2px solid var(--vermelho);
 }
 
+.labels {
+    margin-top: -20px;
+    left: 0;
+}
+
+.pass {
+    display: block;
+}
 
 .input-container input:focus,
 .input-container input:valid {

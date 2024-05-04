@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useMemo  } from "react";
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -9,8 +9,9 @@ import Button from '@mui/material/Button';
 import { Gear, PeopleFill, Collection } from 'react-bootstrap-icons';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import Modal from 'react-bootstrap/Modal';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
+import { Password } from 'primereact/password';
+import { Divider } from 'primereact/divider';
+import { FloatLabel } from 'primereact/floatlabel';
 import Api from '../../../api'
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
@@ -20,7 +21,7 @@ import { getId } from '../../../service/auth';
 
 import Styles from "./ModalUsuario.module.css"
 
-const Logo = "https://fittech500.blob.core.windows.net/blob/semFundo.svg"
+const Logo = "https://fittech500.blob.core.windows.net/imagens-spectrum/semFundo.svg"
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -64,7 +65,7 @@ const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
 function ColorlibStepIcon(props) {
     const { active, completed, className } = props;
 
-    const ImgIcon = () => <img src={Logo} alt="Logo" style={{ width: "70px", height: "70px" }} />;
+    const ImgIcon = useMemo(() => () => <img src={Logo} alt="Logo" style={{ width: "70px", height: "70px" }} />, []);
 
     const icons = {
         1: <ImgIcon />,
@@ -128,9 +129,8 @@ const CustomizedSteppers = ({ nome, email }) => {
 
     const [validated, setValidated] = useState(false);
 
-    const [show, setShow] = useState(true);
+    const [show] = useState(true);
 
-    const handleClose = () => setShow(false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -155,160 +155,157 @@ const CustomizedSteppers = ({ nome, email }) => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    // popover
 
-    const [anchorEl, setAnchorEl] = useState(null);
+    const header = <div className="font-bold mb-3">digite sua nova senha</div>;
+    const footer = (
+        <>
+            <Divider />
+            <p className="mt-2">Necessário ter</p>
+            <ul className="pl-2 ml-2 mt-0 line-height-3">
+                <li>• Pelo menos 1 dígito</li>
+                <li>• Pelo menos 1 letra minúscula</li>
+                <li>• Pelo menos 1 letra maiúscula</li>
+                <li>• Pelo menos 8 caracteres</li>
+                <li>• Pelo menos 1 caractere especial</li>
+            </ul>
+        </>
+    );
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClosePopover = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
 
     const renderStepContent = (step) => {
         switch (step) {
             case 0:
-                return (
-                    <>
-                        <h5 style={{ textAlign: "center" }}>Olá! Seja bem-vindo à Fit Tech. Gostaríamos de conhecê-lo melhor!</h5>
-                    </>
-                );
+                return renderStep0();
             case 1:
-                return (
-                    <Form noValidate validated={validated} className={Styles.box_form}>
-                        <Col className={Styles.form}>
-                            <Form.Group>
-                                <div className={Styles["input-container"]}>
-                                    <label>Seu Nome</label>
-                                    <Form.Control required type="text" value={newUser.nome} name="nome" onChange={handleInputChange} />
-                                </div>
-                            </Form.Group>
-
-                            <Form.Group>
-                                <div className={Styles["input-container"]}>
-                                    <label>Seu Email</label>
-                                    <Form.Control required type="text" value={email} readOnly />
-                                </div>
-                            </Form.Group>
-
-
-                            <Form.Group controlId="validationCustomSenha">
-                                <div className={Styles["input-container"]}>
-                                    <Form.Control type="password" name="senha" value={newUser.senha} onChange={handleInputChange} required />
-                                    <Form.Control.Feedback type="invalid">Por favor digite sua senha.</Form.Control.Feedback>
-                                    <label className={Styles.label}>
-                                        Digite sua nova Senha
-                                    </label>
-                                    <span aria-describedby={id} onClick={handleClick}>senha ?</span>
-                                    <Popover
-                                        id={id}
-                                        open={open}
-                                        anchorEl={anchorEl}
-                                        onClose={handleClosePopover}
-                                        anchorOrigin={{
-                                            vertical: 'bottom',
-                                            horizontal: 'left',
-                                        }}
-                                        sx={{
-                                            '& .MuiTypography-root ': {
-                                                background: "#0f0f0f"
-                                            }
-                                        }}
-                                    >
-                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 1 dígito</Typography>
-                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 1 letra minúscula</Typography>
-                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 1 letra maiúscula</Typography>
-                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 8 caracteres</Typography>
-                                        <Typography sx={{ p: 1, textAlign: "initial" }}>• Pelo menos 1 caractere especial</Typography>
-                                    </Popover>
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Form>
-                );
+                return renderStep1();
             case 2:
-                return (
-                    <Form noValidate validated={validated} className={Styles.box_form}>
-                        <Col className={Styles.form}>
-                            <Form.Group controlId="validationCustomGenero">
-                                <div className={Styles["input-container"]}>
-                                    <label>Seu Gênero:</label>
-                                    <Form.Select aria-label="Select sexo" name="genero" onChange={handleInputChange} defaultValue={newUser.genero}>
-                                        <option disabled value="">Selecione seu gênero</option>
-                                        <option value="masculino">Masculino</option>
-                                        <option value="feminino">Feminino</option>
-                                        <option value="N/A">Prefiro não informar</option>
-                                    </Form.Select>
-                                </div>
-                            </Form.Group>
-
-
-
-                            <Form.Group controlId="validationCustomPeso">
-                                <div className={Styles["input-container"]}>
-                                    <Form.Control required type="number" name="peso" onChange={handleInputChange} value={newUser.peso} />
-                                    <Form.Control.Feedback type="invalid">Por favor informe seu peso!</Form.Control.Feedback>
-                                    <label className={Styles.label}>Digite seu peso</label>
-                                </div>
-                            </Form.Group>
-
-                            <Form.Group controlId="validationCustomAltura">
-                                <div className={Styles["input-container"]}>
-                                    <Form.Control required type="number" name="altura" onChange={handleInputChange} value={newUser.altura} />
-                                    <Form.Control.Feedback type="invalid">Por favor informe sua altura!</Form.Control.Feedback>
-                                    <label className={Styles.label}>Digite sua altura</label>
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Form>
-                );
+                return renderStep2();
             case 3:
-                return (
-                    <Form noValidate validated={validated} className={Styles.box_form}>
-                        <Col className={Styles.form}>
-                            <Form.Group controlId="validationCustomMeta">
-                                <div className={Styles["input-container"]}>
-                                    <label>Sua Meta:</label>
-                                    <Form.Select aria-label="Select meta" name="meta" onChange={handleInputChange} defaultValue={newUser.meta}>
-                                        <option disabled value="">Selecione sua meta</option>
-                                        <option value="Perder peso">Perder peso</option>
-                                        <option value="Ganhar massa">ganhar massa muscular</option>
-                                    </Form.Select>
-                                </div>
-                            </Form.Group>
-
-                            <Form.Group>
-                                <div className={Styles["input-container"]}>
-                                    <label>Informe sua data de nascimento</label>
-                                    <Form.Control type="date" required name="dataNascimento" onChange={handleInputChange} value={newUser.dataNascimento} />
-                                    <Form.Control.Feedback type="invalid">Por favor informe sua data de nascimento.</Form.Control.Feedback>
-                                </div>
-                            </Form.Group>
-
-                            <Form.Group controlId="validationCustomNivel">
-                                <div className={Styles["input-container"]}>
-                                    <label>Seu nível de condição física:</label>
-                                    <Form.Select aria-label="Select condicionamento fisico" name="nivelCondicao" onChange={handleInputChange} defaultValue={newUser.nivelCondicao}>
-                                        <option disabled value="">Selecione seu nível</option>
-                                        <option value="Basico">Não treino</option>
-                                        <option value="Mediano">Treino as vezes</option>
-                                        <option value="Avancado">treino diariamente</option>
-                                    </Form.Select>
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Form>
-                );
+                return renderStep3();
             default:
                 return null;
         }
     };
 
+    const renderStep0 = () => (
+        <h5 style={{ textAlign: "center" }}>Olá! Seja bem-vindo à Fit Tech. Gostaríamos de conhecê-lo melhor!</h5>
+    );
+
+    const renderStep1 = () => (
+        <Form noValidate validated={validated} className={Styles.box_form}>
+            <Col className={Styles.form}>
+                <Form.Group>
+                    <div className={Styles["input-container"]}>
+                        <label>Seu Nome</label>
+                        <Form.Control required type="text" value={newUser.nome} name="nome" onChange={handleInputChange} />
+                    </div>
+                </Form.Group>
+
+                <Form.Group>
+                    <div className={Styles["input-container"]}>
+                        <label>Seu Email</label>
+                        <Form.Control required type="text" value={email} readOnly />
+                    </div>
+                </Form.Group>
+
+
+                <Form.Group controlId="validationCustomSenha">
+                    <div className={`${Styles["input-container"]}`}>
+                        <FloatLabel>
+                            <Password
+                                type="password"
+                                required
+                                className={Styles.pass}
+                                name="senha" value={newUser.senha}
+                                onChange={handleInputChange}
+                                header={header}
+                                footer={footer}
+                                toggleMask
+                                promptLabel="Nível senha"
+                                weakLabel="Fraca"
+                                mediumLabel="Média"
+                                strongLabel="Forte"
+                            />
+                            <label className={Styles.labels} htmlFor="password">Nova senha</label>
+                        </FloatLabel>
+                    </div>
+                </Form.Group>
+            </Col>
+        </Form>
+    );
+
+    const renderStep2 = () => (
+        <Form noValidate validated={validated} className={Styles.box_form}>
+            <Col className={Styles.form}>
+                <Form.Group controlId="validationCustomGenero">
+                    <div className={Styles["input-container"]}>
+                        <label>Seu Gênero:</label>
+                        <Form.Select aria-label="Select sexo" name="genero" onChange={handleInputChange} defaultValue={newUser.genero}>
+                            <option disabled value="">Selecione seu gênero</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="N/A">Prefiro não informar</option>
+                        </Form.Select>
+                    </div>
+                </Form.Group>
+
+
+
+                <Form.Group controlId="validationCustomPeso">
+                    <div className={Styles["input-container"]}>
+                        <Form.Control required type="number" name="peso" onChange={handleInputChange} value={newUser.peso} />
+                        <Form.Control.Feedback type="invalid">Por favor informe seu peso!</Form.Control.Feedback>
+                        <label className={Styles.label}>Digite seu peso</label>
+                    </div>
+                </Form.Group>
+
+                <Form.Group controlId="validationCustomAltura">
+                    <div className={Styles["input-container"]}>
+                        <Form.Control required type="number" name="altura" onChange={handleInputChange} value={newUser.altura} />
+                        <Form.Control.Feedback type="invalid">Por favor informe sua altura!</Form.Control.Feedback>
+                        <label className={Styles.label}>Digite sua altura</label>
+                    </div>
+                </Form.Group>
+            </Col>
+        </Form>
+    );
+
+    const renderStep3 = () => (
+        <Form validated={validated} className={Styles.box_form}>
+            <Col className={Styles.form}>
+                <Form.Group>
+                    <div className={Styles["input-container"]}>
+                        <label>Informe sua data de nascimento</label>
+                        <Form.Control type="date" required name="dataNascimento" onChange={handleInputChange} value={newUser.dataNascimento} />
+                        <Form.Control.Feedback type="invalid">Por favor informe sua data de nascimento.</Form.Control.Feedback>
+                    </div>
+                </Form.Group>
+
+                <Form.Group controlId="validationCustomMeta">
+                    <div className={Styles["input-container"]}>
+                        <label>Sua Meta:</label>
+                        <Form.Select aria-label="Select meta" name="meta" onChange={handleInputChange} defaultValue={newUser.meta}>
+                            <option disabled value="">Selecione sua meta</option>
+                            <option value="Perder peso">Perder peso</option>
+                            <option value="Ganhar massa">ganhar massa muscular</option>
+                        </Form.Select>
+                    </div>
+                </Form.Group>
+
+                <Form.Group controlId="validationCustomNivel">
+                    <div className={Styles["input-container"]}>
+                        <label>Seu nível de condição física:</label>
+                        <Form.Select aria-label="Select condicionamento fisico" name="nivelCondicao" onChange={handleInputChange} defaultValue={newUser.nivelCondicao}>
+                            <option disabled value="">Selecione seu nível</option>
+                            <option value="Basico">Não treino</option>
+                            <option value="Mediano">Treino as vezes</option>
+                            <option value="Avancado">treino diariamente</option>
+                        </Form.Select>
+                    </div>
+                </Form.Group>
+            </Col>
+        </Form>
+    );
     return (
         <>
             <Modal show={show} animation={true}>
@@ -327,8 +324,7 @@ const CustomizedSteppers = ({ nome, email }) => {
                                                 '&.MuiStepLabel-label.Mui-active': {
                                                     color: 'green'
                                                 }
-                                            }}
-                                        >
+                                            }}>
                                             {label}
                                         </StepLabel>
                                     </Step>
@@ -338,12 +334,7 @@ const CustomizedSteppers = ({ nome, email }) => {
                             {renderStepContent(activeStep)}
 
                             <Stack direction="row" spacing={2}>
-                                <Button
-                                    onClick={handleBack}
-                                    variant="outlined"
-                                >
-                                    Voltar
-                                </Button>
+                                <Button onClick={handleBack} variant="outlined">Voltar</Button>
                                 <Button
                                     variant={activeStep !== steps.length - 1 ? "contained" : "outlined"}
                                     onClick={activeStep !== steps.length - 1 ? handleNext : handleSubmit}
@@ -353,11 +344,12 @@ const CustomizedSteppers = ({ nome, email }) => {
                             </Stack>
                         </Stack>
                     </div>
-                </div >
+                </div>
             </Modal>
         </>
-    );
+    )
 }
+
 
 
 export default CustomizedSteppers;

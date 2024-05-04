@@ -8,9 +8,12 @@ import Card from 'react-bootstrap/Card';
 import FindImage from "../../../../components/projeto/GET/ProcurarImg";
 import Table from 'react-bootstrap/Table';
 import Api from '../../../../api';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 import { getId } from '../../../../service/auth';
+import { useNavigate } from "react-router-dom";
 
-import { EggFried, FiletypeCsv, FilePdf, ArrowUpLeftCircle, Trash, ArrowsVertical, BrightnessHigh  } from 'react-bootstrap-icons';
+import { EggFried, FiletypeCsv, FilePdf, ArrowUpLeftCircle, Trash, ArrowsVertical, BrightnessHigh } from 'react-bootstrap-icons';
 
 import ScoreIcon from '@mui/icons-material/Score';
 import GpsNotFixedIcon from '@mui/icons-material/GpsNotFixed';
@@ -21,9 +24,50 @@ import LineDirection from "../../../../components/projeto/Charts/LineChart"
 import AxisDirection from "../../../../components/projeto/Charts/AxisDirection"
 import HearingIcon from '@mui/icons-material/Hearing';
 import Section3 from '../../../../components/projeto/Charts/Section3'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 
+
+const options = ["",
+    "Acredite e faça acontecer.",
+    "Persista e vença.",
+    "Seja a mudança que você quer ver no mundo.",
+    "Sonhe grande e corra atrás.",
+    "Você é capaz.",
+    "Cada passo conta.",
+    "Vá em frente sem medo.",
+    "A jornada é a recompensa.",
+    "Nunca desista.",
+    "O impossível é apenas uma questão de opinião."];
+
+
 const User = () => {
+    const navigate = useNavigate();
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
+
+
+    const [showDelete, setshowDelete] = useState(false);
+    const [show, setShow] = useState(false);
+
+
+    const [valueMessage, setValueMessage] = React.useState(options[0]);
+    const [inputValue, setInputValue] = React.useState('');
+
+
+    const handleShow = () => setShow(true);
+    const handleshowDelete = () => setshowDelete(true);
+
+
+    const handleClose = () => setShow(false);
+    const handleCloseDelete = () => setshowDelete(false);
+
+
+
+
     const [user, setUser] = useState({
         nome: '',
         dataNascimento: '',
@@ -51,6 +95,26 @@ const User = () => {
         fetchData();
     }, []);
 
+    // trocar mensagem
+    const updateMessage = async () => {
+        toast.dismiss();
+        if (inputValue === "") {
+            toast.info("Por favor informe sua motivação");
+        } else {
+            Api.put(`objetivos/${getId()}`, {
+                objetivo: inputValue
+
+            }).then(() => {
+
+                toast.success("Mensagem atualizada com sucesso!");
+                setTimeout(() => window.location.reload()
+                    , 2000);
+
+            }).catch(function (error) {
+                toast.error(error.response.data.message);
+            });
+        }
+    }
 
     // baixar csv
     const handleDownload = async () => {
@@ -106,6 +170,34 @@ const User = () => {
         }
     }
 
+    const deletarConta = () => {
+
+        Api.delete(`usuarios/${getId()}`, {
+        }).then(() => {
+
+            toast.success("Exclusão feita com sucesso!");
+            toast.success(`Até mais ${user.nome}!`);
+            setTimeout(() => { navigate("/logar"); }, 2000);
+
+        }).catch(function (error) {
+            toast.error("Desculpe, tente novamente mais tarde!");
+        });
+    }
+
+    const bloquearConta = () => {
+
+        Api.delete(`usuarios/${getId()}/inativar`, {
+        }).then(() => {
+
+            toast.success("Inativação feita com sucesso!");
+            toast.success(`Até mais ${user.nome}!`);
+            setTimeout(() => { navigate("/logar"); }, 2000);
+
+        }).catch(function (error) {
+            toast.error("Desculpe, tente novamente mais tarde!");
+        });
+    }
+
 
 
     return (
@@ -145,11 +237,11 @@ const User = () => {
 
                                         <div className={`${Styles.box_text} ${Styles.active}`}> <FilePdf color="white" size={22} className="align-center" /><span>Relatório</span></div>
 
-                                        <div className={`${Styles.box_text} ${Styles.active}`}> <HearingIcon color="white" size={22} className="align-center" /><span>Apoio</span></div>
+                                        <div className={`${Styles.box_text} ${Styles.active}`} onClick={handleShow}> <HearingIcon color="white" size={22} className="align-center" /><span>Apoio</span></div>
 
-                                        <div className={`${Styles.box_text} ${Styles.active}`}> <ArrowUpLeftCircle color="white" size={22} className="align-center" /><span>Editar</span></div>
+                                        <div className={`${Styles.box_text} ${Styles.active}`} onClick={() => handleNavigate('Editar')}> <ArrowUpLeftCircle color="white" size={22} className="align-center" /><span>Editar</span></div>
 
-                                        <div className={`${Styles.box_text} ${Styles.active}`}> <Trash color="white" size={22} className="align-center" /><span>Excluir conta</span></div>
+                                        <div className={`${Styles.box_text} ${Styles.active}`} onClick={handleshowDelete}> <Trash color="white" size={22} className="align-center" /><span>Excluir conta</span></div>
                                     </div>
                                 </div>
                             </Card.Body>
@@ -243,6 +335,95 @@ const User = () => {
                     </Col>
                 </Row>
             </Container>
+
+
+            {/* Modal apoio */}
+            <Modal show={show} onHide={handleClose} centered>
+                <div className={Styles.backModal}>
+                    <Modal.Header>
+                        <Modal.Title>Sua nova mensagem motivacional</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Autocomplete
+                                freeSolo
+                                id="free-solo-2-demo"
+                                disableClearable
+                                options={options}
+                                value={valueMessage}
+                                onChange={(event, newValue) => {
+                                    setValueMessage(newValue);
+                                }}
+                                inputValue={inputValue}
+                                onInputChange={(event, newInputValue) => {
+                                    setInputValue(newInputValue);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Escreva sua mensagem"
+                                        InputProps={{
+                                            ...params.InputProps,
+                                            type: 'search',
+                                        }}
+                                        InputLabelProps={{
+                                            style: { color: 'white' }
+                                        }}
+                                        sx={{
+                                            '& input': {
+                                                color: 'white'
+                                            },
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'white'
+                                            },
+                                        }}
+                                    />
+                                )}
+                                renderOption={(props, option) => (
+                                    <li {...props} style={{ backgroundColor: 'var(--preto)', color: 'white' }}>
+                                        {option}
+                                    </li>
+                                )}
+                            />
+
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Fechar
+                        </Button>
+                        <Button variant="outline-success" onClick={() => updateMessage()}>
+                            Salvar mensagem
+                        </Button>
+                    </Modal.Footer>
+                </div>
+            </Modal>
+
+            {/* Modal deletar */}
+            <Modal show={showDelete} onHide={handleCloseDelete} centered>
+                <div className={Styles.backModal}>
+                    <Modal.Header>
+                        <Modal.Title>Excluir Conta</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Tem certeza de que deseja excluir sua conta?</p>
+                        <p>Isso resultará na perda de todo o seu progresso.</p>
+                        <p>Se preferir, pode optar por bloquear sua conta temporariamente.</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseDelete}>
+                            Fechar
+                        </Button>
+                        <Button variant="outline-danger" onClick={() => deletarConta()}>
+                            Excluir Conta
+                        </Button>
+                        <Button variant="outline-success" onClick={() => bloquearConta()}>
+                            Bloquear Conta
+                        </Button>
+                    </Modal.Footer>
+                </div>
+            </Modal>
+
         </>
     )
 }

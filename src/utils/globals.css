@@ -26,9 +26,9 @@
     text-decoration: none !important;
 }
 
-
 body {
     background-image: var(--background);
+    background-color: black !important;
     font-family: 'Archivo', 'Open Sans', sans-serif;
     overflow-x: hidden;
     background-repeat: no-repeat;
@@ -65,9 +65,32 @@ ul {
     box-shadow: none !important;
 }
 
+.css-2hvfka-MuiChartsTooltip-table {
+
+    background: var(--preto);
+}
+
+.base-Popper-root {
+    fill: #1C1C1E !important;
+}
 
 .container {
     max-width: 95% !important;
+}
+
+.p-float-label:has(input:focus) label {
+
+    top: -0.20rem;
+}
+
+.p-icon-field > .p-input-icon{
+    top: 5px;
+}
+
+.p-password-panel{
+    background: var(--preto-secundario);
+    padding:  0 20px;
+    z-index: 10000 !important;
 }
 
 ::-webkit-scrollbar {

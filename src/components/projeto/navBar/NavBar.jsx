@@ -13,10 +13,14 @@ const logo = 'https://fittech500.blob.core.windows.net/imagens-spectrum/logo.png
 
 const NavBar = () => {
     const navigate = useNavigate();
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
 
     useEffect(() => {
         if (!sessionStorage.getItem("token")) {
-            navigate("logar");
+            handleNavigate("logar");
+            window.location.reload();
         }
     });
 
@@ -44,7 +48,7 @@ const NavBar = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className={`${styles.nav} me-auto justify-content-around`}>
                             <div className={styles.box}>
-                                <Nav.Link href='homeProjeto' className={styles.nav_link}>Home
+                                <Nav.Link onClick={() => handleNavigate('../homeProjeto')} className={styles.nav_link}>Home
                                     <House color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 
                                 <Nav.Link className={`${styles.nav_link}`}>Treino
@@ -59,7 +63,7 @@ const NavBar = () => {
 
                             <div className={styles.box}>
                                 <Nav.Link className={`${styles.button_nav}`}>2</Nav.Link>
-                                <Nav.Link href='/homeProjeto/user' className={`${styles.button_nav}`}>{FindImage()}</Nav.Link>
+                                <Nav.Link onClick={() => handleNavigate('../homeProjeto/user')} className={`${styles.button_nav}`}>{FindImage()}</Nav.Link>
                             </div>
                         </Nav>
                     </Navbar.Collapse>

@@ -4,13 +4,13 @@
 
 .sub_tittle {
     font-size: 1rem;
-    filter: opacity(0.9);
-    filter: contrast(100%);
+    text-shadow: 4px 4px 6px #000000;
 }
 
 .sub_tittle_red {
     font-size: 1rem;
     color: var(--rosa);
+    cursor: pointer;
 }
 
 .bolder {
@@ -55,6 +55,16 @@
     justify-content: flex-start;
 }
 
+.caption {
+    position: relative;
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    z-index: 1;
+}
+
 .card {
     aspect-ratio: 16/9;
     position: relative;
@@ -68,6 +78,8 @@
     color: var(--branco);
     font-family: 'Open Sans';
     overflow: hidden;
+    background-size: cover;
+    transition: opacity 0.5s ease-in-out;
 }
 
 .card::before {
@@ -77,19 +89,32 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../../../utils/assets/Card.png');
-    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: -1;
-    opacity: 0.4;
     border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 
-.caption {
-    height: 4rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    position: relative;
-    z-index: 1;
+.card:hover::before {
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 768px) {
+    .tittle {
+        font-size: 1rem;
+    }
+    
+    .sub_tittle {
+        font-size: 0.8rem;
+    }
+    
+    .sub_tittle_red {
+        font-size: 0.8rem;
+    }
+    
+    .bolder {
+        font-weight: 900;
+        font-size: 1rem;
+    }
 }

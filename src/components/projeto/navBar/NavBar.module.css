@@ -46,14 +46,12 @@
 }
 
 .actives {
-
     background: var(--salmao) !important;
     color: var(--branco) !important;
     border: 2px solid var(--vermelho) !important;
 }
 
 .nav_link:nth-child(-n + 5):hover {
-
     border-bottom: 2px solid var(--vermelho) !important;
     background: transparent !important;
     color: var(--branco) !important;
@@ -81,5 +79,9 @@
 
     .box {
         margin-left: 0;
+    }
+
+    .nav > * {
+        margin-bottom: 1rem;
     }
 }

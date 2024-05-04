@@ -58,6 +58,7 @@ const Home = () => {
             <NavBar />
 
             <FindUser />
+            <div className={styles.main}>
 
             <div className={styles.header}>
                 <div className={styles.col1}>
@@ -72,6 +73,8 @@ const Home = () => {
             <PlanoTreino />
 
             <ExerciciosRecomendados />
+            
+            </div>
         </>
     )
 }

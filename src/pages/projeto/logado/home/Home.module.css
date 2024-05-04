@@ -35,3 +35,27 @@
     font-weight: 900;
     font-size: 1.44rem;
 }
+
+.main {
+    width: 100%;
+    margin-bottom: 4rem;
+}
+
+@media screen and (max-width: 768px) {
+    .tittle {
+        font-size: 1rem;
+    }
+    
+    .sub_tittle {
+        font-size: 0.8rem;
+    }
+    
+    .sub_tittle_red {
+        font-size: 0.8rem;
+    }
+    
+    .bolder {
+        font-weight: 900;
+        font-size: 1rem;
+    }    
+}

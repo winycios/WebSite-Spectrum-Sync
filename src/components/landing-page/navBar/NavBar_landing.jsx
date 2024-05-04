@@ -4,10 +4,16 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import styles from './NavBar_landing.module.css'
 import { PersonAdd, House, BoxArrowInRight, Cursor, Shuffle, PersonRaisedHand } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 
 const logo = 'https://fittech500.blob.core.windows.net/imagens-spectrum/logo.png'
 
 const NavBar = () => {
+    const navigate = useNavigate();
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
+
     const scrollToSection = (sectionId) => {
         const section = document.getElementById(sectionId);
         if (section) {
@@ -58,12 +64,12 @@ const NavBar = () => {
                             </div>
 
                             <div className={styles.box}>
-                                <Nav.Link href='cadastrar' className={`${styles.button_nav} ${styles.nav_link}`}>
+                                <Nav.Link onClick={() => handleNavigate('cadastrar')} className={`${styles.button_nav} ${styles.nav_link}`}>
                                     Cadastrar
                                     <PersonAdd color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} />
                                 </Nav.Link>
 
-                                <Nav.Link href='logar' className={`${styles.button_nav} ${styles.nav_link} ${styles.actives}`}>
+                                <Nav.Link onClick={() => handleNavigate('logar')} className={`${styles.button_nav} ${styles.nav_link} ${styles.actives}`}>
                                     Entrar
                                     <BoxArrowInRight color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} />
                                 </Nav.Link>

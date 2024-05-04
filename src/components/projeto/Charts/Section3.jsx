@@ -89,7 +89,7 @@ const Section3 = () => {
                     <Card.Body className={Styles.box}>
                         {users.map((data) => (
                             <div key={data.id} style={{ cursor: "pointer" }} onClick={() => handleShow(data.id)}>
-                                <ListGroup horizontal style={{ height: "100%", display: "flex", justifyContent: "space-between" }}>
+                                <ListGroup horizontal className={Styles.list}>
                                     <ListGroup.Item className={Styles.item}>{data.img ? (<img src={`${data.img}`} alt="Foto do usuário" />) : (<Person color="white" size={30} />)}</ListGroup.Item>
                                     <ListGroup.Item className={Styles.item}>{data.nome}</ListGroup.Item>
                                     <ListGroup.Item className={Styles.item}><div className={`${Styles.button_nav}`} style={{ border: `${color()}` }}>{count++}</div></ListGroup.Item>
@@ -149,8 +149,8 @@ const Section3 = () => {
                                 <List sx={{ width: '100%' }}>
                                     <ListItem>
                                         <ListItemAvatar>
-                                            <Avatar>
-                                                <MonitorWeightIcon />
+                                            <Avatar className={Styles.fundoIcon}>
+                                                <MonitorWeightIcon className={Styles.icon}/>
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Peso" secondary={`${user.peso} kg`}
@@ -158,8 +158,8 @@ const Section3 = () => {
                                     </ListItem>
                                     <ListItem>
                                         <ListItemAvatar>
-                                            <Avatar>
-                                                <HeightIcon />
+                                            <Avatar className={Styles.fundoIcon}>
+                                                <HeightIcon className={Styles.icon}/>
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Altura" secondary={`${user.altura} cm`}
@@ -167,8 +167,8 @@ const Section3 = () => {
                                     </ListItem>
                                     <ListItem>
                                         <ListItemAvatar>
-                                            <Avatar>
-                                                <GpsNotFixedIcon />
+                                            <Avatar className={Styles.fundoIcon}>
+                                                <GpsNotFixedIcon className={Styles.icon}/>
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Meta" secondary={user.meta}
@@ -179,8 +179,8 @@ const Section3 = () => {
                                 <List sx={{ width: '100%' }}>
                                     <ListItem>
                                         <ListItemAvatar>
-                                            <Avatar>
-                                                <CakeIcon />
+                                            <Avatar className={Styles.fundoIcon}>
+                                                <CakeIcon className={Styles.icon}/>
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Nascimento" secondary={user.dataNascimento}
@@ -188,8 +188,8 @@ const Section3 = () => {
                                     </ListItem>
                                     <ListItem>
                                         <ListItemAvatar>
-                                            <Avatar>
-                                                <TransgenderIcon />
+                                            <Avatar className={Styles.fundoIcon}>
+                                                <TransgenderIcon className={Styles.icon}/>
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Sexo" secondary={user.genero}
@@ -197,8 +197,8 @@ const Section3 = () => {
                                     </ListItem>
                                     <ListItem>
                                         <ListItemAvatar>
-                                            <Avatar>
-                                                <ScoreIcon />
+                                            <Avatar className={Styles.fundoIcon}>
+                                                <ScoreIcon className={Styles.icon}/>
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Pontuação" secondary={user.pontuacao}

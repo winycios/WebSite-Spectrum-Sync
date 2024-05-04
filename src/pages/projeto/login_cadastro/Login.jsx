@@ -1,8 +1,10 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Styles from "./L_G.module.css";
 import LayoutLogin from "../../../components/projeto/cadastro_login/layout/Layout_Login";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { Password } from 'primereact/password';
+import { FloatLabel } from 'primereact/floatlabel';
 
 import { toast } from 'react-toastify';
 import Api from '../../../api'
@@ -16,6 +18,9 @@ import { LogarUser } from "../../../service/auth";
 const tela = "https://fittech500.blob.core.windows.net/imagens-spectrum/FundoLogin.png"
 
 const Login = () => {
+    useEffect(() => {
+        toast.dismiss();
+    }, []);
     const navigate = useNavigate();
 
 
@@ -51,10 +56,12 @@ const Login = () => {
     const [validated, setValidated] = useState(false);
 
     const handleSubmit = (event) => {
+        toast.dismiss();
         event.preventDefault();
 
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false && senha === "") {
+            toast.warning("Por favor digite uma senha")
             event.stopPropagation();
         } else {
             handleLogin();
@@ -82,16 +89,24 @@ const Login = () => {
                                 </div>
                             </Form.Group>
 
-                            <Form.Group controlId="validationCustomEmail">
+                            <Form.Group controlId="validationCustomSenha">
                                 <div className={Styles["input-container"]}>
-                                    <Form.Control required type="password" value={senha} onChange={(e) => handleInputChange(e, setSenha)} />
-                                    <Form.Control.Feedback type="invalid">Por favor digite sua Senha!</Form.Control.Feedback>
-                                    <label className={Styles.label}>Digite seu senha</label>
+                                    <FloatLabel>
+                                        <Password
+                                            required
+                                            className={Styles.pass}
+                                            value={senha}
+                                            feedback={false}
+                                            onChange={(e) => handleInputChange(e, setSenha)}
+                                            toggleMask
+                                        />
+                                        <Form.Control.Feedback type="invalid">Por favor digite sua senha!</Form.Control.Feedback>
+                                        <label className={Styles.labels} htmlFor="password">Digite sua senha</label>
+                                    </FloatLabel>
                                 </div>
                             </Form.Group>
-                            {/* <p type="button" Link="../recuperar" className={Styles.help_pass}>Esqueci minha senha</p> */}
                             <Link className={Styles.help_pass} to="../recuperar">Esqueci minha senha</Link>
-                            
+
                         </Col>
 
                         <div className={Styles.box_button}>

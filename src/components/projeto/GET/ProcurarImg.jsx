@@ -1,40 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import Api from '../../../api';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Person } from 'react-bootstrap-icons';
+import Api from '../../../api';
 import { getId } from '../../../service/auth';
 
-export const FindImage = () => {
-    const [img, setImg] = useState("");
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const FindImage = () => {
+    const [userData, setUserData] = useState({
+        img: null,
+        loading: true,
+        error: null
+    });
+
+    const fetchData = useCallback(async () => {
+        try {
+            const response = await Api.get(`usuarios/${getId()}`);
+            setUserData({ img: response.data.img, loading: false, error: null });
+        } catch (error) {
+            setUserData({ img: null, loading: false, error: error.message });
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await Api.get(`usuarios/${getId()}`);
-                setImg(response.data.img);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchData();
-    }, []);
+    }, [fetchData]);
+
+    const { img, loading, error } = userData;
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return (
+            <div>
+                Error: {error}
+                <button onClick={fetchData}>Reload</button>
+            </div>
+        );
     }
 
     return (
         <>
             {img ? (
-                <img src={`${img}`} alt="Foto do usuário" />
+                <img src={img} alt="User" />
             ) : (
                 <Person color="white" size={30} />
             )}

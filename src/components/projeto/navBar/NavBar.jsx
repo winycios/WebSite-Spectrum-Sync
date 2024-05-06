@@ -33,7 +33,7 @@ const NavBar = () => {
 
     return (
         <>
-            <Navbar expand="lg" className={`${styles["bg-body-tertiary"]} navbar navbar-dark `}>
+            <Navbar expand="lg" className={`${styles["bg-body-tertiary"]} navbar navbar-dark sticky-top`}>
                 <Container>
                     <Navbar.Brand href="/">
                         <img
@@ -48,6 +48,7 @@ const NavBar = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className={`${styles.nav} me-auto justify-content-around`}>
                             <div className={styles.box}>
+
                                 <Nav.Link onClick={() => handleNavigate('../homeProjeto')} className={styles.nav_link}>Home
                                     <House color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 

@@ -1,0 +1,120 @@
+.tittle {
+    font-size: 1.4rem;
+}
+
+.sub_tittle {
+    font-size: 1rem;
+    text-shadow: 4px 4px 6px #000000;
+}
+
+.sub_tittle_red {
+    font-size: 1rem;
+    color: var(--rosa);
+    cursor: pointer;
+}
+
+.bolder {
+    font-weight: 900;
+    font-size: 1rem;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 4rem 0 4rem 0;
+}
+
+.container_meu_treino {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 1rem;
+}
+
+.container_tittle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.vector {
+    width: 11px;
+    position: relative;
+    background-color: var(--rosa);
+    height: 2px;
+    transform: rotate(-90deg);
+}
+
+.sub_caption {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.caption {
+    position: relative;
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    z-index: 1;
+}
+
+.card {
+    aspect-ratio: 16/9;
+    position: relative;
+    border-radius: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 2%;
+    text-align: left;
+    color: var(--branco);
+    font-family: 'Open Sans';
+    overflow: hidden;
+    background-size: cover;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.card:hover::before {
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 768px) {
+    .tittle {
+        font-size: 1rem;
+    }
+    
+    .sub_tittle {
+        font-size: 0.8rem;
+    }
+    
+    .sub_tittle_red {
+        font-size: 0.8rem;
+    }
+    
+    .bolder {
+        font-weight: 900;
+        font-size: 1rem;
+    }
+}

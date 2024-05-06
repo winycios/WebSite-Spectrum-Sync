@@ -1,0 +1,56 @@
+.carousel_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    padding: 0 0 4rem 0;
+}
+
+.main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sub_tittle {
+    font-size: 1rem;
+    filter: contrast(100%);
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.sub_tittle_red {
+    font-size: 1rem;
+    color: var(--rosa);
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.carousel_img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 2%;
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 768px) {
+    .carousel_box {
+        padding: 0 0 2rem 0;
+    }
+
+    .tittle {
+        font-size: 1rem;
+    }
+    
+    .sub_tittle {
+        font-size: 0.8rem;
+    }
+    
+    .sub_tittle_red {
+        font-size: 0.8rem;
+    }
+    
+    .bolder {
+        font-weight: 900;
+        font-size: 1rem;
+    }
+}

@@ -13,6 +13,7 @@ import Recuperar from './pages/projeto/recuperar_senha/RecuperarSenha';
 //Usuario logado
 import HomeProjeto from './pages/projeto/logado/home/Home'
 import User from './pages/projeto/logado/tela_usuario/User'
+import Editar from './pages/projeto/logado/tela_usuario/editar/Editar'
 
 const Rotas = createBrowserRouter(
     createRoutesFromElements(
@@ -24,6 +25,7 @@ const Rotas = createBrowserRouter(
                 <Route path="recuperar" element={<Recuperar />} />
                 <Route path="homeProjeto" element={<HomeProjeto />} />
                 <Route path="homeProjeto/user" element={<User />} />
+                <Route path="homeProjeto/user/editar" element={<Editar />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
         </>

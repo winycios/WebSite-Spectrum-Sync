@@ -32,7 +32,7 @@ const Recuperar = () => {
             setTimeout(() => { navigate("/logar"); }, 2000);
 
         }).catch(function (error) {
-            toast.error(error.response.data.message);
+            setTimeout(() => { toast.error(error.response.data.message) }, 2000);
         });
     }
 

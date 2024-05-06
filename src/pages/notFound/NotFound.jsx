@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import { ArrowLeft } from 'react-bootstrap-icons';
 
-const imgNotFound = "https://fittech500.blob.core.windows.net/blob/404.svg";
+const imgNotFound = "https://fittech500.blob.core.windows.net/imagens-spectrum/404.svg";
 
 
 const NotFound = () => {

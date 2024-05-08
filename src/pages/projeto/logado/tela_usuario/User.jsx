@@ -10,6 +10,7 @@ import Table from 'react-bootstrap/Table';
 import Api from '../../../../api';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { getId } from '../../../../service/auth';
 import { useNavigate } from "react-router-dom";
 
@@ -52,6 +53,7 @@ const User = () => {
 
     const [showDelete, setshowDelete] = useState(false);
     const [show, setShow] = useState(false);
+    const [showPeso, setShowPeso] = useState(false);
 
 
     const [valueMessage, setValueMessage] = React.useState(options[0]);
@@ -60,40 +62,82 @@ const User = () => {
 
     const handleShow = () => setShow(true);
     const handleshowDelete = () => setshowDelete(true);
+    const handleshowPeso = () => setShowPeso(true);
+
 
 
     const handleClose = () => setShow(false);
     const handleCloseDelete = () => setshowDelete(false);
-
-
+    const handleClosePeso = () => setShowPeso(false);
 
 
     const [user, setUser] = useState({
-        nome: '',
-        dataNascimento: '',
-        genero: '',
         peso: '',
-        altura: '',
-        nivelCondicao: '',
-        meta: '',
-        objetivo: '',
-        pontuacao: ''
+        pesoMeta: '',
+        usuario: {
+            nome: '',
+            dataNascimento: '',
+            genero: '',
+            altura: '',
+            nivelCondicao: '',
+            meta: '',
+            objetivo: '',
+            pontuacao: ''
+        }
     });
+
+    const [peso, setPeso] = useState('');
+    const [pesoMeta, setPesoMeta] = useState('');
 
     // dados do usuario
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await Api.get(`usuarios/${getId()}`);
+                const response = await Api.get(`/pesos/ultima-insercao/${getId()}`);
                 const userData = response.data;
                 setUser(userData);
             } catch (error) {
                 toast.error(error.message);
             }
+
         };
 
         fetchData();
     }, []);
+
+    const [focusedInput, setFocusedInput] = React.useState(false);
+    const [focusedInput2, setFocusedInput2] = React.useState(false);
+
+
+    // Atualizar peso
+    const handleVadidate = () => {
+        if (peso === "" || pesoMeta === "") {
+            toast.error("Não pode haver campos vazios.");
+            setFocusedInput(peso === '');
+            setFocusedInput2(pesoMeta === '');
+
+        } else {
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = hoje.getFullYear();
+            const data = `${ano}-${mes}-${dia}`;
+
+            Api.post(`pesos/${getId()}`, {
+                "dataPostagem": data,
+                "peso": peso,
+                "pesoMeta": pesoMeta
+
+            }).then(() => {
+                toast.success("Peso atualizado com sucesso!");
+                setTimeout(() => window.location.reload()
+                    , 2000);
+            }).catch(function (error) {
+                toast.error(error.response.data.message);
+            });
+        }
+    }
+
 
     // trocar mensagem
     const updateMessage = async () => {
@@ -145,10 +189,10 @@ const User = () => {
         if (newImageFile) {
             const maxSize = 2 * 1024 * 1024;
             const fileSize = newImageFile.size;
-
             if (fileSize <= maxSize) {
                 const formData = new FormData();
                 formData.append('imageFile', newImageFile);
+                toast.info("Tratando imagem ...")
 
                 try {
                     await Api.patch(`usuarios/imagem/${getId()}`, formData, {
@@ -176,7 +220,7 @@ const User = () => {
         }).then(() => {
 
             toast.success("Exclusão feita com sucesso!");
-            toast.success(`Até mais ${user.nome}!`);
+            toast.success(`Até mais ${user.usuario.nome}!`);
             setTimeout(() => { navigate("/logar"); }, 2000);
 
         }).catch(function (error) {
@@ -190,7 +234,7 @@ const User = () => {
         }).then(() => {
 
             toast.success("Inativação feita com sucesso!");
-            toast.success(`Até mais ${user.nome}!`);
+            toast.success(`Até mais ${user.usuario.nome}!`);
             setTimeout(() => { navigate("/logar"); }, 2000);
 
         }).catch(function (error) {
@@ -198,6 +242,7 @@ const User = () => {
         });
     }
 
+    const ariaLabel = { 'aria-label': 'description' };
 
 
     return (
@@ -214,19 +259,19 @@ const User = () => {
                                         <label htmlFor="file" className={Styles.custom_file_button}>{FindImage()}</label>
                                         <input type="file" onChange={handleImageChange} accept="image/*" id="file" name="file" />
                                     </form>
-                                    <p>Olá, {user.nome}</p>
-                                    <p>{user.genero}</p>
-                                    <p>{user.objetivo.objetivo ? user.objetivo.objetivo : "--"}</p>
+                                    <p>Olá, {user.usuario.nome}</p>
+                                    <p>{user.usuario.genero}</p>
+                                    <p>{user.usuario.objetivo.objetivo ? user.usuario.objetivo.objetivo : "--"}</p>
                                     <span className={Styles.line} />
                                     <div className={Styles.box}>
 
-                                        <div className={Styles.box_text}> <GpsNotFixedIcon color="white" size={22} className="align-center" /> <span>{user.meta}</span></div>
+                                        <div className={Styles.box_text}> <GpsNotFixedIcon color="white" size={22} className="align-center" /> <span>{user.usuario.meta}</span></div>
 
-                                        <div className={Styles.box_text}> <MonitorWeightIcon color="white" size={22} className="align-center" /> <span>Peso: {user.peso} kg</span></div>
+                                        <div className={Styles.box_text}> <MonitorWeightIcon color="white" size={22} className="align-center" /> <span>Peso: {user.usuario.peso} kg</span></div>
 
-                                        <div className={Styles.box_text}> <ArrowsVertical color="white" size={22} className="align-center" /> <span>Altura: {user.altura}cm</span></div>
+                                        <div className={Styles.box_text}> <ArrowsVertical color="white" size={22} className="align-center" /> <span>Altura: {user.usuario.altura}cm</span></div>
 
-                                        <div className={Styles.box_text}> <ScoreIcon color="white" size={22} className="align-center" /> <span>Pontos: {user.pontuacao}</span></div>
+                                        <div className={Styles.box_text}> <ScoreIcon color="white" size={22} className="align-center" /> <span>Pontos: {user.usuario.pontuacao}</span></div>
                                     </div>
                                     <span className={Styles.line} />
                                     <div className={Styles.box}>
@@ -240,6 +285,8 @@ const User = () => {
                                         <div className={`${Styles.box_text} ${Styles.active}`} onClick={handleShow}> <HearingIcon color="white" size={22} className="align-center" /><span>Apoio</span></div>
 
                                         <div className={`${Styles.box_text} ${Styles.active}`} onClick={() => handleNavigate('Editar')}> <ArrowUpLeftCircle color="white" size={22} className="align-center" /><span>Editar</span></div>
+
+                                        <div className={`${Styles.box_text} ${Styles.active}`} onClick={handleshowPeso}> <FitnessCenterIcon color="white" size={22} className="align-center" /><span>Atualizar peso</span></div>
 
                                         <div className={`${Styles.box_text} ${Styles.active}`} onClick={handleshowDelete}> <Trash color="white" size={22} className="align-center" /><span>Excluir conta</span></div>
                                     </div>
@@ -360,6 +407,7 @@ const User = () => {
                                 }}
                                 renderInput={(params) => (
                                     <TextField
+                                        color="error"
                                         {...params}
                                         label="Escreva sua mensagem"
                                         InputProps={{
@@ -419,6 +467,71 @@ const User = () => {
                         </Button>
                         <Button variant="outline-success" onClick={() => bloquearConta()}>
                             Bloquear Conta
+                        </Button>
+                    </Modal.Footer>
+                </div>
+            </Modal>
+
+            {/* Modal peso */}
+            <Modal show={showPeso} onHide={handleClosePeso} centered>
+                <div className={Styles.backModal}>
+                    <Modal.Header>
+                        <Modal.Title>Atualize seu peso</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <Form style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
+                            <TextField
+                                fullWidth
+                                type="number"
+                                label="Digite seu peso (KG)"
+                                color="error"
+                                error={focusedInput}
+                                placeholder={user.peso ? user.peso : 0.0}
+                                inputProps={ariaLabel}
+                                onChange={(e) => setPeso(e.target.value)}
+                                InputLabelProps={{
+                                    style: { color: 'white' }
+                                }}
+                                sx={{
+                                    '& input': {
+                                        color: 'white'
+                                    },
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: 'white'
+                                    },
+                                }}
+                            />
+
+                            <TextField
+                                fullWidth
+                                type="number"
+                                label="Digite sua meta de peso atual (KG)"
+                                color="error"
+                                error={focusedInput2}
+                                placeholder={user.pesoMeta ? user.pesoMeta : 0.0}
+                                onChange={(e) => setPesoMeta(e.target.value)}
+                                InputLabelProps={{
+                                    style: { color: 'white' }
+                                }}
+                                sx={{
+                                    '& input': {
+                                        color: 'white'
+                                    },
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: 'white'
+                                    },
+                                }}
+                            />
+                        </Form>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClosePeso}>
+                            Fechar
+                        </Button>
+                        <Button variant="outline-success" onClick={handleVadidate}>
+                            Atualizar peso
                         </Button>
                     </Modal.Footer>
                 </div>

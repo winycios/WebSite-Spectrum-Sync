@@ -18,7 +18,7 @@ const chartSetting = {
     margin: { right: 5 },
     xAxis: [
         {
-            label: 'rainfall (mm)',
+            label: 'Quantidade',
         },
     ],
     height: 250,
@@ -90,11 +90,11 @@ export default function BasicColor() {
             <BarChart
                 dataset={dataset}
                 yAxis={[{ scaleType: 'band', dataKey: 'month' }]}
-                series={[{ dataKey: 'seoul', label: 'Seoul rainfall', valueFormatter, color }]}
+                series={[{ dataKey: 'seoul', label: 'Dias', valueFormatter, color }]}
                 layout="horizontal"
                 sx={{
                     '& tspan': {
-                        fill: color, // set the fill color of tspans
+                        fill: color,
                     },
                     '& .MuiChartsAxis-line': {
                         stroke: "white !important"

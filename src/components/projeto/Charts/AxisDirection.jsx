@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
 import { LinePlot, MarkPlot } from '@mui/x-charts/LineChart';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -10,12 +10,9 @@ import { ChartsYAxis } from '@mui/x-charts/ChartsYAxis';
 import { ChartsGrid } from '@mui/x-charts/ChartsGrid';
 import { ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
 
-const dataset = [
-    { min: -12, max: -4, precip: 79, month: 'Jan' },
-    { min: -11, max: -3, precip: 66, month: 'Feb' },
-    { min: -6, max: 2, precip: 76, month: 'Mar' },
-    { min: 1, max: 9, precip: 106, month: 'Apr' },
-];
+import Api from '../../../api';
+import { getId } from '../../../service/auth';
+
 
 const Tableau10 = [
     '#4e79a7',
@@ -28,11 +25,48 @@ const Tableau10 = [
 ];
 
 const chartSetting = {
-    margin: { right: 5 },
+    margin: { right: 0 },
     height: 250,
 };
 
 export default function ReverseExampleNoSnap() {
+
+    const [loading, setLoading] = useState(true);
+
+
+    const [dataset, setDataset] = useState([{
+        dataPostagem: '',
+        peso: '',
+        pesoMeta: ''
+    }])
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Api.get(`pesos/historico-grafico/${getId()}`);
+                const userData = response.data;
+                setDataset(userData.map(item => ({
+                    dataPostagem: formatDate(item.dataPostagem),
+                    peso: item.peso,
+                    pesoMeta: item.pesoMeta
+                })));
+            } catch (error) {
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const [color, setColor] = React.useState('#4e79a7');
 
     const handleChange = (event, nextColor) => {
@@ -40,73 +74,82 @@ export default function ReverseExampleNoSnap() {
     };
 
     const series = [
-        { type: 'bar', dataKey: 'precip', color, yAxisKey: 'rightAxis', label: 'Peso atual' },
-        { type: 'line', dataKey: 'min', color: 'white', label: 'Peso ideal/objetivo' }
+        { type: 'bar', dataKey: 'peso', color, yAxisKey: 'rightAxis', label: 'Peso atual' },
+        { type: 'line', dataKey: 'pesoMeta', yAxisKey: 'leftAxis', color: 'white', label: 'Peso ideal/objetivo' }
     ];
+
 
     return (
         <Stack spacing={2} alignItems="center" sx={{ width: '100%', padding: "10px" }}>
-            <ResponsiveChartContainer
-                series={series}
-                xAxis={[
-                    {
-                        scaleType: 'band',
-                        dataKey: 'month',
-                        label: 'Month',
-                    },
-                ]}
-                sx={{
-                    '& tspan': {
-                        fill: color,
-                    },
-                    '& .MuiChartsAxis-line': {
-                        stroke: "white !important"
-                    },
-                    '& .MuiChartsAxis-tick': {
-                        stroke: "white !important"
-                    }
-                }}
-                yAxis={[
-                    { id: 'leftAxis' },
-                    { id: 'rightAxis', position: 'right' },
-                ]}
-                dataset={dataset}
-                {...chartSetting}>
-                <ChartsGrid horizontal />
-                <BarPlot />
-                <LinePlot />
-                <MarkPlot />
+            {loading ? (
+                <div>Carregando...</div>
+            ) : (
+                <React.Fragment>
+                    <ResponsiveChartContainer
+                        series={series}
+                        xAxis={[
+                            {
+                                scaleType: 'band',
+                                dataKey: 'dataPostagem',
+                                label: 'Data',
+                            },
+                        ]}
+                        sx={{
+                            '& tspan': {
+                                fill: color,
+                            },
+                            '& .MuiChartsAxis-line': {
+                                stroke: "white !important"
+                            },
+                            '& .MuiChartsAxis-tick': {
+                                stroke: "white !important"
+                            }
+                        }}
+                        yAxis={[
+                            { id: 'leftAxis' },
+                            { id: 'rightAxis' },
+                        ]}
+                        dataset={dataset}
+                        {...chartSetting}>
+                        <ChartsGrid horizontal />
+                        <BarPlot />
+                        <LinePlot />
+                        <MarkPlot />
 
-                <ChartsXAxis />
-                <ChartsYAxis label="temerature (°C)" />
-                <ChartsTooltip backgroundColor="black" />
-            </ResponsiveChartContainer>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                {series.map((s, index) => (
-                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-                        <div style={{ width: '10px', height: '10px', backgroundColor: s.color, marginRight: '5px' }}></div>
-                        <span>{s.label}</span>
+                        <ChartsXAxis />
+                        <ChartsYAxis label="Peso (KG)" />
+                        <ChartsYAxis />
+
+                        <ChartsTooltip backgroundColor="black" />
+                    </ResponsiveChartContainer>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        {series.map((s, index) => (
+                            <div key={index} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                                <div style={{ width: '10px', height: '10px', backgroundColor: s.color, marginRight: '5px' }}></div>
+                                <span>{s.label}</span>
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-            <ToggleButtonGroup
-                value={color}
-                exclusive
-                onChange={handleChange}
-            >
-                {Tableau10.map((value) => (
-                    <ToggleButton key={value} value={value} sx={{ p: 1 }}>
-                        <div
-                            style={{
-                                width: 15,
-                                height: 15,
-                                backgroundColor: value,
-                                display: 'inline-block',
-                            }}
-                        />
-                    </ToggleButton>
-                ))}
-            </ToggleButtonGroup>
+                    <ToggleButtonGroup
+                        value={color}
+                        exclusive
+                        onChange={handleChange}
+                    >
+                        {Tableau10.map((value) => (
+                            <ToggleButton key={value} value={value} sx={{ p: 1 }}>
+                                <div
+                                    style={{
+                                        width: 15,
+                                        height: 15,
+                                        backgroundColor: value,
+                                        display: 'inline-block',
+                                    }}
+                                />
+                            </ToggleButton>
+                        ))}
+                    </ToggleButtonGroup>
+                </React.Fragment>
+            )}
         </Stack>
     );
 }

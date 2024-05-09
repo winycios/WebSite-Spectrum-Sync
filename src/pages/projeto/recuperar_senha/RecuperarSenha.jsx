@@ -20,7 +20,7 @@ const Recuperar = () => {
     const [email, setEmail] = useState("");
 
     const handleSave = () => {
-        toast.success("Enviando email!");
+        toast.info("Enviando email!");
 
         Api.post(`usuarios/enviar-email`, {
             "nome": nome,
@@ -105,7 +105,6 @@ const Recuperar = () => {
                                 <Form.Control required type="text" value={nome} onChange={(e) => handleInputChange(e, setNome)} />
                                 <Form.Control.Feedback type="invalid">Por favor digite seu nome completo!</Form.Control.Feedback>
                                 <label className={Styles.label}>Digite seu nome completo</label>
-                                <div className={Styles.underline}></div>
                             </div>
                         </Form.Group>
 
@@ -114,7 +113,6 @@ const Recuperar = () => {
                                 <Form.Control required type="text" value={email} onChange={(e) => handleInputChange(e, setEmail)} />
                                 <Form.Control.Feedback type="invalid">Por favor digite seu email!</Form.Control.Feedback>
                                 <label className={Styles.label}>Digite seu Email</label>
-                                <div className={Styles.underline}></div>
                             </div>
                         </Form.Group>
 

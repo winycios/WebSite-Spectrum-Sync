@@ -22,6 +22,15 @@ const Cadastro = () => {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const [option, setOption] = useState(false);
+
+    const mudarOption = () => {
+        if (!option) {
+            setOption(true)
+        } else {
+            setOption(false)
+        }
+    }
 
     const header = <div className="font-bold mb-3">Digite sua senha</div>;
     const footer = (
@@ -68,9 +77,11 @@ const Cadastro = () => {
         event.preventDefault();
 
         const form = event.currentTarget;
-        if (form.checkValidity() === false && senha === "") {
+        if ((form.checkValidity()) === false && (senha === "")) {
             toast.warning("Por favor digite uma senha")
             event.stopPropagation();
+        } else if (!option) {
+            toast.warning("É necessário aceitar os termos")
         } else {
             handleSave();
         }
@@ -134,9 +145,10 @@ const Cadastro = () => {
                             <p style={{ textAlign: "justify", cursor: "pointer" }} onClick={() => window.open('https://fittech500.blob.core.windows.net/imagens-spectrum/modelo-termos-e-condicoes-FitTech.pdf', '_blank')}>Termos e condições</p>
                             <Form.Check
                                 required
-                                label="Concorde com os termos e condições"
+                                label="Concordo com os termos e condições"
                                 feedback="Concorde antes de se cadastrar"
                                 feedbackType="invalid"
+                                onChange={() => mudarOption()}
                             />
                         </Form.Group>
                         <div className={Styles.box_button}>

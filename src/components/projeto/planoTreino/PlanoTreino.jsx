@@ -25,7 +25,7 @@ const PlanoTreino = () => {
                 <h2 className={styles.sub_tittle}>Plano de Treino para Hoje:</h2>
 
                 {cards.map((card, index) => (
-                    <div className={styles.card} key={index} style={{ display: showAllCards || index === 0 ? 'block' : 'none', backgroundImage: `url(${card.backgroundImage})`, marginBottom: '1rem' }}>
+                    <div className={styles.card} key={index} style={{ display: showAllCards || index === 0 ? 'inherit' : 'none', backgroundImage: `url(${card.backgroundImage})`,opacity: "0.9", marginBottom: '1rem' }}>
                         <div className={styles.cardOverlay}></div>
                         <div className={styles.caption}>
                             <div className={styles.sub_tittle}>{card.description}</div>

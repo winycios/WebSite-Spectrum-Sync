@@ -19,16 +19,11 @@ const Tableau10 = [
 ];
 
 const chartsParams = {
-    margin: { bottom: 25, right: 5 },
-    yAxis: [
-        {
-            label: 'Quilogramas',
-        },
-    ],
+    margin: { bottom: 25 },
     height: 260,
 };
 export default function BasicColor() {
-    const [color, setColor] = React.useState('#4e79a7');
+    const [color, setColor] = React.useState('#f28e2c');
 
     const [loading, setLoading] = useState(true);
 
@@ -50,8 +45,8 @@ export default function BasicColor() {
             try {
                 const response = await Api.get(`pesos/historico-grafico/${getId()}`);
                 const userData = response.data;
-                setDataset(userData.map(item => ({
-                    dataPostagem: formatDate(item.dataPostagem),
+                setDataset(userData.reverse(item => ({
+                    dataPostagem: item.dataPostagem,
                     peso: item.peso
                 })));
             } catch (error) {
@@ -62,7 +57,6 @@ export default function BasicColor() {
 
         fetchData();
     }, []);
-
 
     const handleChange = (event, nextColor) => {
         setColor(nextColor);
@@ -86,7 +80,7 @@ export default function BasicColor() {
                                 stroke: "white !important"
                             }
                         }}
-                        xAxis={[{ scaleType: 'point', data: dataset.map(item => item.dataPostagem) }]}
+                        xAxis={[{ scaleType: 'point', data: dataset.map(item => formatDate(item.dataPostagem)) }]}
                         {...chartsParams}
                         series={[
                             {
@@ -96,7 +90,6 @@ export default function BasicColor() {
                             },
                         ]}
                     />
-                    {console.log(dataset.map(item => item.dataPostagem))}
                     <ToggleButtonGroup
                         value={color}
                         exclusive

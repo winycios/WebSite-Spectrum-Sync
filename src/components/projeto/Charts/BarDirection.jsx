@@ -25,52 +25,31 @@ const chartSetting = {
 };
 const dataset = [
     {
-        london: 59,
-        paris: 57,
-        newYork: 86,
-        seoul: 21,
+        seoul: 8,
         month: 'Seg',
     },
     {
-        london: 50,
-        paris: 52,
-        newYork: 78,
-        seoul: 28,
+        seoul: 4,
         month: 'Ter',
     },
     {
-        london: 47,
-        paris: 53,
-        newYork: 106,
-        seoul: 41,
+        seoul: 2,
         month: 'Qua',
     },
     {
-        london: 54,
-        paris: 56,
-        newYork: 92,
-        seoul: 73,
+        seoul: 1,
         month: 'Qui',
     },
     {
-        london: 57,
-        paris: 69,
-        newYork: 92,
-        seoul: 99,
+        seoul: 0,
         month: 'Sex',
     },
     {
-        london: 60,
-        paris: 63,
-        newYork: 103,
-        seoul: 144,
+        seoul: 3,
         month: 'Sab',
     },
     {
-        london: 59,
-        paris: 60,
-        newYork: 105,
-        seoul: 319,
+        seoul: 1,
         month: 'Dom',
     },
 ];
@@ -79,7 +58,7 @@ const dataset = [
 const valueFormatter = (value) => value;
 
 export default function BasicColor() {
-    const [color, setColor] = React.useState('#4e79a7');
+    const [color, setColor] = React.useState('#e15759');
 
     const handleChange = (event, nextColor) => {
         setColor(nextColor);

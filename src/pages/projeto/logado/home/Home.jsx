@@ -7,7 +7,6 @@ import styles from "./Home.module.css";
 import Api from '../../../../api';
 import { getId } from '../../../../service/auth';
 import { toast } from 'react-toastify';
-import Slider from '../../../../components/landing-page/slider/Slider';
 
 const Home = () => {
     const [user, setUser] = useState({

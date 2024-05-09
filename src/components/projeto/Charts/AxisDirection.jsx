@@ -44,8 +44,7 @@ export default function ReverseExampleNoSnap() {
         const date = new Date(dateString);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        return `${day}/${month}`;
     };
 
     useEffect(() => {
@@ -57,7 +56,7 @@ export default function ReverseExampleNoSnap() {
                     dataPostagem: formatDate(item.dataPostagem),
                     peso: item.peso,
                     pesoMeta: item.pesoMeta
-                })));
+                })).reverse());
             } catch (error) {
             } finally {
                 setLoading(false);
@@ -67,15 +66,15 @@ export default function ReverseExampleNoSnap() {
         fetchData();
     }, []);
 
-    const [color, setColor] = React.useState('#4e79a7');
+    const [color, setColor] = React.useState('#59a14f');
 
     const handleChange = (event, nextColor) => {
         setColor(nextColor);
     };
 
     const series = [
-        { type: 'bar', dataKey: 'peso', color, yAxisKey: 'rightAxis', label: 'Peso atual' },
-        { type: 'line', dataKey: 'pesoMeta', yAxisKey: 'leftAxis', color: 'white', label: 'Peso ideal/objetivo' }
+        { type: 'bar', dataKey: 'peso', color, yAxisKey: 'leftAxis', label: 'Peso' },
+        { type: 'line', dataKey: 'pesoMeta', color: 'white', label: 'Meta de peso' }
     ];
 
 

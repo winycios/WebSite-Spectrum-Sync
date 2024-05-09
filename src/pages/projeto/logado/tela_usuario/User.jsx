@@ -487,7 +487,7 @@ const User = () => {
                                 label="Digite seu peso (KG)"
                                 color="error"
                                 error={focusedInput}
-                                placeholder={user.peso ? user.peso : 0.0}
+                                placeholder={user.peso ? String(user.peso) : "0.0"}
                                 inputProps={ariaLabel}
                                 onChange={(e) => setPeso(e.target.value)}
                                 InputLabelProps={{
@@ -509,7 +509,7 @@ const User = () => {
                                 label="Digite sua meta de peso atual (KG)"
                                 color="error"
                                 error={focusedInput2}
-                                placeholder={user.pesoMeta ? user.pesoMeta : 0.0}
+                                placeholder={user.pesoMeta ? String(user.pesoMeta) : "0.0"}
                                 onChange={(e) => setPesoMeta(e.target.value)}
                                 InputLabelProps={{
                                     style: { color: 'white' }

@@ -44,7 +44,8 @@ const Section3 = () => {
         peso: '',
         altura: '',
         meta: '',
-        pontuacao: ''
+        pontuacao: '',
+        objetivo: ''
     });
     // Listar todos os usuarios
     useEffect(() => {
@@ -80,6 +81,13 @@ const Section3 = () => {
         }
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
 
     return (
         <>
@@ -105,7 +113,7 @@ const Section3 = () => {
                         <ListGroup as="ol" numbered>
                             <ListGroup.Item as="li" className={`d-flex justify-content-between align-items-start ${Styles.item}`}>
                                 <div className="ms-2 me-auto">
-                                    <div className="fw-bold">Treino diario</div>
+                                    <div className="fw-bold">Treino diário</div>
                                     <h6>23/04/2024</h6>
                                 </div>
                                 <Badge bg="warning" pill>
@@ -114,7 +122,7 @@ const Section3 = () => {
                             </ListGroup.Item>
                             <ListGroup.Item as="li" className={`d-flex justify-content-between align-items-start ${Styles.item}`}>
                                 <div className="ms-2 me-auto">
-                                    <div className="fw-bold">Treino diario</div>
+                                    <div className="fw-bold">Treino diário</div>
                                     <h6>23/04/2024</h6>
                                 </div>
                                 <Badge bg="success" pill>
@@ -123,7 +131,7 @@ const Section3 = () => {
                             </ListGroup.Item>
                             <ListGroup.Item as="li" className={`d-flex justify-content-between align-items-start ${Styles.item}`}>
                                 <div className="ms-2 me-auto">
-                                    <div className="fw-bold">Treino diario</div>
+                                    <div className="fw-bold">Treino diário</div>
                                     <h6>23/04/2024</h6>
                                 </div>
                                 <Badge bg="warning" pill>
@@ -144,13 +152,14 @@ const Section3 = () => {
                             <div className={Styles.perfil}>
                                 {user.img ? (<img src={`${user.img}`} className={Styles.img} alt="Foto do usuário" />) : (<Person color="white" size={200} />)}
                                 <p>{user.nome}</p>
+                                <p>{user.objetivo.objetivo}</p>
                             </div>
                             <div className={Styles.dados}>
                                 <List sx={{ width: '100%' }}>
                                     <ListItem>
                                         <ListItemAvatar>
                                             <Avatar className={Styles.fundoIcon}>
-                                                <MonitorWeightIcon className={Styles.icon}/>
+                                                <MonitorWeightIcon className={Styles.icon} />
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Peso" secondary={`${user.peso} kg`}
@@ -159,7 +168,7 @@ const Section3 = () => {
                                     <ListItem>
                                         <ListItemAvatar>
                                             <Avatar className={Styles.fundoIcon}>
-                                                <HeightIcon className={Styles.icon}/>
+                                                <HeightIcon className={Styles.icon} />
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Altura" secondary={`${user.altura} cm`}
@@ -168,7 +177,7 @@ const Section3 = () => {
                                     <ListItem>
                                         <ListItemAvatar>
                                             <Avatar className={Styles.fundoIcon}>
-                                                <GpsNotFixedIcon className={Styles.icon}/>
+                                                <GpsNotFixedIcon className={Styles.icon} />
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Meta" secondary={user.meta}
@@ -180,16 +189,16 @@ const Section3 = () => {
                                     <ListItem>
                                         <ListItemAvatar>
                                             <Avatar className={Styles.fundoIcon}>
-                                                <CakeIcon className={Styles.icon}/>
+                                                <CakeIcon className={Styles.icon} />
                                             </Avatar>
                                         </ListItemAvatar>
-                                        <ListItemText primary="Nascimento" secondary={user.dataNascimento}
+                                        <ListItemText primary="Nascimento" secondary={formatDate(user.dataNascimento)}
                                             sx={{ '.css-83ijpv-MuiTypography-root': { color: '#686868', textAlign: "justify" } }} />
                                     </ListItem>
                                     <ListItem>
                                         <ListItemAvatar>
                                             <Avatar className={Styles.fundoIcon}>
-                                                <TransgenderIcon className={Styles.icon}/>
+                                                <TransgenderIcon className={Styles.icon} />
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Sexo" secondary={user.genero}
@@ -198,7 +207,7 @@ const Section3 = () => {
                                     <ListItem>
                                         <ListItemAvatar>
                                             <Avatar className={Styles.fundoIcon}>
-                                                <ScoreIcon className={Styles.icon}/>
+                                                <ScoreIcon className={Styles.icon} />
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText primary="Pontuação" secondary={user.pontuacao}

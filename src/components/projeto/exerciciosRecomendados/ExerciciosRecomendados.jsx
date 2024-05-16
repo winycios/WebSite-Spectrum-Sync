@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "./ExerciciosRecomendados.module.css";
 import Carousel from 'react-bootstrap/Carousel';
-import Img from '../../../utils/assets/Ex.jpg';
-import Img1 from '../../../utils/assets/Ex1.jpg';
-import Img2 from '../../../utils/assets/Ex2.jpg';
+
+const Img = 'https://fittech500.blob.core.windows.net/imagens-spectrum/Ex.jpg';
+const Img1 = 'https://fittech500.blob.core.windows.net/imagens-spectrum/Ex1.jpg';
+const Img2 = 'https://fittech500.blob.core.windows.net/imagens-spectrum/Ex2.jpg';
 
 function ExerciciosRecomendados() {
   return (

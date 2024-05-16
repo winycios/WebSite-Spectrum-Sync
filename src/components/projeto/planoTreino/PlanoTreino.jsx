@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styles from "./PlanoTreino.module.css";
-import img1 from "../../../utils/assets/Card.png";
-import img2 from "../../../utils/assets/Ex.jpg";
-import img3 from "../../../utils/assets/Ex1.jpg";
-import img4 from "../../../utils/assets/Ex2.jpg";
+
+const img1 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Card.jpg";
+const img2 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex.jpg";
+const img3 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex1.jpg";
+const img4 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex2.jpg";
 
 const PlanoTreino = () => {
     const cards = [

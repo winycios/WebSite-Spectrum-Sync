@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import styles from './Slider.module.css';
-import img1 from '../../../utils/assets/SliderImg/image1.svg';
-import img2 from '../../../utils/assets/SliderImg/image2.svg';
-import img3 from '../../../utils/assets/SliderImg/image3.svg';
+const img1 = 'https://fittech500.blob.core.windows.net/imagens-spectrum/image1.png';
+const img2 = 'https://fittech500.blob.core.windows.net/imagens-spectrum/image2.png';
+const img3 = 'https://fittech500.blob.core.windows.net/imagens-spectrum/image3.png';
 
 function Slider() {
   const [index, setIndex] = useState(0);

@@ -1,0 +1,31 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    justify-content: center;
+    padding: 60px;
+    background: var(--preto-secundario);
+}
+
+.container img {
+
+    width: 90%;
+    height: 500px;
+    border-radius: 20px;
+}
+
+.box_button {
+
+    padding: 10px;
+}
+
+.box_text{
+
+    width: 90%;
+    height: min-content;
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

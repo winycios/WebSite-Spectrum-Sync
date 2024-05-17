@@ -52,7 +52,7 @@ const NavBar = () => {
                                 <Nav.Link onClick={() => handleNavigate('../homeProjeto')} className={styles.nav_link}>Home
                                     <House color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 
-                                <Nav.Link className={`${styles.nav_link}`}>Treino
+                                <Nav.Link onClick={() => handleNavigate('../homeProjeto/treino')} className={`${styles.nav_link}`}>Treino
                                     <Cursor color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 
                                 <Nav.Link className={`${styles.nav_link}`}>Dieta

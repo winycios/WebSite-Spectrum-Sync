@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { FitnessCenterOutlined } from "@mui/icons-material";
 import Styles from "./TreinoExtra.module.css";
+import { useNavigate } from "react-router-dom";
 
 const img1 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Card.jpg";
 const img2 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex.jpg";
@@ -14,6 +15,12 @@ const img3 = "https://fittech500.blob.core.windows.net/imagens-spectrum/baixa-it
 const img4 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex2.jpg";
 
 const TreinoExtra = () => {
+    const navigate = useNavigate();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
+
     const [open, setOpen] = React.useState(false);
     const [cardValue, setCardValue] = React.useState(0);
 
@@ -78,7 +85,7 @@ const TreinoExtra = () => {
 
                     <Stack direction="row" spacing={2} marginTop={3}>
                         <Button variant="outlined" onClick={() => setOpen(false)}>Fechar</Button>
-                        <Button variant="contained" color="success" endIcon={<FitnessCenterOutlined />}>Fazer treino</Button>
+                        <Button variant="contained" color="success" endIcon={<FitnessCenterOutlined />} onClick={() => handleNavigate(`../homeProjeto/treino/${cards[cardValue].description}`)}>Fazer treino</Button>
                     </Stack>
 
                 </Sheet>

@@ -1,31 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import Styles from "./Calendario.module.css";
-
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import WeekendIcon from '@mui/icons-material/Weekend';
 import CheckIcon from '@mui/icons-material/Check';
+import Api from "../../../api";
+import moment from 'moment';
+import { getId } from '../../../service/auth';
 
 const Calendario = () => {
-    const diaAtual = new Date().getDate();
-    const datas = [
-        { dia: "Dom", data: 15, treino: "feito" },
-        { dia: "Seg", data: 16, treino: "descanso" },
-        { dia: "Ter", data: 17, treino: "treino" },
-        { dia: "Qua", data: 18, treino: "descanso" },
-        { dia: "Qui", data: 19, treino: "descanso" },
-        { dia: "Sex", data: 20, treino: "treino" },
-        { dia: "Sáb", data: 21, treino: "descanso" }
-    ];
+    const diasDaSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+    const [days, setDays] = useState([{
+        dataTreino: "",
+        status: "",
+    }])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Api.get(`treinos/usuario/${getId()}`);
+                const userData = response.data;
+                setDays(userData.map(item => ({
+                    dataTreino: item.dataTreino,
+                    status: item.status,
+                })).reverse());
+            } catch (error) { }
+        };
+
+        fetchData();
+    }, []);
+
+
+    const formatDate = (dateString) => {
+        return moment(dateString).format('DD');
+    };
+
+    const formatDay = (dateString) => {
+        return moment(dateString).day();
+    };
 
     return (
         <>
             <h2>Rotina da semana</h2>
             <div className={Styles.box_data}>
-                {datas.map((result, index) => (
-                    <div key={index} className={Styles.card} style={result.data === diaAtual ? { background: "var(--salmao)" } : { background: "var(--preto-tom-menor)" }}>
-                        <span>{result.dia}</span>
-                        <span>{result.data}</span>
-                        {result.treino === "descanso" ? <WeekendIcon /> : (result.treino === "treino" ? <FitnessCenterIcon /> : <CheckIcon />)}
+                {days.map((result, index) => (
+                    <div key={index} className={Styles.card} style={formatDate(result.dataTreino).toString() === moment().toDate().getDate().toString() ? { background: "var(--salmao)" } : { background: "var(--preto-tom-menor)" }}>
+                        <span>{diasDaSemana[formatDay(result.dataTreino)]}</span>
+                        <span>{formatDate(result.dataTreino)}</span>
+                        {result.status === "Descanso" ? <WeekendIcon /> : (result.status === "Treino" ? <FitnessCenterIcon /> : <CheckIcon />)}
                     </div>
                 ))
                 }

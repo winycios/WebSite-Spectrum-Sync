@@ -29,6 +29,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 
 const options = ["",
@@ -108,7 +109,6 @@ const User = () => {
     const [focusedInput, setFocusedInput] = React.useState(false);
     const [focusedInput2, setFocusedInput2] = React.useState(false);
 
-
     // Atualizar peso
     const handleVadidate = () => {
         if (peso === "" || pesoMeta === "") {
@@ -117,11 +117,7 @@ const User = () => {
             setFocusedInput2(pesoMeta === '');
 
         } else {
-            const hoje = new Date();
-            const dia = String(hoje.getDate()).padStart(2, '0');
-            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-            const ano = hoje.getFullYear();
-            const data = `${ano}-${mes}-${dia}`;
+            const data = moment().format('YYYY-MM-DD');
 
             Api.post(`pesos/${getId()}`, {
                 "dataPostagem": data,

@@ -5,15 +5,16 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 
-
 import Calendario from "../../../../components/projeto/calendario/Calendario";
 import TreinoExtra from "../../../../components/projeto/treino_extra/TreinoExtra";
+import FindTreino from "../../../../components/projeto/GET/ValidarTreino";
 
 const imgTreino = "https://fittech500.blob.core.windows.net/imagens-spectrum/imgTreino.jpeg"
 const TelaTreino = () => {
 
     return (
         <>
+            <FindTreino />
             <NavBar />
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={3} justifyContent={"center"} style={{ margin: "0" }}>
@@ -22,7 +23,6 @@ const TelaTreino = () => {
                             <Calendario />
                             <div className={Styles.subtitles}>
                                 <span>Seu plano de teino:</span>
-                                <span style={{ color: "var(--rosa)" }}>Editar Meu Treino</span>
                             </div>
                             <div className={Styles.box}>
                                 <img src={imgTreino} alt="mulher treinando" className={Styles.image} />

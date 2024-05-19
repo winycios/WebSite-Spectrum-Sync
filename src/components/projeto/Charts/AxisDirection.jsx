@@ -12,6 +12,7 @@ import { ChartsTooltip } from '@mui/x-charts/ChartsTooltip';
 
 import Api from '../../../api';
 import { getId } from '../../../service/auth';
+import moment from 'moment';
 
 
 const Tableau10 = [
@@ -41,11 +42,11 @@ export default function ReverseExampleNoSnap() {
     }])
 
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        return `${day}/${month}`;
+        const date = moment(dateString);
+        return date.format('DD/MM');
     };
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,7 +54,7 @@ export default function ReverseExampleNoSnap() {
                 const response = await Api.get(`pesos/historico-grafico/${getId()}`);
                 const userData = response.data;
                 setDataset(userData.map(item => ({
-                    dataPostagem: formatDate(item.dataPostagem),
+                    dataPostagem: item.dataPostagem,
                     peso: item.peso,
                     pesoMeta: item.pesoMeta
                 })).reverse());
@@ -108,7 +109,11 @@ export default function ReverseExampleNoSnap() {
                             { id: 'leftAxis' },
                             { id: 'rightAxis' },
                         ]}
-                        dataset={dataset}
+                        dataset={dataset.map(item => ({
+                            dataPostagem: formatDate(item.dataPostagem),
+                            peso: item.peso,
+                            pesoMeta: item.pesoMeta
+                        }))}
                         {...chartSetting}>
                         <ChartsGrid horizontal />
                         <BarPlot />

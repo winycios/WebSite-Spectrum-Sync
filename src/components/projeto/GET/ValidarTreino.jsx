@@ -7,7 +7,6 @@ import ModalTreino from "../modal_criar_treino/ModalTreino"
 const FindTreino = () => {
     const [valid, setValid] = useState("");
 
-
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -26,6 +25,7 @@ const FindTreino = () => {
         fetchData();
     }, []);
 
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -36,7 +36,7 @@ const FindTreino = () => {
 
     return (
         <>
-            {!valid ? <ModalTreino /> : null}
+            {!valid ? <ModalTreino/> : null}
         </>
     );
 };

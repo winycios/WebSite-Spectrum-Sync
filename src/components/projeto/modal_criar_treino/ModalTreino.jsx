@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/joy/Checkbox';
 import Box from '@mui/joy/Box';
@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import Api from '../../../api'
 import { dias } from '../../../utils/vetor/dias';
 import { getId } from '../../../service/auth';
+import moment from 'moment';
 
 const ModalTreino = () => {
 
@@ -21,6 +22,7 @@ const ModalTreino = () => {
         new Array(dias.length).fill(false)
     );
 
+    const [meta, setMeta] = useState("");
 
     const [treino, setTreino] = useState(false);
 
@@ -35,41 +37,62 @@ const ModalTreino = () => {
 
     const checkedCount = checkedState.filter(value => value).length;
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Api.get(`usuarios/${getId()}`);
+                setMeta(response.data.meta);
+
+            } catch (error) {
+                //console.log(error); 
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const criarTreino = async () => {
         if (checkedCount === 0) {
             toast.warning("É necessário selecionar pelo menos uma opção!");
-        } else {
-            setTreino(true);
-            const selectedDays = dias.filter((_, index) => checkedState[index]).map(item => item.name);
-    
-            try {
-                const diasDaSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-    
-                for (let index = 0; index < 7; index++) {
-                    let nextDay = new Date();
-                    nextDay.setDate(nextDay.getDate() + index);
-    
-                    const diaSemanaAbreviado = diasDaSemana[nextDay.getDay()];
-                    const status = selectedDays.includes(diaSemanaAbreviado) ? "Descanso" : "Treino";
-    
-                    await Api.post("treinos", {
-                        "descricao": "Diario",
-                        "dataTreino": nextDay,
-                        "status": status,
-                        "usuarioId": getId()
-                    });
-                }
-                
-                setTimeout(() => {
-                    window.location.reload();
-                }, 3000);
-            } catch (error) {
-                console.log(error.response.data.message);
-            }
+            return;
         }
-    }
-    
-    
+
+        setTreino(true);
+
+        const selectedDays = dias.filter((_, index) => checkedState[index]).map(item => item.name);
+
+        try {
+            const diasDaSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+
+            let intervaloTreino = true;
+
+            for (let i = 0; i < 7; i++) {
+                const nextDay = moment().add(i, 'days');
+                const diaSemanaAbreviado = diasDaSemana[nextDay.day()];
+                const status = selectedDays.includes(diaSemanaAbreviado) ? "Descanso" : "Treino";
+                const tipoTreino = intervaloTreino ? `${meta}_1` : `${meta}_2`;
+
+                await Api.post("treinos", {
+                    descricao: "Diario",
+                    dataTreino: nextDay.format('YYYY-MM-DD'),
+                    status,
+                    tipoTreino,
+                    usuarioId: getId()
+                });
+
+                intervaloTreino = !intervaloTreino;
+            }
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
+        } catch (error) {
+            console.error(error.response?.data?.message || error.message);
+        }
+    };
+
+
+
     const exibicao = () => {
         if (!treino) {
             return (

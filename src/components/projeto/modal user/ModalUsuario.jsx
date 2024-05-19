@@ -286,8 +286,8 @@ const CustomizedSteppers = ({ nome, email }) => {
                         <label>Sua Meta:</label>
                         <Form.Select aria-label="Select meta" name="meta" onChange={handleInputChange} defaultValue={newUser.meta}>
                             <option disabled value="">Selecione sua meta</option>
-                            <option value="Perder peso">Perder peso</option>
-                            <option value="Ganhar massa">ganhar massa muscular</option>
+                            <option value="PerderPeso">Perder peso</option>
+                            <option value="GanharMassa">ganhar massa muscular</option>
                         </Form.Select>
                     </div>
                 </Form.Group>

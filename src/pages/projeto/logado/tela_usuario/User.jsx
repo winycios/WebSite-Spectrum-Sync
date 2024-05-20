@@ -261,7 +261,7 @@ const User = () => {
                                     <span className={Styles.line} />
                                     <div className={Styles.box}>
 
-                                        <div className={Styles.box_text}> <GpsNotFixedIcon color="white" size={22} className="align-center" /> <span>{user.usuario.meta}</span></div>
+                                        <div className={Styles.box_text}> <GpsNotFixedIcon color="white" size={22} className="align-center" /> <span>{user.usuario.meta === "GanharMassa" ? "Ganhar Massa" : "Perder Peso"}</span></div>
 
                                         <div className={Styles.box_text}> <MonitorWeightIcon color="white" size={22} className="align-center" /> <span>Peso: {user.usuario.peso} kg</span></div>
 

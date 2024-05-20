@@ -47,7 +47,7 @@ const TelaTreino = () => {
                     <h3>TREINO DIÁRIO</h3>
                     <h5>Fortalecimento  Muscular</h5>
                     <h6>Comece seu treino agora e fortaleça seus músculos!</h6>
-                    <Button variant="outlined" color="error" style={{ padding: "10px" }} onClick={() => handleNavigate(`../homeProjeto/treino/diario`)}>Começar treino</Button>
+                    <Button variant="outlined" color="error" style={{ padding: "10px" }} onClick={() => handleNavigate(`../homeProjeto/treino/Diario`)}>Começar treino</Button>
                 </div>
             );
         } else if (validarTreino.status === "Descanso") {
@@ -58,11 +58,13 @@ const TelaTreino = () => {
                 </div>
             );
         } else {
-            <div className={Styles.box_text}>
-                <h3>TREINO DIÁRIO</h3>
-                <h5>Fortalecimento  Muscular</h5>
-                <h6>Você já fez seu treino hoje, descanse e espere até amanhã</h6>
-            </div>
+            return (
+                <div className={Styles.box_text}>
+                    <h3>TREINO DIÁRIO</h3>
+                    <h5>Fortalecimento  Muscular</h5>
+                    <h6>Você já fez seu treino hoje, descanse e espere até amanhã</h6>
+                </div>
+            )
         }
     };
 

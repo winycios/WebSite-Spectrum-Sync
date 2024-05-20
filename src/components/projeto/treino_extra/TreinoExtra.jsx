@@ -28,7 +28,7 @@ const TreinoExtra = () => {
     const cards = [
         { description: "Cardio (Alta Intensidade)", duration: "30 MINUTOS", backgroundImage: img1, texto: "Alternância entre exercícios intensos e descanso. Queima gordura e melhora o condicionamento em pouco tempo. Exemplos: sprints, burpees." },
         { description: "Funcional", duration: "30 MINUTOS", backgroundImage: img2, texto: "O treino funcional foca em movimentos naturais do corpo para melhorar força, flexibilidade e equilíbrio. Incorpora exercícios variados." },
-        { description: "Cardio (Baixa Itencidade)", duration: "20 MINUTOS", backgroundImage: img3, texto: "O cardio de baixa intensidade envolve atividades como caminhada ou ciclismo em ritmo moderado, ideal para queima gradual de calorias." },
+        { description: "Cardio (Baixa Intensidade)", duration: "20 MINUTOS", backgroundImage: img3, texto: "O cardio de baixa intensidade envolve atividades como caminhada ou ciclismo em ritmo moderado, ideal para queima gradual de calorias." },
         { description: "Alongamento", duration: "10 MINUTOS", backgroundImage: img4, texto: "O alongamento é essencial para flexibilidade e prevenção de lesões, consistindo em esticar músculos para melhorar amplitude de movimento." }
     ];
 

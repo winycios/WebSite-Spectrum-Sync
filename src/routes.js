@@ -28,7 +28,7 @@ const Rotas = createBrowserRouter(
                 <Route path="homeProjeto" element={<HomeProjeto />} />
                 <Route path="homeProjeto/user" element={<User />} />
                 <Route path="homeProjeto/treino" element={<Treino />} />
-                <Route path="homeProjeto/treino/:treino" element={<Video />} />
+                <Route path="homeProjeto/treino/:url" element={<Video />} />
                 <Route path="homeProjeto/user/editar" element={<Editar />} />
                 <Route path="*" element={<NotFound />} />
             </Route>

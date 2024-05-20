@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Styles from "./TelaVideo.module.css";
 import Box from '@mui/material/Box';
@@ -10,7 +10,6 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/joy/Modal';
-import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import Tabs from '@mui/joy/Tabs';
@@ -22,6 +21,8 @@ import { FitnessCenterOutlined } from '@mui/icons-material';
 import { getId } from '../../../../service/auth';
 import Api from '../../../../api';
 import { perderPeso1, perderPeso2 } from '../../../../utils/vetor/perderPeso';
+import { ganharMassa, ganharMassa2 } from '../../../../utils/vetor/ganharMassa';
+
 
 const TelaVideo = () => {
     const { url } = useParams();
@@ -29,11 +30,28 @@ const TelaVideo = () => {
     const [videos, setVideos] = useState([]);
     const [modalDescanso, setModalDescanso] = useState(false);
     const [open, setOpen] = useState(false);
+    const [objetivo, setObjetivo] = useState("");
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleNavigate = useCallback((path) => {
         navigate(path);
     }, [navigate]);
+
+    // Valores de treino válidos
+    const validUrls = useMemo(() => [
+        "Diario",
+        "Cardio (Alta Intensidade)",
+        "Funcional",
+        "Cardio (Baixa Intensidade)",
+        "Alongamento"
+    ], []);
+
+    useEffect(() => {
+        if (!validUrls.includes(url)) {
+            handleNavigate('/homeProjeto/treino');
+        }
+    }, [url, validUrls, handleNavigate]);
+
 
     useEffect(() => {
         if (!sessionStorage.getItem("token")) {
@@ -47,19 +65,36 @@ const TelaVideo = () => {
             try {
                 const response = await Api.get(`treinos/validar/${getId()}`);
                 const userData = response.data;
+                setObjetivo(userData.usuario.objetivo.objetivo)
 
-                if (userData.descricao === "Diario") {
-                    userData.tipoTreino === "PerderPeso_1" ? setVideos(perderPeso1) : setVideos(perderPeso2);
-
+                if (url === "Diario") {
+                    switch (userData.tipoTreino) {
+                        case "PerderPeso_1":
+                            setVideos(perderPeso1);
+                            break;
+                        case "PerderPeso_2":
+                            setVideos(perderPeso2);
+                            break;
+                        case "GanharMassa_1":
+                            setVideos(ganharMassa);
+                            break;
+                        case "GanharMassa_2":
+                            setVideos(ganharMassa2);
+                            break;
+                        default:
+                            console.warn("Tipo de treino desconhecido:", userData.tipoTreino);
+                    }
                 } else {
-                    console.log("Treino não é diário ou tipo de treino não é PerderPeso_1");
+                    console.log("Treino não é diário");
                 }
             } catch (error) {
+                console.error("Erro ao buscar dados:", error);
                 handleNavigate("../homeProjeto/treino");
             }
         };
+
         fetchData();
-    }, [handleNavigate]);
+    }, [handleNavigate, url]);
 
     useEffect(() => {
         if (modalDescanso) {
@@ -72,14 +107,23 @@ const TelaVideo = () => {
         setSelectedIndex(index);
     };
 
+
     const atualizarPontos = async () => {
+
         try {
-            await Api.put(`usuarios/pontuacao/${getId()}`);
+            await Promise.all([
+                Api.put(`treinos/${getId()}`),
+                Api.put(`usuarios/pontuacao/${getId()}`)
+            ]);
+
             setTimeout(() => {
                 handleNavigate("../homeProjeto/treino");
             }, 3000);
-        } catch (error) { console.log(error) }
-    }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
 
     return (
         <>
@@ -124,7 +168,7 @@ const TelaVideo = () => {
                             </div>
                             <Box sx={{ width: '100%', border: '1px solid #474747', display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                                 <List component="nav" aria-label="Lista de treino">
-                                    <p>Não desista!</p>
+                                    <p>{objetivo ? objetivo : "Não desista, acreditamos em você"} !</p>
                                     {videos.map((card, index) => (
                                         <div key={index}>
                                             <ListItemButton selected={selectedIndex === index} onClick={(event) => handleListItemClick(event, index)}>

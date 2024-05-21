@@ -22,6 +22,8 @@ import { getId } from '../../../../service/auth';
 import Api from '../../../../api';
 import { perderPeso1, perderPeso2 } from '../../../../utils/vetor/perderPeso';
 import { ganharMassa, ganharMassa2 } from '../../../../utils/vetor/ganharMassa';
+import { cardioAlta, cardioBaixa, alongamento, funcional } from '../../../../utils/vetor/extra';
+import moment from 'moment';
 
 
 const TelaVideo = () => {
@@ -31,6 +33,7 @@ const TelaVideo = () => {
     const [modalDescanso, setModalDescanso] = useState(false);
     const [open, setOpen] = useState(false);
     const [objetivo, setObjetivo] = useState("");
+    const [tipoTreino, setTipoTreino] = useState("");
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleNavigate = useCallback((path) => {
@@ -85,7 +88,26 @@ const TelaVideo = () => {
                             console.warn("Tipo de treino desconhecido:", userData.tipoTreino);
                     }
                 } else {
-                    console.log("Treino não é diário");
+                    switch (url) {
+                        case "Cardio (Alta Intensidade)":
+                            setVideos(cardioAlta);
+                            setTipoTreino("Cardio (Alta Intensidade)");
+                            break;
+                        case "Funcional":
+                            setVideos(funcional);
+                            setTipoTreino("Funcional");
+                            break;
+                        case "Cardio (Baixa Intensidade)":
+                            setVideos(cardioBaixa);
+                            setTipoTreino("Cardio (Baixa Intensidade)");
+                            break;
+                        case "Alongamento":
+                            setVideos(alongamento);
+                            setTipoTreino("Alongamento");
+                            break;
+                        default:
+                            console.warn("Tipo de treino desconhecido:", userData.tipoTreino);
+                    }
                 }
             } catch (error) {
                 console.error("Erro ao buscar dados:", error);
@@ -109,27 +131,40 @@ const TelaVideo = () => {
 
 
     const atualizarPontos = async () => {
-
         try {
-            await Promise.all([
-                Api.put(`treinos/${getId()}`),
+            const promises = [
                 Api.put(`usuarios/pontuacao/${getId()}`)
-            ]);
+            ];
+
+            if (tipoTreino === "") {
+                promises.push(Api.put(`treinos/${getId()}`));
+            } else {
+                promises.push(Api.post("treinos", {
+                    descricao: tipoTreino,
+                    dataTreino: moment().format('YYYY-MM-DD'),
+                    status: "Feito",
+                    tipoTreino: tipoTreino,
+                    usuarioId: getId()
+                }));
+            }
+
+            await Promise.all(promises);
 
             setTimeout(() => {
                 handleNavigate("../homeProjeto/treino");
-            }, 3000);
+            }, 4000);
         } catch (error) {
             console.error(error);
         }
     };
 
 
+
     return (
         <>
             <ModalDescanso boolean={modalDescanso} />
             <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ margin: "0", height: "100vh" }}>
+                <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ margin: "0" }}>
                     <Grid xs={12} sm={10}>
                         <div className={Styles.container}>
                             <div className="box_img">

@@ -26,6 +26,7 @@ import GpsNotFixedIcon from '@mui/icons-material/GpsNotFixed';
 import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import moment from 'moment';
+import { getId } from '../../../service/auth';
 
 const Section3 = () => {
     const [show, setShow] = useState(false);
@@ -71,6 +72,8 @@ const Section3 = () => {
         }
     };
 
+
+
     const color = () => {
         if (count === 1) {
             return "5px solid #FFB800"
@@ -86,6 +89,56 @@ const Section3 = () => {
         return moment(dateString).format('DD/MM/YYYY');
 
     };
+
+    // Tabela treino
+    const [tipoTreino, setTipoTreino] = useState([])
+
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Api.get(`treinos/usuario/dia-atual/${getId()}`);
+                const userData = response.data;
+
+                if (Array.isArray(userData)) {
+                    setTipoTreino(userData);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const cards = [
+        { description: "Diario" },
+        { description: "Cardio (Alta Intensidade)" },
+        { description: "Funcional" },
+        { description: "Cardio (Baixa Intensidade)" },
+        { description: "Alongamento" }
+    ];
+
+
+    const getStatus = (description) => {
+        const treino = tipoTreino.find(t => t.descricao === description && t.status === "Feito");
+
+        const badgeProps = treino ? {
+            bg: "success",
+            icon: <CheckLg color="white" size={15} className="align-center" />
+        } : {
+            bg: "warning",
+            icon: <DashLg color="white" size={15} className="align-center" />
+        };
+
+        return (
+            <Badge bg={badgeProps.bg} pill>
+                {badgeProps.icon}
+            </Badge>
+        );
+    };
+
 
     return (
         <>
@@ -109,33 +162,16 @@ const Section3 = () => {
                     <Card.Header className={Styles.title}>Exercicios do dia</Card.Header>
                     <Card.Body className={Styles.box}>
                         <ListGroup as="ol" numbered>
-                            <ListGroup.Item as="li" className={`d-flex justify-content-between align-items-start ${Styles.item}`}>
-                                <div className="ms-2 me-auto">
-                                    <div className="fw-bold">Treino diário</div>
-                                    <h6>23/04/2024</h6>
-                                </div>
-                                <Badge bg="warning" pill>
-                                    <DashLg color="white" size={15} className="align-center" />
-                                </Badge>
-                            </ListGroup.Item>
-                            <ListGroup.Item as="li" className={`d-flex justify-content-between align-items-start ${Styles.item}`}>
-                                <div className="ms-2 me-auto">
-                                    <div className="fw-bold">Treino diário</div>
-                                    <h6>23/04/2024</h6>
-                                </div>
-                                <Badge bg="success" pill>
-                                    <CheckLg color="white" size={15} className="align-center" />
-                                </Badge>
-                            </ListGroup.Item>
-                            <ListGroup.Item as="li" className={`d-flex justify-content-between align-items-start ${Styles.item}`}>
-                                <div className="ms-2 me-auto">
-                                    <div className="fw-bold">Treino diário</div>
-                                    <h6>23/04/2024</h6>
-                                </div>
-                                <Badge bg="warning" pill>
-                                    <DashLg color="white" size={15} className="align-center" />
-                                </Badge>
-                            </ListGroup.Item>
+                            {cards.map((data, index) => (
+                                <ListGroup.Item key={index} as="li" className={`d-flex justify-content-between align-items-start ${Styles.item}`}>
+                                    <div className="ms-2 me-auto">
+                                        <div className="fw-bold">{data.description === "Diario" ? "Treino diário" : data.description}</div>
+                                        <h6>{moment().format("DD/MM/YYYY")}</h6>
+                                    </div>
+                                    {getStatus(data.description)}
+                                </ListGroup.Item>
+                            ))}
+
                         </ListGroup>
                     </Card.Body>
                 </Card>

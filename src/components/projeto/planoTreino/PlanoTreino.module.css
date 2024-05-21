@@ -4,7 +4,6 @@
 
 .sub_tittle {
     font-size: 1rem;
-    text-shadow: 4px 4px 6px #000000;
 }
 
 .sub_tittle_red {
@@ -29,7 +28,7 @@
 .container_meu_treino {
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 60%;
     gap: 1rem;
 }
 
@@ -116,5 +115,9 @@
     .bolder {
         font-weight: 900;
         font-size: 1rem;
+    }
+
+    .container_meu_treino{
+        width: 80%;
     }
 }

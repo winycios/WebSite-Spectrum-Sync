@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
@@ -8,6 +8,9 @@ import Button from '@mui/material/Button';
 import { FitnessCenterOutlined } from "@mui/icons-material";
 import Styles from "./TreinoExtra.module.css";
 import { useNavigate } from "react-router-dom";
+
+import { getId } from "../../../service/auth";
+import Api from "../../../api";
 
 const img1 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Card.jpg";
 const img2 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex.jpg";
@@ -21,9 +24,26 @@ const TreinoExtra = () => {
         navigate(path);
     };
 
-    const [open, setOpen] = React.useState(false);
-    const [cardValue, setCardValue] = React.useState(0);
+    const [open, setOpen] = useState(false);
+    const [cardValue, setCardValue] = useState(0);
+    const [tipoTreino, setTipoTreino] = useState([])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Api.get(`treinos/usuario/dia-atual/${getId()}`);
+                const userData = response.data;
+
+                if (Array.isArray(userData)) {
+                    setTipoTreino(userData);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const cards = [
         { description: "Cardio (Alta Intensidade)", duration: "30 MINUTOS", backgroundImage: img1, texto: "Alternância entre exercícios intensos e descanso. Queima gordura e melhora o condicionamento em pouco tempo. Exemplos: sprints, burpees." },
@@ -32,15 +52,22 @@ const TreinoExtra = () => {
         { description: "Alongamento", duration: "10 MINUTOS", backgroundImage: img4, texto: "O alongamento é essencial para flexibilidade e prevenção de lesões, consistindo em esticar músculos para melhorar amplitude de movimento." }
     ];
 
+    const getStatus = (description) => {
+        const treino = tipoTreino.find(t => t.tipoTreino === description);
+        return treino ? treino.status : 'Opcional';
+    };
 
     return (
         <>
             <div className={Styles.box_extra}>
                 {cards.map((card, index) => (
-                    <div key={index} className={Styles.card} style={{ backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.9) 20%, rgba(0, 0, 0, 0) 80%), url(${card.backgroundImage})` }} onClick={() => { setOpen(true); setCardValue(index) }}>
+                    <div key={index} className={Styles.card} style={{ backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.9) 20%, rgba(0, 0, 0, 0) 80%), url(${card.backgroundImage})` }} onClick={() => {
+                        if (getStatus(card.description) !== "Feito") { setOpen(true); setCardValue(index); }
+                    }}>
                         <div className={Styles.card_body}>
                             <h5>{card.description}</h5>
                             <h6>{card.duration}</h6>
+                            <h6 style={{ color: getStatus(card.description) === "Feito" ? "green" : "white" }}>Status: {getStatus(card.description)}</h6>
                         </div>
                     </div>
                 ))}

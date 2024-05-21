@@ -1,9 +1,12 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Api from '../../../api';
+import { getId } from '../../../service/auth';
 
+// Cores padrão da paleta Tableau10
 const Tableau10 = [
     '#4e79a7',
     '#f28e2c',
@@ -14,7 +17,8 @@ const Tableau10 = [
     '#bab0ab'
 ];
 
-const chartSetting = {
+// Configurações padrão do gráfico
+const chartSettings = {
     margin: { right: 5 },
     xAxis: [
         {
@@ -23,57 +27,44 @@ const chartSetting = {
     ],
     height: 250,
 };
-const dataset = [
-    {
-        seoul: 8,
-        month: 'Seg',
-    },
-    {
-        seoul: 4,
-        month: 'Ter',
-    },
-    {
-        seoul: 2,
-        month: 'Qua',
-    },
-    {
-        seoul: 1,
-        month: 'Qui',
-    },
-    {
-        seoul: 0,
-        month: 'Sex',
-    },
-    {
-        seoul: 3,
-        month: 'Sab',
-    },
-    {
-        seoul: 1,
-        month: 'Dom',
-    },
-];
-
 
 const valueFormatter = (value) => value;
 
 export default function BasicColor() {
-    const [color, setColor] = React.useState('#e15759');
+    const [selectedColor, setSelectedColor] = useState('#e15759');
+    const [data, setData] = useState([]);
 
-    const handleChange = (event, nextColor) => {
-        setColor(nextColor);
+    const handleColorChange = (event, newColor) => {
+        setSelectedColor(newColor);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Api.get(`treinos/por-dia-da-semana/${getId()}`);
+                const userData = response.data.map(({ diaDaSemana, quantidadeTreinos }) => ({
+                    diaDaSemana,
+                    quantidadeTreinos,
+                })).reverse();
+                setData(userData);
+            } catch (error) {
+                console.error('Erro ao buscar os dados:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <Stack direction="column" spacing={2} alignItems="center" sx={{ width: '100%', padding: "10px" }}>
             <BarChart
-                dataset={dataset}
-                yAxis={[{ scaleType: 'band', dataKey: 'month' }]}
-                series={[{ dataKey: 'seoul', label: 'Dias', valueFormatter, color }]}
+                dataset={data}
+                yAxis={[{ scaleType: 'band', dataKey: 'diaDaSemana' }]}
+                series={[{ dataKey: 'quantidadeTreinos', label: 'Dias', valueFormatter, color: selectedColor }]}
                 layout="horizontal"
                 sx={{
                     '& tspan': {
-                        fill: color,
+                        fill: selectedColor,
                     },
                     '& .MuiChartsAxis-line': {
                         stroke: "white !important"
@@ -82,21 +73,20 @@ export default function BasicColor() {
                         stroke: "white !important"
                     },
                 }}
-                {...chartSetting}
-
+                {...chartSettings}
             />
             <ToggleButtonGroup
-                value={color}
+                value={selectedColor}
                 exclusive
-                onChange={handleChange}
+                onChange={handleColorChange}
             >
-                {Tableau10.map((value) => (
-                    <ToggleButton key={value} value={value} sx={{ p: 1 }}>
+                {Tableau10.map((color) => (
+                    <ToggleButton key={color} value={color} sx={{ p: 1 }}>
                         <div
                             style={{
                                 width: 15,
                                 height: 15,
-                                backgroundColor: value,
+                                backgroundColor: color,
                                 display: 'inline-block',
                             }}
                         />

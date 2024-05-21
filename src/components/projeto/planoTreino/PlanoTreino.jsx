@@ -1,47 +1,79 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PlanoTreino.module.css";
+import { useNavigate } from "react-router-dom";
+import Api from "../../../api";
+import { getId } from "../../../service/auth";
 
-const img1 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Card.jpg";
-const img2 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex.jpg";
-const img3 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex1.jpg";
-const img4 = "https://fittech500.blob.core.windows.net/imagens-spectrum/Ex2.jpg";
+const imgTreino = "https://fittech500.blob.core.windows.net/imagens-spectrum/imgTreino.jpeg"
 
 const PlanoTreino = () => {
-    const cards = [
-        { description: "Cardio (Alta Intensidade)", duration: "30 MINUTOS", backgroundImage: img1 },
-        { description: "Musculação (Pernas)", duration: "45 MINUTOS", backgroundImage: img2 },
-        { description: "Yoga (Alongamento)", duration: "20 MINUTOS", backgroundImage: img3 },
-        { description: "Pilates (Core)", duration: "40 MINUTOS", backgroundImage: img4 }
-    ];
+    const navigate = useNavigate();
 
-    const [showAllCards, setShowAllCards] = useState(false);
-
-    const handleToggleCards = () => {
-        setShowAllCards(!showAllCards);
+    const handleNavigate = (path) => {
+        navigate(path);
     };
+
+    const [validarTreino, setTreino] = useState({
+        dataTreino: "",
+        status: ""
+    })
+
+    const exibicao = () => {
+        if (validarTreino.status === "Treino") {
+            return (
+                <>
+                    <div className={styles.sub_caption}>
+                        <div className={styles.vector} />
+                        <div className={styles.sub_tittle}>Status: <span style={{ color: "#cb7116", cursor: "pointer" }} onClick={() => handleNavigate(`../homeProjeto/treino/Diario`)}>Dia de treino</span></div>
+                    </div>
+                </>
+            );
+        } else if (validarTreino.status === "Descanso") {
+            return (
+                <span style={{ color: "blue" }}>Dia de descanso</span>
+
+            );
+        } else if (validarTreino.status === "Feito") {
+            return (
+                <span style={{ color: "green" }}>Concluído</span>
+            )
+        }
+        else {
+            return (
+                <span>Treino não criado</span>
+            )
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await Api.get(`treinos/validar/${getId()}`);
+                const userData = response.data;
+
+                setTreino(userData);
+
+            } catch (error) { }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div className={styles.main}>
             <div className={styles.container_meu_treino}>
                 <h2 className={styles.sub_tittle}>Plano de Treino para Hoje:</h2>
 
-                {cards.map((card, index) => (
-                    <div className={styles.card} key={index} style={{ display: showAllCards || index === 0 ? 'inherit' : 'none', backgroundImage: `url(${card.backgroundImage})`,opacity: "0.9", marginBottom: '1rem' }}>
-                        <div className={styles.cardOverlay}></div>
-                        <div className={styles.caption}>
-                            <div className={styles.sub_tittle}>{card.description}</div>
-                            <div className={styles.sub_caption}>
-                                <div className={styles.vector} />
-                                <div className={styles.sub_tittle}>{card.duration}</div>
-                            </div>
+                <div className={styles.card} style={{ backgroundImage: `url(${imgTreino})`, opacity: "0.9", marginBottom: '1rem' }}>
+                    <div className={styles.cardOverlay}></div>
+                    <div className={styles.caption}>
+                        <div className={styles.sub_tittle}>TREINO DIÁRIO</div>
+                        <div className={styles.sub_caption}>
+                            <div className={styles.vector} />
+                            <div className={styles.sub_tittle}>uma hora</div>
                         </div>
+                        {exibicao()}
                     </div>
-                ))}
-
-                <div className={styles.container_tittle}>
-                    <h2 className={styles.sub_tittle_red} onClick={handleToggleCards}>
-                        {showAllCards ? "Mostrar Menos" : "Ver Mais"}
-                    </h2>
                 </div>
             </div>
         </div>

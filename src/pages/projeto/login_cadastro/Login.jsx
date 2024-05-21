@@ -38,7 +38,6 @@ const Login = () => {
 
             toast.success(`Olá ${response.data.nome}, seja bem vindo!`);
             setTimeout(() => {
-                toast.success("Carregando pagina!");
                 navigate("/homeProjeto")
             }, 2000);
 

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Api from '../../../api';
 import { getId } from '../../../service/auth';
 
-import CustomizedSteppers from "../modal user/ModalUsuario"
-const FindUser = () => {
+import ModalTreino from "../modal_criar_treino/ModalTreino"
+
+const FindTreino = () => {
     const [valid, setValid] = useState("");
-    const [nome, setNome] = useState("");
-    const [email, setEmail] = useState("");
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,10 +13,8 @@ const FindUser = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await Api.get(`usuarios/${getId()}`);
-                setValid(response.data.genero);
-                setNome(response.data.nome);
-                setEmail(response.data.email);
+                const response = await Api.get(`treinos/verificar/${getId()}`);
+                setValid(response.data)
             } catch (error) {
                 setError(error);
             } finally {
@@ -27,6 +24,7 @@ const FindUser = () => {
 
         fetchData();
     }, []);
+
 
     if (loading) {
         return <div>Loading...</div>;
@@ -38,9 +36,9 @@ const FindUser = () => {
 
     return (
         <>
-            {valid == null ? <CustomizedSteppers nome={nome} email={email} /> : null}
+            {!valid ? <ModalTreino/> : null}
         </>
     );
 };
 
-export default FindUser;
+export default FindTreino;

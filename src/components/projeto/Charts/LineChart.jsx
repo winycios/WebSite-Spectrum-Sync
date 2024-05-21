@@ -6,6 +6,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import Api from '../../../api';
 import { getId } from '../../../service/auth';
+import moment from 'moment';
 
 
 const Tableau10 = [
@@ -34,10 +35,8 @@ export default function BasicColor() {
     }])
 
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        return `${day}/${month}`;
+        const date = moment(dateString);
+        return date.format('DD/MM');
     };
 
     useEffect(() => {

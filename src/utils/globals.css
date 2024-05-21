@@ -78,18 +78,22 @@ ul {
     max-width: 95% !important;
 }
 
+.carousel-inner {
+    width: 80% !important;
+}
+
 .p-float-label:has(input:focus) label {
 
     top: -0.20rem;
 }
 
-.p-icon-field > .p-input-icon{
+.p-icon-field>.p-input-icon {
     top: 5px;
 }
 
-.p-password-panel{
+.p-password-panel {
     background: var(--preto-secundario);
-    padding:  0 20px;
+    padding: 0 20px;
     z-index: 10000 !important;
 }
 
@@ -105,4 +109,12 @@ ul {
 ::-webkit-scrollbar-thumb {
     background-color: var(--vermelho);
     border-radius: 5px;
+}
+
+
+@media screen and (max-width: 768px) {
+
+    .carousel-inner {
+        width: 100% !important;
+    }
 }

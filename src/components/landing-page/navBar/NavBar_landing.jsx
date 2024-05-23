@@ -5,16 +5,36 @@ import Navbar from 'react-bootstrap/Navbar';
 import styles from './NavBar_landing.module.css'
 import { PersonAdd, House, BoxArrowInRight, Cursor, Shuffle, PersonRaisedHand } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import SpeedDial from '@mui/material/SpeedDial';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import useStack from '../../../utils/stack/Pilha';
+import { Backdrop } from '@mui/material';
 
 const logo = 'https://fittech500.blob.core.windows.net/imagens-spectrum/logo.png'
 
 const NavBar = () => {
     const navigate = useNavigate();
+    const stack = useStack('section_slider');
+
+    const sectionMappings = {
+        'section_slider': { icon: <House style={{ fill: "var(--salmao)" }} />, name: 'Inicio' },
+        'section_info': { icon: <Cursor style={{ fill: "black" }} />, name: 'Objetivos' },
+        'section_solution': { icon: <Shuffle style={{ fill: "black" }} />, name: 'Versátil' },
+        'section_faq': { icon: <PersonRaisedHand style={{ fill: "black" }} />, name: 'Faq' }
+    };
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const handleNavigate = (path) => {
         navigate(path);
     };
 
     const scrollToSection = (sectionId) => {
+        stack.push(sectionId);
         const section = document.getElementById(sectionId);
         if (section) {
             const navbarHeight = document.querySelector('.navbar').offsetHeight;
@@ -23,6 +43,27 @@ const NavBar = () => {
                 behavior: "smooth"
             });
         }
+    };
+
+    const handleBack = (sectionId) => {
+
+        if (sectionId === 'section_slider') {
+            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            window.scrollTo({
+                top: sectionId.offsetTop - navbarHeight,
+                behavior: "smooth"
+            });
+        } else {
+            const section = document.getElementById(stack.pop());
+            if (section) {
+                const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                window.scrollTo({
+                    top: section.offsetTop - navbarHeight,
+                    behavior: "smooth"
+                });
+            }
+        }
+
     };
 
     return (
@@ -64,12 +105,12 @@ const NavBar = () => {
                             </div>
 
                             <div className={styles.box}>
-                                <Nav.Link onClick={() => handleNavigate('cadastrar')} className={`${styles.button_nav} ${styles.nav_link}`}>
+                                <Nav.Link onClick={() => handleNavigate('/cadastrar')} className={`${styles.button_nav} ${styles.nav_link}`}>
                                     Cadastrar
                                     <PersonAdd color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} />
                                 </Nav.Link>
 
-                                <Nav.Link onClick={() => handleNavigate('logar')} className={`${styles.button_nav} ${styles.nav_link} ${styles.actives}`}>
+                                <Nav.Link onClick={() => handleNavigate('/logar')} className={`${styles.button_nav} ${styles.nav_link} ${styles.actives}`}>
                                     Entrar
                                     <BoxArrowInRight color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} />
                                 </Nav.Link>
@@ -78,6 +119,26 @@ const NavBar = () => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
+            <Box sx={{ flexGrow: 1, display: stack.data.length <= 1 ? "none" : "block", position: "fixed", bottom: 16, right: 16, zIndex: 1000 }}>
+                <Backdrop open={open} />
+                <SpeedDial
+                    ariaLabel="Pilha de historico"
+                    icon={<ArrowBackIcon />}
+                    onClick={handleClose}
+                    onOpen={handleOpen}
+                    open={open}
+                >
+                    {stack.data.map((sectionId) => (
+                        <SpeedDialAction
+                            key={sectionId}
+                            icon={sectionMappings[sectionId].icon}
+                            tooltipTitle={sectionMappings[sectionId].name}
+                            tooltipOpen
+                            onClick={() => handleBack(sectionId)}
+                        />
+                    ))}
+                </SpeedDial>
+            </Box>
         </>
     );
 }

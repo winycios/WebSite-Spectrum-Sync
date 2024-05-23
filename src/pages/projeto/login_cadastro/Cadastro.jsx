@@ -23,6 +23,8 @@ const Cadastro = () => {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [option, setOption] = useState(false);
+    const [count, setCount] = useState(false);
+    
 
     const mudarOption = () => {
         if (!option) {
@@ -48,6 +50,7 @@ const Cadastro = () => {
     );
 
     const handleSave = () => {
+        setCount(true);
 
         Api.post(`usuarios`, {
             nome,
@@ -61,6 +64,7 @@ const Cadastro = () => {
 
         }).catch(function (error) {
             toast.error(error.response.data.message);
+            toast.error(setCount(false))
         });
     }
 
@@ -153,7 +157,7 @@ const Cadastro = () => {
                         </Form.Group>
                         <div className={Styles.box_button}>
                             <CadasGoogle />
-                            <Button className={Styles.button} variant="outline-danger" type="submit">Cadastrar-se</Button>{' '}
+                            <Button className={Styles.button} variant="outline-danger" disabled={count} type="submit">Cadastrar-se</Button>{' '}
                         </div>
                     </Form>
                 </div>

@@ -5,9 +5,13 @@ import img2 from "../../../utils/almoco.jpg";
 import img3 from "../../../utils/lanche.jpg";
 import img4 from "../../../utils/jantar.jpg";
 import img5 from "../../../utils/ceia.webp";
+import ModalDieta from "../modal_dieta/ModalDieta";
+
 const CardDieta = () => {
     const qtdCards = 5;
     const [cardsData, setCardsData] = useState([]);
+    const [selectedCard, setSelectedCard] = useState(null);
+
     useEffect(() => {
         const fetchData = () => {
             const data = [];
@@ -15,22 +19,32 @@ const CardDieta = () => {
                 const id = i + 1;
                 let horario = '';
                 let img = '';
-                if (id === 1) {
-                    horario = "Café da Manhã - 9:00 AM";
-                    img = img1;
-                } else if (id === 2) {
-                    horario = "Almoço - 12:00 PM";
-                    img = img2;
-                } else if (id === 3) {
-                    horario = "Lanche da tarde - 15:00 PM";
-                    img = img3;
-                } else if (id === 4) {
-                    horario = "Jantar - 19:00 PM";
-                    img = img4;
-                } else if (id === 5) {
-                    horario = "Ceia - 22:00 PM";
-                    img = img5;
+
+                switch (id) {
+                    case 1:
+                        horario = "Café da Manhã - 9:00 AM";
+                        img = img1;
+                        break;
+                    case 2:
+                        horario = "Almoço - 12:00 PM";
+                        img = img2;
+                        break;
+                    case 3:
+                        horario = "Lanche da tarde - 15:00 PM";
+                        img = img3;
+                        break;
+                    case 4:
+                        horario = "Jantar - 19:00 PM";
+                        img = img4;
+                        break;
+                    case 5:
+                        horario = "Ceia - 22:00 PM";
+                        img = img5;
+                        break;
+                    default:
+                        break;
                 }
+
                 data.push({
                     id,
                     titulo: `Título ${id}`,
@@ -41,14 +55,22 @@ const CardDieta = () => {
             }
             setCardsData(data);
         };
+
         fetchData();
     }, [qtdCards]);
-    const handleGreenButtonClick = (id) => {
-        alert(`Detalhes do card ${id}`);
+
+    const handleGreenButtonClick = (card) => {
+        setSelectedCard(card);
     };
+
     const handleRedButtonClick = (id) => {
         alert(`Concluir refeição do card ${id}`);
     };
+
+    const closeModal = () => {
+        setSelectedCard(null);
+    };
+
     return (
         <div className={styles.cards_listener}>
             {cardsData.map((card) => (
@@ -65,7 +87,7 @@ const CardDieta = () => {
                             <div className={styles.sub_text}>Sobre a Refeição:</div>
                             <div className={styles.sub_text}>{card.descricao}</div>
                         </div>
-                        <button onClick={() => handleGreenButtonClick(card.id)} className={styles.button_green}>
+                        <button onClick={() => handleGreenButtonClick(card)} className={styles.button_green}>
                             <div className={styles.text_button}>Detalhes</div>
                         </button>
                         <button onClick={() => handleRedButtonClick(card.id)} className={styles.button_red}>
@@ -74,7 +96,9 @@ const CardDieta = () => {
                     </div>
                 </div>
             ))}
+            {selectedCard && <ModalDieta card={selectedCard} onClose={closeModal} />}
         </div>
     );
 };
+
 export default CardDieta;

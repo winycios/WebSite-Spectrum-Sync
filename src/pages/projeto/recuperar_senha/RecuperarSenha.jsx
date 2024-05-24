@@ -11,7 +11,6 @@ import Form from 'react-bootstrap/Form';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 
-
 const Recuperar = () => {
     const navigate = useNavigate();
 
@@ -21,18 +20,20 @@ const Recuperar = () => {
 
     const handleSave = () => {
         toast.info("Enviando email!");
-
+        setCount(true);
+        
         Api.post(`usuarios/enviar-email`, {
             "nome": nome,
             "para": email
 
         }).then(() => {
 
-            toast.success("Senha alterada com sucesso!");
+            toast.success("Senha enviada com sucesso! Verifique seu E-mail.");
             setTimeout(() => { navigate("/logar"); }, 2000);
 
         }).catch(function (error) {
             setTimeout(() => { toast.error(error.response.data.message) }, 2000);
+            setTimeout(() => { toast.error(setCount(false)) }, 20000);
         });
     }
 
@@ -44,7 +45,7 @@ const Recuperar = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.stopPropagation();
@@ -53,6 +54,7 @@ const Recuperar = () => {
         }
 
         setValidated(true);
+
 
     };
 
@@ -65,6 +67,8 @@ const Recuperar = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const [count, setCount] = useState(false);
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -118,7 +122,7 @@ const Recuperar = () => {
 
                         <div className={Styles.box_button}>
                             <Link className={Styles["btnCancelar"]} to="/logar">Cancelar</Link>
-                            <Button className={Styles.button} variant="outline-danger" type="submit">Enviar</Button>{' '}
+                            <Button className={Styles.button} disabled={count} variant="outline-danger" type="submit">Enviar</Button>{' '}
                         </div>
                     </Form>
                 </div>

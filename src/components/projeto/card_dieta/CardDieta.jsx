@@ -64,7 +64,8 @@ const CardDieta = () => {
     };
 
     const handleRedButtonClick = (id) => {
-        alert(`Concluir refeição do card ${id}`);
+        const updatedCards = cardsData.filter(card => card.id !== id);
+        setCardsData(updatedCards);
     };
 
     const closeModal = () => {
@@ -73,6 +74,7 @@ const CardDieta = () => {
 
     return (
         <div className={styles.cards_listener}>
+            {cardsData.length === 0 && <div className={styles.parabens}>Parabéns!</div>}
             {cardsData.map((card) => (
                 <div key={card.id} className={styles.card_container}>
                     <div className={styles.horario}>{card.horario}</div>

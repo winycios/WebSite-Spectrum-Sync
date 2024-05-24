@@ -16,6 +16,7 @@ import Treino from './pages/projeto/logado/tela_treino/TelaTreino'
 import Video from './pages/projeto/logado/tela_video/TelaVideo'
 import User from './pages/projeto/logado/tela_usuario/User'
 import Editar from './pages/projeto/logado/tela_usuario/editar/Editar'
+import Dieta from './pages/projeto/logado/tela_dieta/TelaDieta'
 
 const Rotas = createBrowserRouter(
     createRoutesFromElements(
@@ -30,6 +31,7 @@ const Rotas = createBrowserRouter(
                 <Route path="homeProjeto/treino" element={<Treino />} />
                 <Route path="homeProjeto/treino/:url" element={<Video />} />
                 <Route path="homeProjeto/user/editar" element={<Editar />} />
+                <Route path="homeProjeto/dieta" element={<Dieta />}/>
                 <Route path="*" element={<NotFound />} />
             </Route>
         </>

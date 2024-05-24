@@ -105,7 +105,7 @@ const NavBar = () => {
                                 <Nav.Link onClick={() => handleNavigate('../homeProjeto/treino')} className={`${styles.nav_link}`}>Treino
                                     <Cursor color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 
-                                <Nav.Link className={`${styles.nav_link}`}>Dieta
+                                <Nav.Link onClick={() => handleNavigate('../homeProjeto/dieta')} className={`${styles.nav_link}`}>Dieta
                                     <FileBreak color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 
                                 <Nav.Link onClick={useLogout} className={`${styles.nav_link}`}>Sair

@@ -64,6 +64,8 @@ const NavBar = () => {
             }
         }
 
+        setOpen(false)
+        handleClose();
     };
 
     return (
@@ -118,13 +120,16 @@ const NavBar = () => {
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
-            </Navbar>
-            <Box sx={{ flexGrow: 1, display: stack.data.length <= 1 ? "none" : "block", position: "fixed", bottom: 16, right: 16, zIndex: 1000 }}>
                 <Backdrop open={open} />
+            </Navbar>
+            <Box sx={{
+                height: 330, transform: 'translateZ(0px)', flexGrow: 1, display: stack.data.length <= 1 ? "none" : "block", position: "fixed", bottom: 16, right: 16, zIndex: 10000
+            }}>
                 <SpeedDial
                     ariaLabel="Pilha de historico"
+                    sx={{ position: 'absolute', bottom: 16, right: 16 }}
                     icon={<ArrowBackIcon />}
-                    onClick={handleClose}
+                    onClose={handleClose}
                     onOpen={handleOpen}
                     open={open}
                 >

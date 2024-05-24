@@ -8,7 +8,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import { House, Cursor, FileBreak, BoxArrowInLeft, Display } from 'react-bootstrap-icons';
+import { House, Cursor, FileBreak, BoxArrowInLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import FindImage from '../GET/ProcurarImg';
 import api from '../../../api';
@@ -54,9 +54,9 @@ const NavBar = () => {
     }, []);
 
     useEffect(() => {
-        if (progress === 50) {
+        if (progress <= 50) {
             setNivel(2);
-        }else if(progress === 100){
+        }if(progress <= 100){
             setNivel(3);
         }
     }, [progress]);

@@ -82,6 +82,11 @@ ul {
     width: 80% !important;
 }
 
+.css-7dv1rb-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab {
+
+    background-color: var(--salmao) !important
+}
+
 .p-float-label:has(input:focus) label {
 
     top: -0.20rem;

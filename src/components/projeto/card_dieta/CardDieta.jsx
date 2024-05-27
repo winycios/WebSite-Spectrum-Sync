@@ -6,58 +6,71 @@ import img3 from "../../../utils/lanche.jpg";
 import img4 from "../../../utils/jantar.jpg";
 import img5 from "../../../utils/ceia.webp";
 import ModalDieta from "../modal_dieta/ModalDieta";
+import Api from "../../../api"
+import { getId } from "../../../service/auth"
 
 const CardDieta = () => {
-    const qtdCards = 5;
     const [cardsData, setCardsData] = useState([]);
     const [selectedCard, setSelectedCard] = useState(null);
+    const [showSelectModal, setShowSelectModal] = useState(true);
+    const [qtdCards, setQtdCards] = useState(3);
 
     useEffect(() => {
-        const fetchData = () => {
-            const data = [];
-            for (let i = 0; i < qtdCards; i++) {
-                const id = i + 1;
-                let horario = '';
-                let img = '';
 
-                switch (id) {
-                    case 1:
-                        horario = "Café da Manhã - 9:00 AM";
-                        img = img1;
-                        break;
-                    case 2:
-                        horario = "Almoço - 12:00 PM";
-                        img = img2;
-                        break;
-                    case 3:
-                        horario = "Lanche da tarde - 15:00 PM";
-                        img = img3;
-                        break;
-                    case 4:
-                        horario = "Jantar - 19:00 PM";
-                        img = img4;
-                        break;
-                    case 5:
-                        horario = "Ceia - 22:00 PM";
-                        img = img5;
-                        break;
-                    default:
-                        break;
+        // try {
+        //     const response = await Api.get(`pesos/historico-grafico/${getId()}`);
+        //     console.log(response)
+        // } catch (error) {
+        //     console.error(error);
+        // }
+
+        if (!showSelectModal) {
+            const fetchData = () => {
+                const data = [];
+                for (let i = 0; i < qtdCards; i++) {
+                    const id = i + 1;
+                    let horario = '';
+                    let img = '';
+
+                    switch (id) {
+                        case 1:
+                            horario = "Café da Manhã - 9:00 AM";
+                            img = img1;
+                            break;
+                        case 2:
+                            horario = "Almoço - 12:00 PM";
+                            img = img2;
+                            break;
+                        case 3:
+                            horario = "Lanche da tarde - 15:00 PM";
+                            img = img3;
+                            break;
+                        case 4:
+                            horario = "Jantar - 19:00 PM";
+                            img = img4;
+                            break;
+                        case 5:
+                            horario = "Ceia - 22:00 PM";
+                            img = img5;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    data.push({
+                        id,
+                        titulo: `Título ${id}`,
+                        descricao: `Descrição ${id}`,
+                        horario,
+                        img
+                    });
                 }
+                setCardsData(data);
+            };
 
-                data.push({
-                    id,
-                    titulo: `Título ${id}`,
-                    descricao: `Descrição ${id}`,
-                    horario,
-                    img
-                });
-            }
-            setCardsData(data);
-        };
-
-        fetchData();
-    }, [qtdCards]);
+            fetchData();
+        }
+    }, [qtdCards, showSelectModal]);
 
     const handleGreenButtonClick = (card) => {
         setSelectedCard(card);
@@ -72,9 +85,33 @@ const CardDieta = () => {
         setSelectedCard(null);
     };
 
+    const handleSelectChange = (e) => {
+        setQtdCards(Number(e.target.value));
+    };
+
+    const handleStartClick = () => {
+        setShowSelectModal(false);
+    };
+
     return (
         <div className={styles.cards_listener}>
-            {cardsData.length === 0 && <div className={styles.parabens}>Parabéns!</div>}
+            {showSelectModal && (
+                <div className={styles.modal}>
+                    <div className={styles.modal_content}>
+                        <h2>Selecione o número de refeições que deseja fazer hoje</h2>
+                        <select value={qtdCards} onChange={handleSelectChange}>
+                            <option value={3}>3</option>
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                        </select>
+                        <button onClick={handleStartClick}>Iniciar</button>
+                    </div>
+                </div>
+            )}
+
+            {cardsData.length === 0 && !showSelectModal && (
+                <div className={styles.parabens}>Parabéns por ter completado suas refeições! Volte amanhã 😊</div>
+            )}
             {cardsData.map((card) => (
                 <div key={card.id} className={styles.card_container}>
                     <div className={styles.horario}>{card.horario}</div>
@@ -98,6 +135,7 @@ const CardDieta = () => {
                     </div>
                 </div>
             ))}
+
             {selectedCard && <ModalDieta card={selectedCard} onClose={closeModal} />}
         </div>
     );

@@ -103,7 +103,7 @@ ul {
 }
 
 ::-webkit-scrollbar {
-    scrollbar-width: thin;
+    scrollbar-width: thin !important;
     width: 8px;
 }
 

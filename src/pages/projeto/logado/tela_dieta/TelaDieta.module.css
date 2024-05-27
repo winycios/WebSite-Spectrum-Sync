@@ -4,13 +4,17 @@
     align-items: center;
     width: 100%;
 }
+
 .sub_main {
     width: 80%;
 }
+
 .h1 {
     font-size: 1.4rem;
 }
+
 /* parte de KPIs */
+
 .main_dashboards {
     width: 100%;
     display: flex;
@@ -19,6 +23,7 @@
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
+
 .box_KPI {
     display: flex;
     justify-content: center;
@@ -29,22 +34,32 @@
     background-color: var(--preto-tom-menor);
     width: 35%;
 }
+
 .box_KPI:not(:first-child) {
     width: 60%;
 }
+
 .box_KPI > * {
     padding-bottom: 2rem;
 }
+
 .title_box_KPI {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
+
 .title_KPI {
     font-size: 1.4rem;
     color: var(--rosa);
 }
+
+.title_KPI_peso {
+    font-size: 1.4rem;
+    color: var(--branco);
+}
+
 .info_box_KPI {
     display: flex;
     width: 90%;
@@ -52,21 +67,43 @@
     align-items: center;
     flex-direction: row;
 }
+
 .info_KPI {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
 }
+
 .title_info {
     font-size: 1rem;
 }
+
 .sub_title_info {
     font-size: 1rem;
     color: var(--rosa);
 }
+
 .info_box_Dashboard {
     width: 100%;
     background-color: var(--preto-secundario);
     border-radius: 15px;
+}
+
+@media screen and (max-width: 768px) {
+    .main_dashboards {
+        flex-direction: column;
+    }
+
+    .main_dashboards > *:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+
+    .box_KPI {
+        width: 100%;
+    }
+
+    .box_KPI:not(:first-child) {
+        width: 100%;
+    }
 }

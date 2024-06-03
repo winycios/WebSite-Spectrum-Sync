@@ -1,3 +1,4 @@
+/* TelaDieta.module.css */
 .main {
     display: flex;
     justify-content: center;
@@ -15,13 +16,14 @@
 
 /* parte de KPIs */
 
-.main_dashboards {
-    width: 100%;
+.dashboardContainer {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch;
     padding-top: 2rem;
     padding-bottom: 2rem;
+    gap: 2rem;
+    overflow-x: hidden;
 }
 
 .box_KPI {
@@ -32,15 +34,8 @@
     padding: 1rem;
     border-radius: 15px;
     background-color: var(--preto-tom-menor);
-    width: 35%;
-}
-
-.box_KPI:not(:first-child) {
-    width: 60%;
-}
-
-.box_KPI > * {
-    padding-bottom: 2rem;
+    width: 48%;
+    flex-grow: 1;
 }
 
 .title_box_KPI {
@@ -91,19 +86,15 @@
 }
 
 @media screen and (max-width: 768px) {
-    .main_dashboards {
+    .dashboardContainer {
         flex-direction: column;
     }
 
-    .main_dashboards > *:not(:last-child) {
+    .dashboardContainer > *:not(:last-child) {
         margin-bottom: 2rem;
     }
 
     .box_KPI {
-        width: 100%;
-    }
-
-    .box_KPI:not(:first-child) {
         width: 100%;
     }
 }

@@ -9,6 +9,7 @@ import ModalDieta from "../modal_dieta/ModalDieta";
 import api from "../../../api";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getId } from "../../../service/auth";
+import { toast } from 'react-toastify';
 
 const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,37 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
   const [showSelectModal, setShowSelectModal] = useState(true);
   const [qtdCards, setQtdCards] = useState(3);
   const [error, setError] = useState(null);
+
+  const [user, setUser] = useState({
+    peso: '',
+    pesoMeta: '',
+    usuario: {
+        nome: '',
+        dataNascimento: '',
+        genero: '',
+        altura: '',
+        nivelCondicao: '',
+        meta: '',
+        objetivo: '',
+        pontuacao: ''
+    }
+});
+
+    // dados do usuario
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+              const response = await api.get(`/pesos/ultima-insercao/${getId()}`);
+              const userData = response.data;
+              setUser(userData);
+          } catch (error) {
+              toast.error(error.message);
+          }
+
+      };
+
+      fetchData();
+  }, []);
 
   const predefinedCards = [
     { id: 1, horario: "Café da Manhã - 9:00 AM", img: img1 },
@@ -36,7 +68,7 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
         }
 
         const response = await api.get(`/openai/gpt3/${id}`, {
-          params: { objetivo: "Perder peso" },
+          params: { objetivo: user.usuario.meta },
         });
 
         const apiData = response.data;

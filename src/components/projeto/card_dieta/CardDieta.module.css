@@ -13,8 +13,8 @@
 }
 
 .card_box {
-    min-width: 350px;
-    width: 350px;
+    min-width: 300px;
+    width: 300px;
     background-color: var(--preto-tom-menor);
     border-radius: 15px;
     display: flex;

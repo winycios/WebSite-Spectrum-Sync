@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./CardDieta.module.css";
 import img1 from "../../../utils/cafe-da-manha.jpg";
 import img2 from "../../../utils/almoco.jpg";
@@ -32,31 +32,33 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
         objetivo: '',
         pontuacao: ''
     }
-});
+  });
 
-    // dados do usuario
-    useEffect(() => {
-      const fetchData = async () => {
-          try {
-              const response = await api.get(`/pesos/ultima-insercao/${getId()}`);
-              const userData = response.data;
-              setUser(userData);
-          } catch (error) {
-              toast.error(error.message);
-          }
+  // dados do usuario
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await api.get(`/pesos/ultima-insercao/${getId()}`);
+            const userData = response.data;
+            setUser(userData);
+        } catch (error) {
+            toast.error(error.message);
+        }
 
-      };
+    };
 
-      fetchData();
+    fetchData();
   }, []);
 
-  const predefinedCards = [
+  const meta = user.usuario.meta;
+
+  const predefinedCards = useMemo(() => [
     { id: 1, horario: "Café da Manhã - 9:00 AM", img: img1 },
     { id: 2, horario: "Almoço - 12:00 PM", img: img2 },
     { id: 3, horario: "Lanche da tarde - 15:00 PM", img: img3 },
     { id: 4, horario: "Jantar - 19:00 PM", img: img4 },
     { id: 5, horario: "Ceia - 22:00 PM", img: img5 },
-  ];
+  ], []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,7 +70,7 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
         }
 
         const response = await api.get(`/openai/gpt3/${id}`, {
-          params: { objetivo: user.usuario.meta },
+          params: { objetivo: meta },
         });
 
         const apiData = response.data;
@@ -128,7 +130,7 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
         fetchData();
       }
     }
-  }, [qtdCards, showSelectModal, onNutrientTotalsUpdate]);
+  }, [qtdCards, showSelectModal, onNutrientTotalsUpdate, meta, predefinedCards]);
 
   const handleGreenButtonClick = (card) => {
     setSelectedCard(card);
@@ -198,7 +200,7 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
 
       {cardsData.length === 0 && !showSelectModal && (
         <div className={styles.parabens}>
-          Parabéns por ter completado suas refeições! Volte amanhã 😊
+          Sem mais refeições por enquanto! Volte amanhã 😊
         </div>
       )}
       {cardsData.map((card) => (

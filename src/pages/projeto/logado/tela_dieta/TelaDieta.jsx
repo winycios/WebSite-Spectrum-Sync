@@ -3,16 +3,14 @@ import styles from "./TelaDieta.module.css";
 import NavBar from "../../../../components/projeto/navBar/NavBar";
 import FindUser from "../../../../components/projeto/GET/ValidarUsuario";
 import CardDieta from "../../../../components/projeto/card_dieta/CardDieta";
-
 import Api from "../../../../api";
 import { getId } from "../../../../service/auth";
 import moment from "moment";
-
 import { PieChart } from "@mui/x-charts/PieChart";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 const TelaDieta = () => {
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [dataset, setDataset] = useState([]);
   const [currentPeso, setCurrentPeso] = useState(null);
   const [nutrientTotals, setNutrientTotals] = useState({
@@ -119,62 +117,65 @@ const TelaDieta = () => {
                   </h2>
                 </div>
 
-                <PieChart
-                  sx={{
-                    "& &&& .MuiChartsLegend-label": {
-                      fill: "white !important",
-                    },
-                    "& &&& .MuiChartsLegend-label:hover": {
-                      fill: "white !important",
-                    },
-                    "& .css-1mhcdve-MuiPieArc-root": {
-                      stroke: "none",
-                    },
-                    "& .css-pzk9ne-MuiChartsSurface-root": {
-                      color: "white",
-                    },
-                    "& tspan": {
-                      fill: "white",
-                    },
-                    "& .MuiChartsAxis-line": {
-                      stroke: "white !important",
-                    },
-                    "& .MuiChartsAxis-tick": {
-                      stroke: "white !important",
-                    },
-                  }}
-                  colors={["red", "white"]}
-                  series={[
-                    {
-                      data: [
-                        {
-                          id: 0,
-                          value: currentNutrientTotals.calorias,
-                          label: "Consumido",
-                          color: "red",
-                        },
-                        {
-                          id: 1,
-                          value:
-                            nutrientTotals.calorias -
-                            currentNutrientTotals.calorias,
-                          label: "Total",
-                          color: "white",
-                        },
-                      ],
-                      innerRadius: 90,
-                      outerRadius: 100,
-                      paddingAngle: 0,
-                      cornerRadius: 0,
-                      startAngle: 0,
-                      endAngle: 360,
-                      cx: 150,
-                      cy: 150,
-                    },
-                  ]}
-                  width={400}
-                  height={300}
-                />
+                <div className={styles.chartContainer}>
+                  <PieChart
+                    sx={{
+                      "& &&& .MuiChartsLegend-label": {
+                        fill: "white !important",
+                      },
+                      "& &&& .MuiChartsLegend-label:hover": {
+                        fill: "white !important",
+                      },
+                      "& .css-1mhcdve-MuiPieArc-root": {
+                        stroke: "none",
+                      },
+                      "& .css-pzk9ne-MuiChartsSurface-root": {
+                        color: "white",
+                      },
+                      "& tspan": {
+                        fill: "white",
+                      },
+                      "& .MuiChartsAxis-line": {
+                        stroke: "white !important",
+                      },
+                      "& .MuiChartsAxis-tick": {
+                        stroke: "white !important",
+                      },
+                    }}
+                    colors={["red", "white"]}
+                    series={[
+                      {
+                        data: [
+                          {
+                            id: 0,
+                            value: currentNutrientTotals.calorias,
+                            label: "Consumo",
+                            color: "red",
+                          },
+                          {
+                            id: 1,
+                            value:
+                              nutrientTotals.calorias -
+                              currentNutrientTotals.calorias,
+                            label: "Total",
+                            color: "white",
+                          },
+                        ],
+                        innerRadius: 80,
+                        outerRadius: 90,
+                        paddingAngle: 0,
+                        cornerRadius: 0,
+                        startAngle: 0,
+                        endAngle: 360,
+                        cx: 120,
+                        cy: 120,
+                      },
+                    ]}
+                    width={300}
+                    height={250}
+                    legend={{ position: 'center' }}
+                  />
+                </div>
               </div>
             </div>
 
@@ -186,7 +187,7 @@ const TelaDieta = () => {
               <LineChart
                 sx={{
                   "& tspan": {
-                    fill: 'white',
+                    fill: "white",
                   },
                   "& .MuiChartsAxis-line": {
                     stroke: "white !important",
@@ -208,8 +209,8 @@ const TelaDieta = () => {
                     label: "Peso",
                   },
                 ]}
-                width={600}
-                height={300}
+                width={450}
+                height={250}
               />
               {currentPeso && <p>Peso Atual: {currentPeso} kg</p>}
             </div>

@@ -1,0 +1,115 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.sub_main {
+    width: 80%;
+}
+
+.h1 {
+    font-size: 1.4rem;
+}
+
+/* parte de KPIs */
+
+.dashboardContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 2rem;
+    overflow-x: hidden;
+}
+
+.box_KPI {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 15px;
+    background-color: var(--preto-tom-menor);
+    width: 48%;
+    flex-grow: 1;
+}
+
+.title_box_KPI {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.title_KPI {
+    font-size: 1.4rem;
+    color: var(--rosa);
+}
+
+.title_KPI_peso {
+    font-size: 1.4rem;
+    color: var(--branco);
+}
+
+.info_box_KPI {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.info_KPI {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.title_info {
+    font-size: 1rem;
+}
+
+.sub_title_info {
+    font-size: 1rem;
+    color: var(--rosa);
+}
+
+.info_box_Dashboard {
+    width: 100%;
+    background-color: var(--preto-secundario);
+    border-radius: 15px;
+}
+
+.chartContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+    .dashboardContainer {
+        flex-direction: column;
+    }
+
+    .box_KPI {
+        width: 100%;
+    }
+
+    .info_box_KPI {
+        flex-direction: column !important;
+        align-items: flex-start;
+    }
+
+    .info_KPI {
+        margin-left: 2rem;
+    }
+
+    .chartContainer {
+        order: -1;
+    }
+}

@@ -1,0 +1,175 @@
+.cards_listener {
+    display: flex;
+    overflow-x: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 1rem;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card_box {
+    min-width: 300px;
+    width: 300px;
+    background-color: var(--preto-tom-menor);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    flex-shrink: 0;
+    height: 500px;
+}
+
+.card_box:last-child {
+    margin-right: 0;
+}
+
+.card_box > * {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.title_box {
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: start;
+}
+
+.title {
+    font-size: 1.4rem;
+}
+
+.img_box {
+    width: 90%;
+}
+
+.img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 25px;
+}
+
+.box_desc {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.sub_text {
+    font-size: 1rem;
+}
+
+.button_green {
+    margin: 1rem 1rem;
+}
+
+.button_red {
+    margin-bottom: 1rem;
+}
+
+.button_green {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-radius: 15px;
+    background-color: #169D3F;
+}
+
+.button_red {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-radius: 15px;
+    background-color: var(--salmao);
+}
+
+.button_green:hover {
+    filter: brightness(0.9);
+    cursor: pointer;
+}
+
+.button_red:hover {
+    filter: brightness(0.9);
+    cursor: pointer;
+}
+
+.text_button {
+    font-size: 1.4rem;
+}
+
+.horario {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.parabens {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 1.4rem;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal_content {
+    background-color: var(--preto-tom-menor);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal_content h2 {
+    margin-bottom: 20px;
+}
+
+.modal_content select {
+    margin-bottom: 20px;
+    padding: 8px;
+    font-size: 16px;
+    margin-right: 2rem;
+    color: black;
+}
+
+.modal_content button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal_content button:hover {
+    background-color: #45a049;
+}

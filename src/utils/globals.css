@@ -103,6 +103,7 @@ ul {
 }
 
 ::-webkit-scrollbar {
+    scrollbar-width: thin !important;
     width: 8px;
 }
 
@@ -115,7 +116,6 @@ ul {
     background-color: var(--vermelho);
     border-radius: 5px;
 }
-
 
 @media screen and (max-width: 768px) {
 

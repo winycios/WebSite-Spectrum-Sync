@@ -70,11 +70,10 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
         }
 
         const response = await api.get(`/openai/gpt3/${id}`, {
-          params: { objetivo: meta },
+          params: { objetivo: meta, qtdSelecionada: qtdCards },
         });
 
         const apiData = response.data;
-        console.log(apiData);
 
         const updatedCardsData = predefinedCards
           .slice(0, qtdCards)

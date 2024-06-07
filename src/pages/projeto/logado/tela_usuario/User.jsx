@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Styles from './User.module.css'
 import NavBar from "../../../../components/projeto/navBar/NavBar";
 import Container from 'react-bootstrap/Container';
@@ -14,7 +14,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { getId } from '../../../../service/auth';
 import { useNavigate } from "react-router-dom";
 
-import { EggFried, FiletypeCsv, FilePdf, ArrowUpLeftCircle, Trash, ArrowsVertical, BrightnessHigh } from 'react-bootstrap-icons';
+import { EggFried, FiletypeCsv, FilePdf, ArrowUpLeftCircle, Trash, ArrowsVertical } from 'react-bootstrap-icons';
 
 import ScoreIcon from '@mui/icons-material/Score';
 import GpsNotFixedIcon from '@mui/icons-material/GpsNotFixed';
@@ -30,7 +30,8 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import moment from 'moment';
-
+import LightModeIcon from '@mui/icons-material/LightMode';
+import { Brightness6, Brightness7, Nightlight, NightsStay } from '@mui/icons-material';
 
 const options = ["",
     "Acredite e faça acontecer.",
@@ -90,6 +91,18 @@ const User = () => {
     const [peso, setPeso] = useState('');
     const [pesoMeta, setPesoMeta] = useState('');
 
+    const [statusDieta, setStatusDieta] = useState(0);
+    const [qtdDieta, setqtdSelecionada] = useState(0);
+    const [dieta, setDieta] = useState([]);
+
+    const predefinedCards = useMemo(() => [
+        { id: 1, horario: "09:00", img: LightModeIcon },
+        { id: 2, horario: "12:00", img: Brightness7 },
+        { id: 3, horario: "15:00", img: Brightness6 },
+        { id: 4, horario: "19:00", img: NightsStay },
+        { id: 5, horario: "22:00", img: Nightlight },
+    ], []);
+
     // dados do usuario
     useEffect(() => {
         const fetchData = async () => {
@@ -97,14 +110,41 @@ const User = () => {
                 const response = await Api.get(`/pesos/ultima-insercao/${getId()}`);
                 const userData = response.data;
                 setUser(userData);
+                loadDieta();
             } catch (error) {
                 toast.error(error.message);
             }
+        };
 
+        const loadDieta = async () => {
+            try {
+                setStatusDieta('loading');
+
+                const response = await Api.get(`/openai/${getId()}`, {
+                    params: { objetivo: user.usuario.meta }
+                });
+                const apiData = response.data;
+                setqtdSelecionada(apiData[0].qtdSelecionada)
+
+                const updatedCardsData = predefinedCards
+                    .map((card, index) => ({
+                        ...card,
+                        titulo: apiData[index]?.nome || null,
+                        calorias: Number(apiData[index]?.calorias) || 0,
+                        proteinas: apiData[index]?.proteina || 0,
+                    }));
+
+                setDieta(updatedCardsData);
+
+                setStatusDieta(response.status);
+            } catch (error) {
+                toast.error(error.message);
+                setStatusDieta(500);
+            }
         };
 
         fetchData();
-    }, []);
+    }, [predefinedCards, user.usuario.meta]);
 
     const [focusedInput, setFocusedInput] = React.useState(false);
     const [focusedInput2, setFocusedInput2] = React.useState(false);
@@ -177,7 +217,6 @@ const User = () => {
         }
     };
 
-
     // atualizar imagem
     const handleImageChange = async (event) => {
         const newImageFile = event.target.files[0];
@@ -239,7 +278,6 @@ const User = () => {
     }
 
     const ariaLabel = { 'aria-label': 'description' };
-
 
     return (
         <>
@@ -329,42 +367,28 @@ const User = () => {
                                                     <th>Icon</th>
                                                     <th>Horário</th>
                                                     <th>Calorias</th>
-                                                    <th>Lista</th>
+                                                    <th>Proteínas</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td><BrightnessHigh color="white" size={22} className="align-center" /></td>
-                                                    <td>10:00</td>
-                                                    <td>320000</td>
-                                                    <td>LISTAR</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><BrightnessHigh color="white" size={22} className="align-center" /></td>
-                                                    <td>10:00</td>
-                                                    <td>320000</td>
-                                                    <td>LISTAR</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td><BrightnessHigh color="white" size={22} className="align-center" /></td>
-                                                    <td>10:00</td>
-                                                    <td>320000</td>
-                                                    <td>LISTAR</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td><BrightnessHigh color="white" size={22} className="align-center" /></td>
-                                                    <td>10:00</td>
-                                                    <td>320000</td>
-                                                    <td>LISTAR</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><BrightnessHigh color="white" size={22} className="align-center" /></td>
-                                                    <td>10:00</td>
-                                                    <td>320000</td>
-                                                    <td>LISTAR</td>
-                                                </tr>
+                                                {statusDieta === 200 ? (
+                                                    dieta.slice(0, qtdDieta).map((result) => (
+                                                        <tr key={result.id}>
+                                                            <td><result.img color="white" size={22} className="align-center" /></td>
+                                                            <td>{result.horario}</td>
+                                                            <td>{result.calorias}(kcal)</td>
+                                                            <td>{result.proteinas}(g)</td>
+                                                        </tr>
+                                                    ))
+                                                ) : statusDieta === "loading" ? (
+                                                    <tr>
+                                                        <td colSpan="4">Analisando ...</td>
+                                                    </tr>
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="4">Receita diária não encontrada.</td>
+                                                    </tr>
+                                                )}
                                             </tbody>
                                         </Table>
                                     </Card.Body>

@@ -28,8 +28,6 @@ const chartSettings = {
     height: 250,
 };
 
-const valueFormatter = (value) => value;
-
 export default function BasicColor() {
     const [selectedColor, setSelectedColor] = useState('#e15759');
     const [data, setData] = useState([]);
@@ -55,44 +53,51 @@ export default function BasicColor() {
         fetchData();
     }, []);
 
+    const totalQuantidadeTreinos = data.reduce((acc, curr) => acc + curr.quantidadeTreinos, 0);
     return (
-        <Stack direction="column" spacing={2} alignItems="center" sx={{ width: '100%', padding: "10px" }}>
-            <BarChart
-                dataset={data}
-                yAxis={[{ scaleType: 'band', dataKey: 'diaDaSemana' }]}
-                series={[{ dataKey: 'quantidadeTreinos', label: 'Dias', valueFormatter, color: selectedColor }]}
-                layout="horizontal"
-                sx={{
-                    '& tspan': {
-                        fill: selectedColor,
-                    },
-                    '& .MuiChartsAxis-line': {
-                        stroke: "white !important"
-                    },
-                    '& .MuiChartsAxis-tick': {
-                        stroke: "white !important"
-                    },
-                }}
-                {...chartSettings}
-            />
-            <ToggleButtonGroup
-                value={selectedColor}
-                exclusive
-                onChange={handleColorChange}
-            >
-                {Tableau10.map((color) => (
-                    <ToggleButton key={color} value={color} sx={{ p: 1 }}>
-                        <div
-                            style={{
-                                width: 15,
-                                height: 15,
-                                backgroundColor: color,
-                                display: 'inline-block',
-                            }}
-                        />
-                    </ToggleButton>
-                ))}
-            </ToggleButtonGroup>
-        </Stack>
+        <div>
+            {totalQuantidadeTreinos === 0 ? (
+                "Não há treinos feitos nessa semana."
+            ) : (
+                <Stack direction="column" spacing={2} alignItems="center" sx={{ width: '100%', padding: "10px" }}>
+                    <BarChart
+                        dataset={data}
+                        yAxis={[{ scaleType: 'band', dataKey: 'diaDaSemana' }]}
+                        series={[{ dataKey: 'quantidadeTreinos', label: 'Dias', valueFormatter: (value) => value, color: selectedColor }]}
+                        layout="horizontal"
+                        sx={{
+                            '& tspan': {
+                                fill: selectedColor,
+                            },
+                            '& .MuiChartsAxis-line': {
+                                stroke: "white !important"
+                            },
+                            '& .MuiChartsAxis-tick': {
+                                stroke: "white !important"
+                            },
+                        }}
+                        {...chartSettings}
+                    />
+                    <ToggleButtonGroup
+                        value={selectedColor}
+                        exclusive
+                        onChange={handleColorChange}
+                    >
+                        {Tableau10.map((color) => (
+                            <ToggleButton key={color} value={color} sx={{ p: 1 }}>
+                                <div
+                                    style={{
+                                        width: 15,
+                                        height: 15,
+                                        backgroundColor: color,
+                                        display: 'inline-block',
+                                    }}
+                                />
+                            </ToggleButton>
+                        ))}
+                    </ToggleButtonGroup>
+                </Stack>
+            )}
+        </div>
     );
 }

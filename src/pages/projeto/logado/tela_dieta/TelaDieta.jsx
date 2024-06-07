@@ -12,7 +12,7 @@ import { LineChart } from "@mui/x-charts/LineChart";
 const TelaDieta = () => {
   const [, setLoading] = useState(true);
   const [dataset, setDataset] = useState([]);
-  const [currentPeso, setCurrentPeso] = useState(null);
+  const [, setCurrentPeso] = useState(null);
   const [nutrientTotals, setNutrientTotals] = useState({
     carboidratos: 0,
     calorias: 0,
@@ -212,7 +212,6 @@ const TelaDieta = () => {
                 width={450}
                 height={250}
               />
-              {currentPeso && <p>Peso Atual: {currentPeso} kg</p>}
             </div>
           </div>
         </div>

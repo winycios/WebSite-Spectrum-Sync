@@ -1,9 +1,8 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from 'react-bootstrap/Navbar';
 import styles from './NavBar.module.css'
-import PropTypes from 'prop-types';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -17,8 +16,10 @@ import { getId } from '../../../service/auth';
 const logo = 'https://fittech500.blob.core.windows.net/imagens-spectrum/logo.png'
 
 const NavBar = () => {
-    const [progress, setProgress] = React.useState(0);
-    const [nivel, setNivel] = React.useState(1);
+    const [progress, setProgress] = useState(0);
+    const [nivel, setNivel] = useState(1);
+    const [maxProgress, setMaxProgress] = useState(20);
+
 
     const navigate = useNavigate();
     const handleNavigate = (path) => {
@@ -54,32 +55,36 @@ const NavBar = () => {
     }, []);
 
     useEffect(() => {
-        if (progress <= 50) {
+        if (progress <= 20) {
+            setNivel(1);
+            setMaxProgress(20);
+        } else if (progress <= 50) {
             setNivel(2);
-        }if(progress <= 100){
+            setMaxProgress(51);
+        } else if (progress <= 100) {
             setNivel(3);
+            setMaxProgress(101);
+        } else {
+            setNivel(4);
+            setMaxProgress(200);
         }
     }, [progress]);
 
     function LinearProgressWithLabel(props) {
         return (
-            <Box sx={{ alignItems: 'center'}}>
+            <Box sx={{ alignItems: 'center' }}>
                 <Box sx={{ width: '100%', mr: 25, marginTop: 0.7 }}>
                     <LinearProgress variant="determinate" color='error'{...props} sx={{ height: 10, borderRadius: 50 }} />
                 </Box>
                 <Box sx={{ minWidth: 35 }}>
-                    <Typography sx={{ marginTop: 1, fontWeight: 750 }} variant="caption" display="block" gutterBottom>
-                        PONTOS: {progress}
+                    <Typography sx={{ width: "100%", marginTop: 1, display: "flex", justifyContent: "space-between" }} variant="h6">
+                        <p style={{ fontSize: "14px", fontWeight: 600 }}>PONTOS: {progress}</p>
+                        <p style={{ fontSize: "14px", fontWeight: 600 }}>NÍVEL: {nivel}</p>
                     </Typography>
                 </Box>
             </Box>
         );
     }
-
-    LinearProgressWithLabel.propTypes = {
-
-        value: PropTypes.number.isRequired,
-    };
 
     return (
         <>
@@ -115,9 +120,9 @@ const NavBar = () => {
                             <div className={styles.box}>
                                 <Tooltip
                                     title={<Box sx={{ width: '100%', height: '35px' }}>
-                                        <LinearProgressWithLabel value={progress} />
+                                        <LinearProgressWithLabel value={(progress / maxProgress) * 100} />
                                     </Box>}
-                                     sx={{
+                                    sx={{
                                         '& .MuiTypography-root': {
                                             color: 'black'
                                         },

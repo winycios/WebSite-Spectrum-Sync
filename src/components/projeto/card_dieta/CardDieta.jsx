@@ -7,6 +7,15 @@ import img4 from "../../../utils/jantar.jpg";
 import img5 from "../../../utils/ceia.webp";
 import ModalDieta from "../modal_dieta/ModalDieta";
 import api from "../../../api";
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/joy/Checkbox';
+import Box from '@mui/joy/Box';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
+import Typography from '@mui/joy/Typography';
+import Modal from '@mui/joy/Modal';
+import ModalDialog from '@mui/joy/ModalDialog';
+import DialogTitle from '@mui/joy/DialogTitle';
 import CircularProgress from "@mui/material/CircularProgress";
 import { getId } from "../../../service/auth";
 import { toast } from 'react-toastify';
@@ -23,27 +32,27 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
     peso: '',
     pesoMeta: '',
     usuario: {
-        nome: '',
-        dataNascimento: '',
-        genero: '',
-        altura: '',
-        nivelCondicao: '',
-        meta: '',
-        objetivo: '',
-        pontuacao: ''
+      nome: '',
+      dataNascimento: '',
+      genero: '',
+      altura: '',
+      nivelCondicao: '',
+      meta: '',
+      objetivo: '',
+      pontuacao: ''
     }
   });
 
   // dados do usuario
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const response = await api.get(`/pesos/ultima-insercao/${getId()}`);
-            const userData = response.data;
-            setUser(userData);
-        } catch (error) {
-            toast.error(error.message);
-        }
+      try {
+        const response = await api.get(`/pesos/ultima-insercao/${getId()}`);
+        const userData = response.data;
+        setUser(userData);
+      } catch (error) {
+        toast.error(error.message);
+      }
 
     };
 
@@ -160,39 +169,79 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
     setSelectedCard(null);
   };
 
-  const handleSelectChange = (e) => {
-    setQtdCards(Number(e.target.value));
-  };
 
   const handleStartClick = () => {
     setShowSelectModal(false);
   };
 
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const handleSelectChange = (value) => {
+    if (checkedItems.includes(value)) {
+      // Desmarcar a checkbox
+      setCheckedItems(checkedItems.filter(item => item !== value));
+    } else {
+      // Marcar a checkbox
+      setCheckedItems([...checkedItems, value]);
+    }
+  };
+
   return (
     <div className={styles.cards_listener}>
       {showSelectModal && !sessionStorage.getItem("cardsData") && (
-        <div className={styles.modal}>
-          <div className={styles.modal_content}>
-            <h2>Selecione o número de refeições que deseja fazer hoje</h2>
-            <select value={qtdCards} onChange={handleSelectChange}>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-            </select>
-            <button onClick={handleStartClick}>Iniciar</button>
-          </div>
-        </div>
+        <Modal open={true}>
+          <ModalDialog sx={{ background: "var(--preto-secundario)" }}>
+            <DialogTitle style={{ color: "white" }}>Criando sua dieta Diária personalizada.</DialogTitle>
+            <form>
+              <Box>
+                <Typography id="topping" level="body-sm" fontWeight="500" fontSize={"18px"} mb={2}>
+                  Selecione a quantidade de refeições que você fará (APENAS 1 OPÇÃO)
+                </Typography>
+                <div role="group" aria-labelledby="topping">
+                  <List
+                    orientation="horizontal"
+                    wrap
+                    style={{ width: "100%", display: "flex", justifyContent: "center" }}
+                    sx={{
+                      '--List-gap': '8px',
+                      '--ListItem-radius': '20px',
+                    }}>
+                    {[3, 4, 5].map((value) => (
+                      <ListItem key={value}>
+                        <Checkbox
+                          overlay
+                          disabled={checkedItems.length >= 1 && !checkedItems.includes(value)}
+                          disableIcon
+                          label={value}
+                          color='danger'
+                          value={value}
+                          checked={checkedItems.includes(value)}
+                          onChange={() => handleSelectChange(value)}
+                          sx={{
+                            '.css-10q1s9e-JoyCheckbox-label': {
+                              color: "white",
+                              fontWeight: "bold"
+                            }
+                          }} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </div>
+              </Box>
+              <Button variant='contained' color='success' style={{ marginTop: "20px" }} onClick={handleStartClick}>Gerar dieta</Button>
+            </form>
+          </ModalDialog>
+        </Modal>
       )}
-
-      {loading && (
-        <div className={styles.modal}>
-          <div className={styles.modal_content}>
-            <h2>Carregando suas refeições, aguarde...</h2>
+      {loading  && (
+        <Modal open={true}>
+          <ModalDialog sx={{ background: "var(--preto-secundario)" }}>
+            <DialogTitle style={{ color: "white" }}>Carregando suas refeições, aguarde...</DialogTitle>
             <div className={styles.loading}>
               <CircularProgress color="primary" />
             </div>
-          </div>
-        </div>
+          </ModalDialog>
+        </Modal>
       )}
 
       {error && <p>Erro: {error}</p>}

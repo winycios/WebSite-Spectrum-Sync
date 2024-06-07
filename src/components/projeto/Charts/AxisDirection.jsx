@@ -78,7 +78,6 @@ export default function ReverseExampleNoSnap() {
         { type: 'line', dataKey: 'pesoMeta', color: 'white', label: 'Meta de peso' }
     ];
 
-
     return (
         <Stack spacing={2} alignItems="center" sx={{ width: '100%', padding: "10px" }}>
             {loading ? (

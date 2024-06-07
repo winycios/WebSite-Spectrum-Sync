@@ -164,7 +164,7 @@ const TelaVideo = () => {
         <>
             <ModalDescanso boolean={modalDescanso} />
             <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ margin: "0" }}>
+                <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ margin: "0", height: "100vh" }}>
                     <Grid xs={12} sm={10}>
                         <div className={Styles.container}>
                             <div className="box_img">

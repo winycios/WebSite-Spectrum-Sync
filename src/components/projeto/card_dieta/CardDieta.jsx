@@ -25,7 +25,7 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
   const [cardsData, setCardsData] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [showSelectModal, setShowSelectModal] = useState(true);
-  const [qtdCards, setQtdCards] = useState(3);
+  const [qtdCards, setQtdCards] = useState(0);
   const [error, setError] = useState(null);
 
   const [user, setUser] = useState({
@@ -170,22 +170,26 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
   };
 
 
-  const handleStartClick = () => {
-    setShowSelectModal(false);
-  };
 
   const [checkedItems, setCheckedItems] = useState([]);
 
-  const handleSelectChange = (value) => {
-    if (checkedItems.includes(value)) {
-      // Desmarcar a checkbox
-      setCheckedItems(checkedItems.filter(item => item !== value));
+  const handleStartClick = () => {
+    if (qtdCards === 0) {
+      toast.warning("Selecione alguma opção");
     } else {
-      // Marcar a checkbox
-      setCheckedItems([...checkedItems, value]);
+      setShowSelectModal(false);
     }
   };
 
+  const handleSelectChange = (value) => {
+    if (checkedItems.includes(value)) {
+      setCheckedItems(checkedItems.filter(item => item !== value));
+      setQtdCards(0);
+    } else {
+      setCheckedItems([value]);
+      setQtdCards(value);
+    }
+  };
   return (
     <div className={styles.cards_listener}>
       {showSelectModal && !sessionStorage.getItem("cardsData") && (

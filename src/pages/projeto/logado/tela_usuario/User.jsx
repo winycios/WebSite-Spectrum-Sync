@@ -13,8 +13,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { getId } from '../../../../service/auth';
 import { useNavigate } from "react-router-dom";
-
-import { EggFried, FiletypeCsv, FilePdf, ArrowUpLeftCircle, Trash, ArrowsVertical } from 'react-bootstrap-icons';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
+import ListSubheader from '@mui/joy/ListSubheader';
+import { EggFried, FiletypeCsv, ArrowUpLeftCircle, Trash, ArrowsVertical } from 'react-bootstrap-icons';
 
 import ScoreIcon from '@mui/icons-material/Score';
 import GpsNotFixedIcon from '@mui/icons-material/GpsNotFixed';
@@ -31,7 +33,15 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import { Brightness6, Brightness7, Nightlight, NightsStay } from '@mui/icons-material';
+import { Brightness6, Brightness7, KeyboardArrowDown, Nightlight, NightsStay } from '@mui/icons-material';
+import { IconButton } from '@mui/joy';
+import ModalDieta from '../../../../components/projeto/modal_dieta/ModalDieta';
+
+import cafe from "../../../../utils/cafe-da-manha.jpg"
+import almoco from "../../../../utils/almoco.jpg"
+import lanche from "../../../../utils/lanche.jpg"
+import jantar from "../../../../utils/jantar.jpg"
+import ceia from "../../../../utils/ceia.webp"
 
 const options = ["",
     "Acredite e faça acontecer.",
@@ -56,10 +66,13 @@ const User = () => {
     const [showDelete, setshowDelete] = useState(false);
     const [show, setShow] = useState(false);
     const [showPeso, setShowPeso] = useState(false);
+    const [selectedCard, setSelectedCard] = useState(null);
 
 
     const [valueMessage, setValueMessage] = React.useState(options[0]);
     const [inputValue, setInputValue] = React.useState('');
+
+    const [open, setOpen] = useState(false);
 
 
     const handleShow = () => setShow(true);
@@ -91,17 +104,18 @@ const User = () => {
     const [peso, setPeso] = useState('');
     const [pesoMeta, setPesoMeta] = useState('');
 
-    const [statusDieta, setStatusDieta] = useState(0);
     const [qtdDieta, setqtdSelecionada] = useState(0);
     const [dieta, setDieta] = useState([]);
 
     const predefinedCards = useMemo(() => [
-        { id: 1, horario: "09:00", img: LightModeIcon },
-        { id: 2, horario: "12:00", img: Brightness7 },
-        { id: 3, horario: "15:00", img: Brightness6 },
-        { id: 4, horario: "19:00", img: NightsStay },
-        { id: 5, horario: "22:00", img: Nightlight },
+        { id: 1, horario: "09:00", img: cafe, icon: LightModeIcon },
+        { id: 2, horario: "12:00", img: almoco, icon: Brightness7 },
+        { id: 3, horario: "15:00", img: lanche, icon: Brightness6 },
+        { id: 4, horario: "19:00", img: jantar, icon: NightsStay },
+        { id: 5, horario: "22:00", img: ceia, icon: Nightlight },
     ], []);
+
+    const [dietaEx, setDietaEx] = useState([]);
 
     // dados do usuario
     useEffect(() => {
@@ -118,33 +132,50 @@ const User = () => {
 
         const loadDieta = async () => {
             try {
-                setStatusDieta('loading');
 
                 const response = await Api.get(`/openai/${getId()}`, {
                     params: { objetivo: user.usuario.meta }
                 });
+
                 const apiData = response.data;
-                setqtdSelecionada(apiData[0].qtdSelecionada)
 
-                const updatedCardsData = predefinedCards
-                    .map((card, index) => ({
-                        ...card,
-                        titulo: apiData[index]?.nome || null,
-                        calorias: Number(apiData[index]?.calorias) || 0,
-                        proteinas: apiData[index]?.proteina || 0,
-                    }));
+                if (!Array.isArray(apiData)) {
+                    return null
+                }
 
-                setDieta(updatedCardsData);
+                setqtdSelecionada(apiData[0]?.qtdSelecionada || 0);
+                const updatedCardsData = apiData.map((data, index) => {
+                    if (index < predefinedCards.length && apiData[index].qtdSelecionada >= 3) {
+                        return {
+                            ...predefinedCards[index],
+                            titulo: data.nome || `Título 1`,
+                            descricao: data.modoPreparo || `Descrição 1`,
+                            carboidratos: Number(data.carboidratos) || 0,
+                            calorias: Number(data.calorias) || 0,
+                            gorduras: Number(data.gorduras) || 0,
+                            proteinas: Number(data.proteina) || 0,
+                            acucares: data.acucar || 0,
+                            tempoPreparo: data.tempoPreparo || 0,
+                            ingredientes: data.ingredientes || [],
+                        };
+                    } else {
+                        return null;
+                    }
+                });
 
-                setStatusDieta(response.status);
+                setDieta(updatedCardsData.filter(card => card !== null));
+                setDietaEx(apiData);
             } catch (error) {
                 toast.error(error.message);
-                setStatusDieta(500);
             }
         };
 
         fetchData();
     }, [predefinedCards, user.usuario.meta]);
+
+    const closeModal = () => {
+        setSelectedCard(null);
+    };
 
     const [focusedInput, setFocusedInput] = React.useState(false);
     const [focusedInput2, setFocusedInput2] = React.useState(false);
@@ -310,11 +341,9 @@ const User = () => {
                                     <span className={Styles.line} />
                                     <div className={Styles.box}>
 
-                                        <div className={`${Styles.box_text} ${Styles.active}`}> <EggFried color="white" size={22} className="align-center" /><span>Dieta</span></div>
+                                        <div className={`${Styles.box_text} ${Styles.active}`} onClick={() => handleNavigate('../homeProjeto/dieta')}> <EggFried color="white" size={22} className="align-center" /><span>Dieta</span></div>
 
                                         <div onClick={handleDownload} className={`${Styles.box_text} ${Styles.active}`}> <FiletypeCsv color="white" size={22} className="align-center" /><span>Dados</span></div>
-
-                                        <div className={`${Styles.box_text} ${Styles.active}`}> <FilePdf color="white" size={22} className="align-center" /><span>Relatório</span></div>
 
                                         <div className={`${Styles.box_text} ${Styles.active}`} onClick={handleShow}> <HearingIcon color="white" size={22} className="align-center" /><span>Apoio</span></div>
 
@@ -361,51 +390,120 @@ const User = () => {
                                     <Card.Body>
                                         <Card.Title className={Styles.title}>Alimentação diária</Card.Title>
 
-                                        <Table striped hover variant="dark">
-                                            <thead>
-                                                <tr>
-                                                    <th>Icon</th>
-                                                    <th>Horário</th>
-                                                    <th>Calorias</th>
-                                                    <th>Proteínas</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {statusDieta === 200 ? (
-                                                    dieta.slice(0, qtdDieta).map((result) => (
-                                                        <tr key={result.id}>
-                                                            <td><result.img color="white" size={22} className="align-center" /></td>
-                                                            <td>{result.horario}</td>
-                                                            <td>{result.calorias}(kcal)</td>
-                                                            <td>{result.proteinas}(g)</td>
-                                                        </tr>
-                                                    ))
-                                                ) : statusDieta === "loading" ? (
-                                                    <tr>
-                                                        <td colSpan="4">Analisando ...</td>
-                                                    </tr>
-                                                ) : (
-                                                    <tr>
-                                                        <td colSpan="4">Receita diária não encontrada.</td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </Table>
+                                        <List variant="plain">
+                                            <div style={{ height: "200px", overflowY: "auto" }}>
+                                                <ListItem nested>
+                                                    <ListSubheader>Dieta diária</ListSubheader>
+                                                    <List>
+                                                        <ListItem>
+                                                            <Table striped hover variant="dark">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Icon</th>
+                                                                        <th>Horário</th>
+                                                                        <th>Caloria</th>
+                                                                        <th>Proteína</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {(dieta.length > 0) ? (
+                                                                        dieta.slice(0, qtdDieta).map((result) => (
+                                                                            <tr key={result.id} style={{cursor: "pointer"}} onClick={() => setSelectedCard(result)}>
+                                                                                <td><result.icon color="white" size={22} className="align-center" /></td>
+                                                                                <td>{result.horario}</td>
+                                                                                <td>{result.calorias}(kcal)</td>
+                                                                                <td style={{ textAlign: "center" }}>{result.proteinas}(g)</td>
+                                                                            </tr>
+                                                                        ))
+                                                                    ) : (
+                                                                        <tr>
+                                                                            <td colSpan="4">Nenhuma receita feita</td>
+                                                                        </tr>
+                                                                    )}
+                                                                </tbody>
+                                                            </Table>
+                                                        </ListItem>
+                                                    </List>
+                                                </ListItem>
+                                            </div>
+                                            <div style={{ height: "150px", overflowY: "auto" }}>
+                                                <ListItem
+                                                    nested
+                                                    sx={{ my: 1 }}
+                                                    startAction={
+                                                        <IconButton
+                                                            size="sm"
+                                                            color="success"
+                                                            onClick={() => setOpen(!open)}
+                                                        >
+                                                            <KeyboardArrowDown
+                                                                sx={{ transform: open ? 'initial' : 'rotate(-90deg)' }}
+                                                            />
+                                                        </IconButton>
+                                                    }>
+                                                    <ListSubheader sx={{ marginLeft: "20px" }}>Receitas extras</ListSubheader>
+                                                    {open && (
+                                                        <List>
+                                                            <ListItem>
+                                                                <Table striped hover variant="dark">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Nome</th>
+                                                                            <th>Calorias</th>
+                                                                            <th>Proteínas</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {dietaEx.some(result => result.qtdSelecionada === 1) ? (
+                                                                            dietaEx.map((result) => (
+                                                                                result.qtdSelecionada === 1 ? (
+                                                                                    <tr key={result.id} style={{cursor: "pointer"}} onClick={() => setSelectedCard({
+                                                                                        titulo: result.nome || `Título 1`,
+                                                                                        descricao: result.modoPreparo || `Descrição 1`,
+                                                                                        carboidratos: Number(result.carboidratos) || 0,
+                                                                                        calorias: Number(result.calorias) || 0,
+                                                                                        gorduras: Number(result.gorduras) || 0,
+                                                                                        proteinas: Number(result.proteina) || 0,
+                                                                                        acucares: result.acucar || 0,
+                                                                                        tempoPreparo: result.tempoPreparo || 0,
+                                                                                        ingredientes: result.ingredientes || [],
+                                                                                    })}>
+                                                                                        <td>{result.nome}</td>
+                                                                                        <td>{result.calorias}(kcal)</td>
+                                                                                        <td style={{ textAlign: "center" }}>{result.proteina}(g)</td>
+                                                                                    </tr>
+                                                                                ) : null
+                                                                            ))
+                                                                        ) : (
+                                                                            <tr>
+                                                                                <td colSpan="3">Nenhuma receita extra feita</td>
+                                                                            </tr>
+                                                                        )}
+
+                                                                    </tbody>
+                                                                </Table>
+                                                            </ListItem>
+                                                        </List>
+                                                    )}
+                                                </ListItem>
+                                            </div>
+                                        </List>
                                     </Card.Body>
                                 </Card>
                             </Card.Body>
                         </Card>
                     </Col>
 
+
                     <Col className={`${Styles.cols} ${Styles.section_none}`} sm>
                         <Section3 />
                     </Col>
-                </Row>
+                </Row >
             </Container>
 
 
             {/* Modal apoio */}
-            <Modal show={show} onHide={handleClose} centered>
+            < Modal show={show} onHide={handleClose} centered >
                 <div className={Styles.backModal}>
                     <Modal.Header>
                         <Modal.Title>Sua nova mensagem motivacional</Modal.Title>
@@ -465,10 +563,10 @@ const User = () => {
                         </Button>
                     </Modal.Footer>
                 </div>
-            </Modal>
+            </Modal >
 
             {/* Modal deletar */}
-            <Modal show={showDelete} onHide={handleCloseDelete} centered>
+            < Modal show={showDelete} onHide={handleCloseDelete} centered >
                 <div className={Styles.backModal}>
                     <Modal.Header>
                         <Modal.Title>Excluir Conta</Modal.Title>
@@ -490,10 +588,10 @@ const User = () => {
                         </Button>
                     </Modal.Footer>
                 </div>
-            </Modal>
+            </Modal >
 
             {/* Modal peso */}
-            <Modal show={showPeso} onHide={handleClosePeso} centered>
+            < Modal show={showPeso} onHide={handleClosePeso} centered >
                 <div className={Styles.backModal}>
                     <Modal.Header>
                         <Modal.Title>Atualize seu peso</Modal.Title>
@@ -555,8 +653,9 @@ const User = () => {
                         </Button>
                     </Modal.Footer>
                 </div>
-            </Modal>
+            </Modal >
 
+            {selectedCard && <ModalDieta card={selectedCard} onClose={closeModal} />}
         </>
     )
 }

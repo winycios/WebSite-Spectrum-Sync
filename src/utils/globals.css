@@ -74,6 +74,10 @@ ul {
     fill: #1C1C1E !important;
 }
 
+tr:last-of-type.css-hqneie-MuiChartsTooltip-row td{
+    color: white !important;
+}
+
 .container {
     max-width: 95% !important;
 }

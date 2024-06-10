@@ -7,11 +7,12 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import { House, Cursor, FileBreak, BoxArrowInLeft } from 'react-bootstrap-icons';
+import { House, BoxArrowInLeft, EggFried } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import FindImage from '../GET/ProcurarImg';
 import api from '../../../api';
 import { getId } from '../../../service/auth';
+import { FitnessCenterOutlined } from '@mui/icons-material';
 
 const logo = 'https://fittech500.blob.core.windows.net/imagens-spectrum/logo.png'
 
@@ -108,10 +109,10 @@ const NavBar = () => {
                                     <House color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 
                                 <Nav.Link onClick={() => handleNavigate('../homeProjeto/treino')} className={`${styles.nav_link}`}>Treino
-                                    <Cursor color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
+                                    <FitnessCenterOutlined color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 
                                 <Nav.Link onClick={() => handleNavigate('../homeProjeto/dieta')} className={`${styles.nav_link}`}>Dieta
-                                    <FileBreak color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
+                                    <EggFried color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>
 
                                 <Nav.Link onClick={useLogout} className={`${styles.nav_link}`}>Sair
                                     <BoxArrowInLeft color="white" size={20} className="align-center" style={{ marginLeft: "6px" }} /></Nav.Link>

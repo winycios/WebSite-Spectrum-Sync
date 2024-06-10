@@ -237,7 +237,7 @@ const CardDieta = ({ onNutrientTotalsUpdate, onCurrentNutrientUpdate }) => {
           </ModalDialog>
         </Modal>
       )}
-      {loading  && (
+      {loading && (
         <Modal open={true}>
           <ModalDialog sx={{ background: "var(--preto-secundario)" }}>
             <DialogTitle style={{ color: "white" }}>Carregando suas refeições, aguarde...</DialogTitle>

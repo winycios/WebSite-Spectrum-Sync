@@ -13,7 +13,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { getId } from '../../../../service/auth';
 import { useNavigate } from "react-router-dom";
-
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
+import ListSubheader from '@mui/joy/ListSubheader';
 import { EggFried, FiletypeCsv, FilePdf, ArrowUpLeftCircle, Trash, ArrowsVertical } from 'react-bootstrap-icons';
 
 import ScoreIcon from '@mui/icons-material/Score';
@@ -31,7 +33,8 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import { Brightness6, Brightness7, Nightlight, NightsStay } from '@mui/icons-material';
+import { Brightness6, Brightness7, KeyboardArrowDown, Nightlight, NightsStay } from '@mui/icons-material';
+import { IconButton } from '@mui/joy';
 
 const options = ["",
     "Acredite e faça acontecer.",
@@ -60,6 +63,8 @@ const User = () => {
 
     const [valueMessage, setValueMessage] = React.useState(options[0]);
     const [inputValue, setInputValue] = React.useState('');
+
+    const [open, setOpen] = useState(false);
 
 
     const handleShow = () => setShow(true);
@@ -103,6 +108,8 @@ const User = () => {
         { id: 5, horario: "22:00", img: Nightlight },
     ], []);
 
+    const [dietaEx, setDietaEx] = useState([]);
+
     // dados do usuario
     useEffect(() => {
         const fetchData = async () => {
@@ -123,25 +130,32 @@ const User = () => {
                 const response = await Api.get(`/openai/${getId()}`, {
                     params: { objetivo: user.usuario.meta }
                 });
+
                 const apiData = response.data;
-                setqtdSelecionada(apiData[0].qtdSelecionada)
+                setqtdSelecionada(apiData[0]?.qtdSelecionada || 0);
 
-                const updatedCardsData = predefinedCards
-                    .map((card, index) => ({
-                        ...card,
-                        titulo: apiData[index]?.nome || null,
-                        calorias: Number(apiData[index]?.calorias) || 0,
-                        proteinas: apiData[index]?.proteina || 0,
-                    }));
+                const updatedCardsData = apiData.map((data, index) => {
+                    if (index < predefinedCards.length && apiData.qtdSelecionada >= 3) {
+                        return {
+                            ...predefinedCards[index],
+                            titulo: data.nome || null,
+                            calorias: Number(data.calorias) || 0,
+                            proteinas: data.proteina || 0,
+                        };
+                    } else {
+                        return null;
+                    }
+                });
 
-                setDieta(updatedCardsData);
-
+                setDieta(updatedCardsData.filter(card => card !== null));
+                setDietaEx(apiData);
                 setStatusDieta(response.status);
             } catch (error) {
                 toast.error(error.message);
                 setStatusDieta(500);
             }
         };
+
 
         fetchData();
     }, [predefinedCards, user.usuario.meta]);
@@ -361,51 +375,126 @@ const User = () => {
                                     <Card.Body>
                                         <Card.Title className={Styles.title}>Alimentação diária</Card.Title>
 
-                                        <Table striped hover variant="dark">
-                                            <thead>
-                                                <tr>
-                                                    <th>Icon</th>
-                                                    <th>Horário</th>
-                                                    <th>Calorias</th>
-                                                    <th>Proteínas</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {statusDieta === 200 ? (
-                                                    dieta.slice(0, qtdDieta).map((result) => (
-                                                        <tr key={result.id}>
-                                                            <td><result.img color="white" size={22} className="align-center" /></td>
-                                                            <td>{result.horario}</td>
-                                                            <td>{result.calorias}(kcal)</td>
-                                                            <td>{result.proteinas}(g)</td>
-                                                        </tr>
-                                                    ))
-                                                ) : statusDieta === "loading" ? (
-                                                    <tr>
-                                                        <td colSpan="4">Analisando ...</td>
-                                                    </tr>
-                                                ) : (
-                                                    <tr>
-                                                        <td colSpan="4">Receita diária não encontrada.</td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </Table>
+                                        <List variant="plain">
+                                            <div style={{ height: "200px", overflowY: "auto" }}>
+                                                <ListItem nested>
+                                                    <ListSubheader>Dieta diária</ListSubheader>
+                                                    <List>
+                                                        <ListItem>
+                                                            <Table striped hover variant="dark">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Icon</th>
+                                                                        <th>Horário</th>
+                                                                        <th>Caloria</th>
+                                                                        <th>Proteína</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {statusDieta === 200 ? (
+                                                                        dieta.slice(0, qtdDieta).map((result) => (
+                                                                            <tr key={result.id}>
+                                                                                <td><result.img color="white" size={22} className="align-center" /></td>
+                                                                                <td>{result.horario}</td>
+                                                                                <td>{result.calorias}(kcal)</td>
+                                                                                <td style={{ textAlign: "center" }}>{result.proteinas}(g)</td>
+                                                                            </tr>
+                                                                        ))
+                                                                    ) : statusDieta === "loading" ? (
+                                                                        <tr>
+                                                                            <td colSpan="4">Analisando ...</td>
+                                                                        </tr>
+                                                                    ) : dieta.length === 0 ? (
+                                                                        <tr>
+                                                                            <td colSpan="4">Nenhuma receita feita</td>
+                                                                        </tr>
+                                                                    ) : (
+                                                                        <tr>
+                                                                            <td colSpan="4">Receita diária não encontrada.</td>
+                                                                        </tr>
+                                                                    )}
+                                                                </tbody>
+                                                            </Table>
+                                                        </ListItem>
+                                                    </List>
+                                                </ListItem>
+                                            </div>
+                                            <div style={{ height: "250px", overflowY: "auto" }}>
+                                                <ListItem
+                                                    nested
+                                                    sx={{ my: 1 }}
+                                                    startAction={
+                                                        <IconButton
+                                                            size="sm"
+                                                            color="success"
+                                                            onClick={() => setOpen(!open)}
+                                                        >
+                                                            <KeyboardArrowDown
+                                                                sx={{ transform: open ? 'initial' : 'rotate(-90deg)' }}
+                                                            />
+                                                        </IconButton>
+                                                    }>
+                                                    <ListSubheader sx={{ marginLeft: "20px" }}>Receitas extras</ListSubheader>
+                                                    {open && (
+                                                        <List>
+                                                            <ListItem>
+                                                                <Table striped hover variant="dark">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Nome</th>
+                                                                            <th>Calorias</th>
+                                                                            <th>Proteínas</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {statusDieta === 200 ? (
+                                                                            dietaEx.map((result) => (
+                                                                                result.qtdSelecionada === 1 ? (
+                                                                                    <tr key={result.id}>
+                                                                                        <td>{result.nome}</td>
+                                                                                        <td>{result.calorias}(kcal)</td>
+                                                                                        <td style={{ textAlign: "center" }}>{result.proteina}(g)</td>
+                                                                                    </tr>
+                                                                                ) : null
+                                                                            ))
+                                                                        ) : statusDieta === "loading" ? (
+                                                                            <tr>
+                                                                                <td colSpan="3">Analisando ...</td>
+                                                                            </tr>
+                                                                        ) : dietaEx.length === 0 ? (
+                                                                            <tr>
+                                                                                <td colSpan="3">Nenhuma receita feita</td>
+                                                                            </tr>
+                                                                        ) : (
+                                                                            <tr>
+                                                                                <td colSpan="3">Receita diária não encontrada.</td>
+                                                                            </tr>
+                                                                        )}
+
+                                                                    </tbody>
+                                                                </Table>
+                                                            </ListItem>
+                                                        </List>
+                                                    )}
+                                                </ListItem>
+                                            </div>
+                                        </List>
                                     </Card.Body>
                                 </Card>
                             </Card.Body>
                         </Card>
                     </Col>
 
+
                     <Col className={`${Styles.cols} ${Styles.section_none}`} sm>
                         <Section3 />
                     </Col>
-                </Row>
+                </Row >
             </Container>
 
 
             {/* Modal apoio */}
-            <Modal show={show} onHide={handleClose} centered>
+            < Modal show={show} onHide={handleClose} centered >
                 <div className={Styles.backModal}>
                     <Modal.Header>
                         <Modal.Title>Sua nova mensagem motivacional</Modal.Title>
@@ -465,10 +554,10 @@ const User = () => {
                         </Button>
                     </Modal.Footer>
                 </div>
-            </Modal>
+            </Modal >
 
             {/* Modal deletar */}
-            <Modal show={showDelete} onHide={handleCloseDelete} centered>
+            < Modal show={showDelete} onHide={handleCloseDelete} centered >
                 <div className={Styles.backModal}>
                     <Modal.Header>
                         <Modal.Title>Excluir Conta</Modal.Title>
@@ -490,10 +579,10 @@ const User = () => {
                         </Button>
                     </Modal.Footer>
                 </div>
-            </Modal>
+            </Modal >
 
             {/* Modal peso */}
-            <Modal show={showPeso} onHide={handleClosePeso} centered>
+            < Modal show={showPeso} onHide={handleClosePeso} centered >
                 <div className={Styles.backModal}>
                     <Modal.Header>
                         <Modal.Title>Atualize seu peso</Modal.Title>
@@ -555,7 +644,7 @@ const User = () => {
                         </Button>
                     </Modal.Footer>
                 </div>
-            </Modal>
+            </Modal >
 
         </>
     )

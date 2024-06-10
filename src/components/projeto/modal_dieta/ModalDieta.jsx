@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './ModalDieta.module.css';
+import img3 from "../../../utils/lanche.jpg";
 
 const ModalDieta = ({ card, onClose }) => {
     if (!card) return null;
@@ -21,7 +22,7 @@ const ModalDieta = ({ card, onClose }) => {
                     <span className={styles.closeButton} onClick={onClose}>&times;</span>
                 </div>
                 <div className={styles.sectionInfo}>
-                    <img src={card.img} alt={card.titulo} className={styles.img} />
+                    <img src={card.img ? card.img : img3} alt={card.titulo} className={styles.img} />
                     <div className={styles.info}>
                         <div className={styles.sectionInfo}>
                             <h2 className={styles.font_secondary}>Calorias</h2>

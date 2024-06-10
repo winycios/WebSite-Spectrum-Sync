@@ -4,6 +4,7 @@ import NavBar from "../../../../components/projeto/navBar/NavBar";
 import FindUser from "../../../../components/projeto/GET/ValidarUsuario";
 import CardDieta from "../../../../components/projeto/card_dieta/CardDieta";
 import Api from "../../../../api";
+import DietaExtra from "../../../../components/projeto/dieta_extra/Dieta_extra";
 import { getId } from "../../../../service/auth";
 import moment from "moment";
 import { PieChart } from "@mui/x-charts/PieChart";
@@ -79,6 +80,9 @@ const TelaDieta = () => {
             onNutrientTotalsUpdate={setNutrientTotals}
             onCurrentNutrientUpdate={setCurrentNutrientTotals}
           />
+          <div style={{marginTop: "20px"}}>
+            <DietaExtra />
+          </div>
           <div className={styles.dashboardContainer}>
             <div className={styles.box_KPI}>
               <div className={styles.title_box_KPI}>
@@ -173,7 +177,7 @@ const TelaDieta = () => {
                     ]}
                     width={300}
                     height={250}
-                    legend={{ position: 'center' }}
+                    legend={{ position: { horizontal: 'middle', vertical: 'middle' } }} // Changed to an object
                   />
                 </div>
               </div>

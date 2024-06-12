@@ -408,7 +408,7 @@ const User = () => {
                                                                 <tbody>
                                                                     {(dieta.length > 0) ? (
                                                                         dieta.slice(0, qtdDieta).map((result) => (
-                                                                            <tr key={result.id} style={{cursor: "pointer"}} onClick={() => setSelectedCard(result)}>
+                                                                            <tr key={result.id} style={{ cursor: "pointer" }} onClick={() => setSelectedCard(result)}>
                                                                                 <td><result.icon color="white" size={22} className="align-center" /></td>
                                                                                 <td>{result.horario}</td>
                                                                                 <td>{result.calorias}(kcal)</td>
@@ -457,7 +457,7 @@ const User = () => {
                                                                         {dietaEx.some(result => result.qtdSelecionada === 1) ? (
                                                                             dietaEx.map((result) => (
                                                                                 result.qtdSelecionada === 1 ? (
-                                                                                    <tr key={result.id} style={{cursor: "pointer"}} onClick={() => setSelectedCard({
+                                                                                    <tr key={result.id} style={{ cursor: "pointer" }} onClick={() => setSelectedCard({
                                                                                         titulo: result.nome || `Título 1`,
                                                                                         descricao: result.modoPreparo || `Descrição 1`,
                                                                                         carboidratos: Number(result.carboidratos) || 0,
@@ -465,6 +465,7 @@ const User = () => {
                                                                                         gorduras: Number(result.gorduras) || 0,
                                                                                         proteinas: Number(result.proteina) || 0,
                                                                                         acucares: result.acucar || 0,
+                                                                                        img: result.image,
                                                                                         tempoPreparo: result.tempoPreparo || 0,
                                                                                         ingredientes: result.ingredientes || [],
                                                                                     })}>

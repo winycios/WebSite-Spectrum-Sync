@@ -80,7 +80,7 @@ const TelaDieta = () => {
             onNutrientTotalsUpdate={setNutrientTotals}
             onCurrentNutrientUpdate={setCurrentNutrientTotals}
           />
-          <div style={{marginTop: "20px"}}>
+          <div style={{ marginTop: "20px" }}>
             <DietaExtra />
           </div>
           <div className={styles.dashboardContainer}>
@@ -177,7 +177,7 @@ const TelaDieta = () => {
                     ]}
                     width={300}
                     height={250}
-                    legend={{ position: { horizontal: 'middle', vertical: 'middle' } }} // Changed to an object
+                    legend={{ position: { horizontal: 'middle', vertical: 'middle' } }}
                   />
                 </div>
               </div>
@@ -213,7 +213,6 @@ const TelaDieta = () => {
                     label: "Peso",
                   },
                 ]}
-                width={450}
                 height={250}
               />
             </div>

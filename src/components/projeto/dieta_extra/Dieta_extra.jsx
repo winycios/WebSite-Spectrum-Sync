@@ -55,6 +55,7 @@ const DietaExtra = () => {
                 gorduras: Number(response.data.gorduras) || 0,
                 proteinas: Number(response.data.proteina) || 0,
                 acucares: response.data.acucar || 0,
+                img: response.data.image,
                 tempoPreparo: response.data.tempoPreparo || 0,
                 ingredientes: response.data.ingredientes || [],
             });
@@ -148,7 +149,7 @@ const DietaExtra = () => {
                                             '--List-gap': '8px',
                                             '--ListItem-radius': '20px',
                                         }}>
-                                        {["Arroz", "Salada", "Pão"].map((value) => (
+                                        {["Arroz Integral", "Salada", "Pão"].map((value) => (
                                             <ListItem key={value}>
                                                 <Checkbox
                                                     overlay

@@ -10,8 +10,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'react-toastify/dist/ReactToastify.css';
-import "./utils/globals.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "./utils/globals.css"
 
 document.getElementById('root').classList.toggle('dark');
 ReactDOM.createRoot(document.getElementById('root')).render(

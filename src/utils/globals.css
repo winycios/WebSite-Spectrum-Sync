@@ -65,16 +65,23 @@ ul {
     box-shadow: none !important;
 }
 
-.css-2hvfka-MuiChartsTooltip-table {
-
-    background: var(--preto);
-}
-
 .base-Popper-root {
     fill: #1C1C1E !important;
 }
 
-tr:last-of-type.css-hqneie-MuiChartsTooltip-row td{
+.css-r9uhzn {
+
+    background-color: #FF3B47 !important;
+}
+
+.css-rbnde3 {
+    background: #1C1C1E !important;
+}
+
+tr:last-of-type.css-hqneie-MuiChartsTooltip-row td,
+.css-1q4zyjn,
+.css-1q4zyjn.MuiChartsTooltip-valueCell,
+.css-mbfek {
     color: white !important;
 }
 
@@ -84,11 +91,6 @@ tr:last-of-type.css-hqneie-MuiChartsTooltip-row td{
 
 .carousel-inner {
     width: 80% !important;
-}
-
-.css-7dv1rb-MuiButtonBase-root-MuiFab-root-MuiSpeedDial-fab {
-
-    background-color: var(--salmao) !important
 }
 
 .p-float-label:has(input:focus) label {

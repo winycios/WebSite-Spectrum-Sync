@@ -13,25 +13,48 @@ A FIT TECH é uma aplicação web desenvolvida em React voltada para ajudar os u
 
 ## Instalação
 
-1. Clone o repositório: `git clone https://github.com/seu-usuario/academia-fitness-app.git`
-2. Navegue até o diretório do projeto: `cd academia-fitness-app`
-3. Instale as dependências: `npm install`
-4. Inicie o servidor de desenvolvimento: `npm start`
-5. Abra o navegador e acesse `http://localhost:3000`
+1. Clone o repositório:
+    ```bash
+    git clone https://github.com/seu-usuario/academia-fitness-app.git
+    ```
+2. Navegue até o diretório do projeto:
+    ```bash
+    cd academia-fitness-app
+    ```
+3. Instale as dependências:
+    ```bash
+    npm install
+    ```
+4. Inicie o servidor de desenvolvimento:
+    ```bash
+    npm start
+    ```
+5. Abra o navegador e acesse [http://localhost:3000](http://localhost:3000).
+
+> **Nota:** Para que o sistema funcione completamente, é necessário que a API esteja rodando localmente. A API pode estar desligada, portanto, verifique e inicie a API conforme necessário.
+
+## Configuração da API
+
+Para garantir o funcionamento correto, certifique-se de atualizar o arquivo `api.js` com o endereço correto da API. Altere a URL base para `http://localhost:8080` ou o endereço onde sua API está rodando.
 
 ## Tecnologias Utilizadas
 
 - **React**: Biblioteca JavaScript para construção de interfaces de usuário.
 - **React Router**: Para gerenciamento de rotas na aplicação.
-- **MySql**:  armazenamento de dados em tempo real.
-- **Google login**: Para autenticação de usuários
+- **MySQL**: Armazenamento de dados em tempo real.
+- **Google Login**: Para autenticação de usuários.
 - **React Charts - MUI X**: Para geração de gráficos e estatísticas.
 
 ## Contribuição
 
 Contribuições são bem-vindas! Se você encontrou um bug, tem uma ideia para um novo recurso ou quer melhorar a documentação, sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
-
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
+Espero que você aproveite o uso da FIT TECH! Para qualquer dúvida ou suporte, entre em contato conosco.
+
+**Mantenha-se em forma e saudável!** 💪
